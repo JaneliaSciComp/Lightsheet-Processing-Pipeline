@@ -49,7 +49,7 @@ for t = 1:numel(timePoints)
             folderName = ['Comparison.TM' num2str(timePoints(t), '%.6d') '.' dataTypes{i} '.bin_tau' num2str(taus{i}(j)) '.overlay'];
             mkdir(folderName);
             for z = 1:size(imageStack, 3)
-                imwrite(cat(3, edgeStack(:, :, z), referenceEdgeStack(:, :, z), imageStack(:, :, z)), [folderName '\' num2str(z, '%.4d') '.tif'], 'Compression', 'none');
+                imwrite(cat(3, edgeStack(:, :, z), referenceEdgeStack(:, :, z), imageStack(:, :, z)), [folderName filesep '' num2str(z, '%.4d') '.tif'], 'Compression', 'none');
             end;
         end;
     end;

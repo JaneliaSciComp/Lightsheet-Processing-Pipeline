@@ -4,8 +4,8 @@ if exist('ProjectionsMVD', 'dir') ~= 7
     mkdir('ProjectionsMVD');
 end;
 
-if exist('ProjectionsMVD\Frames', 'dir') ~= 7
-    mkdir('ProjectionsMVD\Frames');
+if exist('ProjectionsMVD' filesep 'Frames', 'dir') ~= 7
+    mkdir('ProjectionsMVD' filesep 'Frames');
 end;
 
 frames = cell(numel(timepoints), 6);
@@ -20,20 +20,20 @@ for i = 1:numel(timepoints)
     disp(['reading time point ' num2str(timepoint)]);
     
     allDone = ...
-        exist(['ProjectionsMVD\Frames\MVD_SmallPSF_iter20.TM' num2str(timepoint, '%.3d') '_xy.klb'], 'file') == 2 &&...
-        exist(['ProjectionsMVD\Frames\MVD_SmallPSF_iter20.TM' num2str(timepoint, '%.3d') '_xz.klb'], 'file') == 2 &&...
-        exist(['ProjectionsMVD\Frames\MVD_SmallPSF_iter20.TM' num2str(timepoint, '%.3d') '_yz.klb'], 'file') == 2;
+        exist(['ProjectionsMVD' filesep 'Frames' filesep 'MVD_SmallPSF_iter20.TM' num2str(timepoint, '%.3d') '_xy.klb'], 'file') == 2 &&...
+        exist(['ProjectionsMVD' filesep 'Frames' filesep 'MVD_SmallPSF_iter20.TM' num2str(timepoint, '%.3d') '_xz.klb'], 'file') == 2 &&...
+        exist(['ProjectionsMVD' filesep 'Frames' filesep 'MVD_SmallPSF_iter20.TM' num2str(timepoint, '%.3d') '_yz.klb'], 'file') == 2;
     
     if allDone
-        frames{i, 1} = readImage(['ProjectionsMVD\Frames\MVD_SmallPSF_iter20.TM' num2str(timepoint, '%.3d') '_xy.klb']);
-        frames{i, 2} = readImage(['ProjectionsMVD\Frames\MVD_SmallPSF_iter20.TM' num2str(timepoint, '%.3d') '_xz.klb']);
-        frames{i, 3} = readImage(['ProjectionsMVD\Frames\MVD_SmallPSF_iter20.TM' num2str(timepoint, '%.3d') '_yz.klb']);
+        frames{i, 1} = readImage(['ProjectionsMVD' filesep 'Frames' filesep 'MVD_SmallPSF_iter20.TM' num2str(timepoint, '%.3d') '_xy.klb']);
+        frames{i, 2} = readImage(['ProjectionsMVD' filesep 'Frames' filesep 'MVD_SmallPSF_iter20.TM' num2str(timepoint, '%.3d') '_xz.klb']);
+        frames{i, 3} = readImage(['ProjectionsMVD' filesep 'Frames' filesep 'MVD_SmallPSF_iter20.TM' num2str(timepoint, '%.3d') '_yz.klb']);
         
         sizeArray(i, 1:2) = [size(frames{i, 1}, 1) size(frames{i, 1}, 2)];
         sizeArray(i, 3:4) = [size(frames{i, 2}, 1) size(frames{i, 2}, 2)];
         sizeArray(i, 5:6) = [size(frames{i, 3}, 1) size(frames{i, 3}, 2)];
     else
-        stack = readImage(['TM' num2str(timepoint, '%.6d') '\SPM00_TM' num2str(timepoint, '%.6d') ...
+        stack = readImage(['TM' num2str(timepoint, '%.6d') filesep 'SPM00_TM' num2str(timepoint, '%.6d') ...
             '_CM00_CHN00.affine.trsf.cropped.padded.klb_dec_LR_multiGPU_MVD_SmallPSF_iter20_lambdaTV000000.uint16.klb']);
         
         frames{i, 1} = max(stack, [], 3);
@@ -44,28 +44,28 @@ for i = 1:numel(timepoints)
         sizeArray(i, 3:4) = [size(frames{i, 2}, 1) size(frames{i, 2}, 2)];
         sizeArray(i, 5:6) = [size(frames{i, 3}, 1) size(frames{i, 3}, 2)];
         
-        writeImage(frames{i, 1}, ['ProjectionsMVD\Frames\MVD_SmallPSF_iter20.TM' num2str(timepoint, '%.3d') '_xy.klb']);
-        writeImage(frames{i, 2}, ['ProjectionsMVD\Frames\MVD_SmallPSF_iter20.TM' num2str(timepoint, '%.3d') '_xz.klb']);
-        writeImage(frames{i, 3}, ['ProjectionsMVD\Frames\MVD_SmallPSF_iter20.TM' num2str(timepoint, '%.3d') '_yz.klb']);
+        writeImage(frames{i, 1}, ['ProjectionsMVD' filesep 'Frames' filesep 'MVD_SmallPSF_iter20.TM' num2str(timepoint, '%.3d') '_xy.klb']);
+        writeImage(frames{i, 2}, ['ProjectionsMVD' filesep 'Frames' filesep 'MVD_SmallPSF_iter20.TM' num2str(timepoint, '%.3d') '_xz.klb']);
+        writeImage(frames{i, 3}, ['ProjectionsMVD' filesep 'Frames' filesep 'MVD_SmallPSF_iter20.TM' num2str(timepoint, '%.3d') '_yz.klb']);
     end;
     
     intensity(i, 2:6, 1) = [min(frames{i, 1}(:)), prctile(frames{i, 1}(:), 10), median(frames{i, 1}(:)), prctile(frames{i, 1}(:), 99.9), max(frames{i, 1}(:))];
     
     allDone = ...
-        exist(['ProjectionsMVD\Frames\MVD_LargePSF_iter50.TM' num2str(timepoint, '%.3d') '_xy.klb'], 'file') == 2 &&...
-        exist(['ProjectionsMVD\Frames\MVD_LargePSF_iter50.TM' num2str(timepoint, '%.3d') '_xz.klb'], 'file') == 2 &&...
-        exist(['ProjectionsMVD\Frames\MVD_LargePSF_iter50.TM' num2str(timepoint, '%.3d') '_yz.klb'], 'file') == 2;
+        exist(['ProjectionsMVD' filesep 'Frames' filesep 'MVD_LargePSF_iter50.TM' num2str(timepoint, '%.3d') '_xy.klb'], 'file') == 2 &&...
+        exist(['ProjectionsMVD' filesep 'Frames' filesep 'MVD_LargePSF_iter50.TM' num2str(timepoint, '%.3d') '_xz.klb'], 'file') == 2 &&...
+        exist(['ProjectionsMVD' filesep 'Frames' filesep 'MVD_LargePSF_iter50.TM' num2str(timepoint, '%.3d') '_yz.klb'], 'file') == 2;
     
     if allDone
-        frames{i, 4} = readImage(['ProjectionsMVD\Frames\MVD_LargePSF_iter50.TM' num2str(timepoint, '%.3d') '_xy.klb']);
-        frames{i, 5} = readImage(['ProjectionsMVD\Frames\MVD_LargePSF_iter50.TM' num2str(timepoint, '%.3d') '_xz.klb']);
-        frames{i, 6} = readImage(['ProjectionsMVD\Frames\MVD_LargePSF_iter50.TM' num2str(timepoint, '%.3d') '_yz.klb']);
+        frames{i, 4} = readImage(['ProjectionsMVD' filesep 'Frames' filesep 'MVD_LargePSF_iter50.TM' num2str(timepoint, '%.3d') '_xy.klb']);
+        frames{i, 5} = readImage(['ProjectionsMVD' filesep 'Frames' filesep 'MVD_LargePSF_iter50.TM' num2str(timepoint, '%.3d') '_xz.klb']);
+        frames{i, 6} = readImage(['ProjectionsMVD' filesep 'Frames' filesep 'MVD_LargePSF_iter50.TM' num2str(timepoint, '%.3d') '_yz.klb']);
         
         sizeArray(i, 7:8) = [size(frames{i, 4}, 1) size(frames{i, 4}, 2)];
         sizeArray(i, 9:10) = [size(frames{i, 5}, 1) size(frames{i, 5}, 2)];
         sizeArray(i, 11:12) = [size(frames{i, 6}, 1) size(frames{i, 6}, 2)];
     else
-        stack = readImage(['TM' num2str(timepoint, '%.6d') '\SPM00_TM' num2str(timepoint, '%.6d') ...
+        stack = readImage(['TM' num2str(timepoint, '%.6d') filesep 'SPM00_TM' num2str(timepoint, '%.6d') ...
             '_CM00_CHN00.affine.trsf.cropped.padded.klb_dec_LR_multiGPU_MVD_LargePSF_iter50_lambdaTV000000.uint16.klb']);
         
         frames{i, 4} = max(stack, [], 3);
@@ -76,15 +76,15 @@ for i = 1:numel(timepoints)
         sizeArray(i, 9:10) = [size(frames{i, 5}, 1) size(frames{i, 5}, 2)];
         sizeArray(i, 11:12) = [size(frames{i, 6}, 1) size(frames{i, 6}, 2)];
         
-        writeImage(frames{i, 4}, ['ProjectionsMVD\Frames\MVD_LargePSF_iter50.TM' num2str(timepoint, '%.3d') '_xy.klb']);
-        writeImage(frames{i, 5}, ['ProjectionsMVD\Frames\MVD_LargePSF_iter50.TM' num2str(timepoint, '%.3d') '_xz.klb']);
-        writeImage(frames{i, 6}, ['ProjectionsMVD\Frames\MVD_LargePSF_iter50.TM' num2str(timepoint, '%.3d') '_yz.klb']);
+        writeImage(frames{i, 4}, ['ProjectionsMVD' filesep 'Frames' filesep 'MVD_LargePSF_iter50.TM' num2str(timepoint, '%.3d') '_xy.klb']);
+        writeImage(frames{i, 5}, ['ProjectionsMVD' filesep 'Frames' filesep 'MVD_LargePSF_iter50.TM' num2str(timepoint, '%.3d') '_xz.klb']);
+        writeImage(frames{i, 6}, ['ProjectionsMVD' filesep 'Frames' filesep 'MVD_LargePSF_iter50.TM' num2str(timepoint, '%.3d') '_yz.klb']);
     end;
     
     intensity(i, 2:6, 2) = [min(frames{i, 1}(:)), prctile(frames{i, 1}(:), 10), median(frames{i, 1}(:)), prctile(frames{i, 1}(:), 99.9), max(frames{i, 1}(:))];
 end;
 
-save('ProjectionsMVD\IntensityStatistics.mat', 'intensity');
+save('ProjectionsMVD' filesep 'IntensityStatistics.mat', 'intensity');
 
 disp('writing projection overlay stacks');
 
@@ -103,17 +103,17 @@ for c = 1:6
     
     switch c
         case 1
-            outputName = 'ProjectionsMVD\MVD_SmallPSF_iter20.overlay_xy';
+            outputName = 'ProjectionsMVD' filesep 'MVD_SmallPSF_iter20.overlay_xy';
         case 2
-            outputName = 'ProjectionsMVD\MVD_SmallPSF_iter20.overlay_xz';
+            outputName = 'ProjectionsMVD' filesep 'MVD_SmallPSF_iter20.overlay_xz';
         case 3
-            outputName = 'ProjectionsMVD\MVD_SmallPSF_iter20.overlay_yz';
+            outputName = 'ProjectionsMVD' filesep 'MVD_SmallPSF_iter20.overlay_yz';
         case 4
-            outputName = 'ProjectionsMVD\MVD_LargePSF_iter50.overlay_xy';
+            outputName = 'ProjectionsMVD' filesep 'MVD_LargePSF_iter50.overlay_xy';
         case 5
-            outputName = 'ProjectionsMVD\MVD_LargePSF_iter50.overlay_xz';
+            outputName = 'ProjectionsMVD' filesep 'MVD_LargePSF_iter50.overlay_xz';
         case 6
-            outputName = 'ProjectionsMVD\MVD_LargePSF_iter50.overlay_yz';
+            outputName = 'ProjectionsMVD' filesep 'MVD_LargePSF_iter50.overlay_yz';
     end;
     
     writeImage(projections, [outputName '.klb']);

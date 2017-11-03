@@ -1,4 +1,4 @@
-dataRoot   = 'W:\SiMView1\13-12-16\Mmu_E1_CAGTAG1_01_20131216_164117.corrected\SPM00';
+dataRoot   = 'W:' filesep 'SiMView1' filesep '13-12-16' filesep 'Mmu_E1_CAGTAG1_01_20131216_164117.corrected' filesep 'SPM00';
 identifier = 'Mmu_E1_CAGTAG1_01_20131216_164117';
 specimen   = 0;
 timePoints = 0:254;
@@ -24,7 +24,7 @@ end;
 for t = timePoints
     for c = cameras
         for h = channels
-            stackFile = [dataRoot '\TM' num2str(t, '%.6d') '\SPM' num2str(specimen, '%.2d') ...
+            stackFile = [dataRoot filesep 'TM' num2str(t, '%.6d') filesep 'SPM' num2str(specimen, '%.2d') ...
                 '_TM' num2str(t, '%.6d') '_CM' num2str(c, '%.2d') '_CHN' num2str(h, '%.2d') inputExtension];
             xyMaskFile = [stackFile(1:(end - 3)) 'xyMask' inputExtension];
             xzMaskFile = [stackFile(1:(end - 3)) 'xzMask' inputExtension];

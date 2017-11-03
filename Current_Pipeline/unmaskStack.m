@@ -42,10 +42,10 @@ if exist(outputFolder, 'dir') ~= 7
 end;
 
 if fastInitialize
-    unmaskedStackName = [outputFolder '\' maskedStackName(1:(end-3)) ...
+    unmaskedStackName = [outputFolder filesep '' maskedStackName(1:(end-3)) ...
         'unmasked_r' num2str(interpRadius) '_d' num2str(downsampling) '_e' num2str(erosionRadius) '.klb'];
 else
-    unmaskedStackName = [outputFolder '\' maskedStackName(1:(end-3)) ...
+    unmaskedStackName = [outputFolder filesep '' maskedStackName(1:(end-3)) ...
         'unmasked_r' num2str(interpRadius) '_d' num2str(downsampling) '.klb'];
 end;
 
@@ -54,11 +54,11 @@ if exist(unmaskedStackName, 'file') == 2
 else
     disp(['Processing stack ' maskedStackName]);
     
-    stack = readImage([inputFolder '\' maskedStackName]);
+    stack = readImage([inputFolder filesep '' maskedStackName]);
     
     if correctionType == 1
-        binaryMaskName = [outputFolder '\' maskedStackName(1:(end-3)) 'binaryMask.klb'];
-        dilatedMaskName = [outputFolder '\' maskedStackName(1:(end-3)) 'dilatedMask_r' num2str(interpRadius) '.klb'];
+        binaryMaskName = [outputFolder filesep '' maskedStackName(1:(end-3)) 'binaryMask.klb'];
+        dilatedMaskName = [outputFolder filesep '' maskedStackName(1:(end-3)) 'dilatedMask_r' num2str(interpRadius) '.klb'];
         
         if exist(dilatedMaskName, 'file') == 2
             if verbose
@@ -105,7 +105,7 @@ else
         if correctionSlot(1) == 3
             backgroundLevel = correctionSlot(2);
         else
-            load([inputFolder '\' maskedStackName(1:(end-3)) 'minIntensity.mat']);
+            load([inputFolder filesep '' maskedStackName(1:(end-3)) 'minIntensity.mat']);
             backgroundLevel = minIntensity(correctionSlot(1));
         end;
         stack(~dilatedMask) = backgroundLevel;
@@ -120,9 +120,9 @@ else
         
         if downsampling <= 1
             if fastInitialize
-                erodedMaskName = [outputFolder '\' maskedStackName(1:(end-3)) ...
+                erodedMaskName = [outputFolder filesep '' maskedStackName(1:(end-3)) ...
                     'erodedMask_r' num2str(interpRadius) '_d' num2str(downsampling) '_e' num2str(erosionRadius) '.klb'];
-                minimalForegroundMaskName = [outputFolder '\' maskedStackName(1:(end-3)) ...
+                minimalForegroundMaskName = [outputFolder filesep '' maskedStackName(1:(end-3)) ...
                     'minimalForegroundMask_r' num2str(interpRadius) '_d' num2str(downsampling) '_e' num2str(erosionRadius) '.klb'];
                 if exist(minimalForegroundMaskName, 'file') == 2
                     if verbose
@@ -204,9 +204,9 @@ else
             end;
             
             if fastInitialize
-                erodedMaskName = [outputFolder '\' maskedStackName(1:(end-3)) ...
+                erodedMaskName = [outputFolder filesep '' maskedStackName(1:(end-3)) ...
                     'erodedMask_r' num2str(interpRadius) '_d' num2str(downsampling) '_e' num2str(erosionRadius) '.klb'];
-                minimalForegroundMaskName = [outputFolder '\' maskedStackName(1:(end-3)) ...
+                minimalForegroundMaskName = [outputFolder filesep '' maskedStackName(1:(end-3)) ...
                     'minimalForegroundMask_r' num2str(interpRadius) '_d' num2str(downsampling) '_e' num2str(erosionRadius) '.klb'];
                 if exist(minimalForegroundMaskName, 'file') == 2
                     if verbose
@@ -292,16 +292,16 @@ else
         end;
         timeArray = [dilatedMaskTime; backgroundFloodingTime; samplingTime; minimalForegroundMaskTime; functionTime; transitionFloodingTime];
         if fastInitialize
-            save([outputFolder '\' maskedStackName(1:(end-3)) 'unmasked_r' num2str(interpRadius) '_d' num2str(downsampling) '_e' num2str(erosionRadius) '.timeArray.mat'], 'timeArray');
+            save([outputFolder filesep '' maskedStackName(1:(end-3)) 'unmasked_r' num2str(interpRadius) '_d' num2str(downsampling) '_e' num2str(erosionRadius) '.timeArray.mat'], 'timeArray');
         else
-            save([outputFolder '\' maskedStackName(1:(end-3)) 'unmasked_r' num2str(interpRadius) '_d' num2str(downsampling) '.timeArray.mat'], 'timeArray');
+            save([outputFolder filesep '' maskedStackName(1:(end-3)) 'unmasked_r' num2str(interpRadius) '_d' num2str(downsampling) '.timeArray.mat'], 'timeArray');
         end;
         
         voxelArray = [nForegroundSlots; nTransitionSlots];
         if fastInitialize
-            save([outputFolder '\' maskedStackName(1:(end-3)) 'unmasked_r' num2str(interpRadius) '_d' num2str(downsampling) '_e' num2str(erosionRadius) '.voxelArray.mat'], 'voxelArray');
+            save([outputFolder filesep '' maskedStackName(1:(end-3)) 'unmasked_r' num2str(interpRadius) '_d' num2str(downsampling) '_e' num2str(erosionRadius) '.voxelArray.mat'], 'voxelArray');
         else
-            save([outputFolder '\' maskedStackName(1:(end-3)) 'unmasked_r' num2str(interpRadius) '_d' num2str(downsampling) '.voxelArray.mat'], 'voxelArray');
+            save([outputFolder filesep '' maskedStackName(1:(end-3)) 'unmasked_r' num2str(interpRadius) '_d' num2str(downsampling) '.voxelArray.mat'], 'voxelArray');
         end;
     end;
 end;

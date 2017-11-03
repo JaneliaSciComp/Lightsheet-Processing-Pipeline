@@ -12,14 +12,14 @@ checkForResults   = 1;
 
 scriptName = 'runMVD.ps1';
 
-binaryFile = 'U:\Philipp\Exchange\MVD 2015-08-10\Binaries\main_multiviewDeconvLR_multiGPU_blocksZ.exe';
-xmlFolder  = 'V:\SV1\KM_15-08-10\Mmu_E1_mKate2_20150810_160708.corrected.registered\XMLs';
+binaryFile = 'U:' filesep 'Philipp' filesep 'Exchange' filesep 'MVD 2015-08-10' filesep 'Binaries' filesep 'main_multiviewDeconvLR_multiGPU_blocksZ.exe';
+xmlFolder  = 'V:' filesep 'SV1' filesep 'KM_15-08-10' filesep 'Mmu_E1_mKate2_20150810_160708.corrected.registered' filesep 'XMLs';
 
 %% Configuration of XML file generation
 
 timePoints = 0:278;
 
-stackFolder  = 'V:\SV1\KM_15-08-10\Mmu_E1_mKate2_20150810_160708.corrected.registered';
+stackFolder  = 'V:' filesep 'SV1' filesep 'KM_15-08-10' filesep 'Mmu_E1_mKate2_20150810_160708.corrected.registered';
 stackHeaders = {...
     'SPM00_TM';...
     'SPM00_TM';...
@@ -63,22 +63,22 @@ if createShellScript
     
     for t = 1:numel(timePoints)
         for i = 1:numel(psfTypeArray)
-            outputStackName = [stackFolder '\TM' num2str(timePoints(t), '%.6d') '\' stackHeaders{1} num2str(timePoints(t), '%.6d') stackFooters{1} ...
+            outputStackName = [stackFolder filesep 'TM' num2str(timePoints(t), '%.6d') filesep '' stackHeaders{1} num2str(timePoints(t), '%.6d') stackFooters{1} ...
                 '_dec_LR_multiGPU_MVD_' psfNameArray{i} '_iter' num2str(iterationArray(i)) '_lambdaTV' num2str(lambda*10^6, '%.6d') '.klb'];
             
             if includeMVDJobs && (~checkForResults || (exist(outputStackName, 'file') ~= 2 && exist([outputStackName(1:(end-3)) 'uint16.klb'], 'file') ~= 2))
                 disp(['* Including MVD XML for time point ' num2str(timePoints(t)) ' and PSF type "' psfNameArray{i} '"']);
-                fwrite(fid, ['&"' binaryFile '" "' xmlFolder '\TM' num2str(timePoints(t), '%.3d') '_MVD_' psfNameArray{i} '.xml"']); fprintf(fid, '\n');
+                fwrite(fid, ['&"' binaryFile '" "' xmlFolder filesep 'TM' num2str(timePoints(t), '%.3d') '_MVD_' psfNameArray{i} '.xml"']); fprintf(fid, '\n');
             end;
             
             if includeSVDJobs
                 for s = 1:numel(stackHeaders)
-                    outputStackName = [stackFolder '\TM' num2str(timePoints(t), '%.6d') '\' stackHeaders{s} num2str(timePoints(t), '%.6d') stackFooters{s} ...
+                    outputStackName = [stackFolder filesep 'TM' num2str(timePoints(t), '%.6d') filesep '' stackHeaders{s} num2str(timePoints(t), '%.6d') stackFooters{s} ...
                         '_dec_LR_multiGPU_SVD_' psfNameArray{i} '_iter' num2str(iterationArray(i)) '_lambdaTV' num2str(lambda*10^6, '%.6d') '.klb'];
                     
                     if ~checkForResults || (exist(outputStackName, 'file') ~= 2 && exist([outputStackName(1:(end-3)) 'uint16.klb'], 'file') ~= 2)
                         disp(['* Including SVD XML for view ' num2str(s) ' at time point ' num2str(timePoints(t)) ' and PSF type "' psfNameArray{i} '"']);
-                        fwrite(fid, ['&"' binaryFile '" "' xmlFolder '\TM' num2str(timePoints(t), '%.3d') '_SVD' num2str(s) '_' psfNameArray{i} '.xml"']); fprintf(fid, '\n');
+                        fwrite(fid, ['&"' binaryFile '" "' xmlFolder filesep 'TM' num2str(timePoints(t), '%.3d') '_SVD' num2str(s) '_' psfNameArray{i} '.xml"']); fprintf(fid, '\n');
                     end;
                 end;
             end;
@@ -106,13 +106,13 @@ if createXMLs
     
     for t = 1:numel(timePoints)
         for i = 1:numel(psfTypeArray)
-            outputStackName = [stackFolder '\TM' num2str(timePoints(t), '%.6d') '\' stackHeaders{1} num2str(timePoints(t), '%.6d') stackFooters{1} ...
+            outputStackName = [stackFolder filesep 'TM' num2str(timePoints(t), '%.6d') filesep '' stackHeaders{1} num2str(timePoints(t), '%.6d') stackFooters{1} ...
                 '_dec_LR_multiGPU_MVD_' psfNameArray{i} '_iter' num2str(iterationArray(i)) '_lambdaTV' num2str(lambda*10^6, '%.6d') '.klb'];
             
             if includeMVDJobs && (~checkForResults || (exist(outputStackName, 'file') ~= 2 && exist([outputStackName(1:(end-3)) 'uint16.klb'], 'file') ~= 2))
                 disp(['* Creating MVD XML for time point ' num2str(timePoints(t)) ' and PSF type "' psfNameArray{i} '"']);
                 
-                outputName = [xmlFolder '\TM' num2str(timePoints(t), '%.3d') '_MVD_' psfNameArray{i} '.xml'];
+                outputName = [xmlFolder filesep 'TM' num2str(timePoints(t), '%.3d') '_MVD_' psfNameArray{i} '.xml'];
                 
                 fid = fopen(outputName, 'w');
                 
@@ -121,8 +121,8 @@ if createXMLs
                 
                 for s = 1:numel(stackHeaders)
                     fwrite(fid, [...
-                        '<view imgFilename="' stackFolder '\TM' num2str(timePoints(t), '%.6d') '\' stackHeaders{s} num2str(timePoints(t), '%.6d') stackFooters{s}  ...
-                        '" psfFilename="' stackFolder '\TM' num2str(timePoints(t), '%.6d') '\' psfFolderHeader '\' psfTypeArray{i} psfHeaders{s} num2str(timePoints(t), '%.6d') psfFooters{s} ...
+                        '<view imgFilename="' stackFolder filesep 'TM' num2str(timePoints(t), '%.6d') filesep '' stackHeaders{s} num2str(timePoints(t), '%.6d') stackFooters{s}  ...
+                        '" psfFilename="' stackFolder filesep 'TM' num2str(timePoints(t), '%.6d') filesep '' psfFolderHeader filesep '' psfTypeArray{i} psfHeaders{s} num2str(timePoints(t), '%.6d') psfFooters{s} ...
                         '" ' indentityMatrixString '></view>']); fprintf(fid, '\n');
                 end;
                 
@@ -141,13 +141,13 @@ if createXMLs
             
             if includeSVDJobs
                 for s = 1:numel(stackHeaders)
-                    outputStackName = [stackFolder '\TM' num2str(timePoints(t), '%.6d') '\' stackHeaders{s} num2str(timePoints(t), '%.6d') stackFooters{s} ...
+                    outputStackName = [stackFolder filesep 'TM' num2str(timePoints(t), '%.6d') filesep '' stackHeaders{s} num2str(timePoints(t), '%.6d') stackFooters{s} ...
                         '_dec_LR_multiGPU_SVD_' psfNameArray{i} '_iter' num2str(iterationArray(i)) '_lambdaTV' num2str(lambda*10^6, '%.6d') '.klb'];
                     
                     if ~checkForResults || (exist(outputStackName, 'file') ~= 2 && exist([outputStackName(1:(end-3)) 'uint16.klb'], 'file') ~= 2)
                         disp(['* Creating SVD XML for view ' num2str(s) ' at time point ' num2str(timePoints(t)) ' and PSF type "' psfNameArray{i} '"']);
                         
-                        outputName = [xmlFolder '\TM' num2str(timePoints(t), '%.3d') '_SVD' num2str(s) '_' psfNameArray{i} '.xml'];
+                        outputName = [xmlFolder filesep 'TM' num2str(timePoints(t), '%.3d') '_SVD' num2str(s) '_' psfNameArray{i} '.xml'];
                         
                         fid = fopen(outputName, 'w');
                         
@@ -155,8 +155,8 @@ if createXMLs
                         fwrite(fid, '<document>'); fprintf(fid, '\n');
                         
                         fwrite(fid, [...
-                            '<view imgFilename="' stackFolder '\TM' num2str(timePoints(t), '%.6d') '\' stackHeaders{s} num2str(timePoints(t), '%.6d') stackFooters{s}  ...
-                            '" psfFilename="' stackFolder '\TM' num2str(timePoints(t), '%.6d') '\' psfFolderHeader '\' psfTypeArray{i} psfHeaders{s} num2str(timePoints(t), '%.6d') psfFooters{s} ...
+                            '<view imgFilename="' stackFolder filesep 'TM' num2str(timePoints(t), '%.6d') filesep '' stackHeaders{s} num2str(timePoints(t), '%.6d') stackFooters{s}  ...
+                            '" psfFilename="' stackFolder filesep 'TM' num2str(timePoints(t), '%.6d') filesep '' psfFolderHeader filesep '' psfTypeArray{i} psfHeaders{s} num2str(timePoints(t), '%.6d') psfFooters{s} ...
                             '" ' indentityMatrixString '></view>']); fprintf(fid, '\n');
                         
                         fwrite(fid, ['<deconvolution lambdaTV="' num2str(lambda, '%.6f') ...

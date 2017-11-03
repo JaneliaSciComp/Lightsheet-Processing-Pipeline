@@ -12,12 +12,12 @@ configuration{4}  = inputHeader1; configuration{5}  = inputHeader2; configuratio
 configuration{9}  = interMode;    configuration{10} = scaling;      configuration{11} = splitting;
 configuration{12} = inputType;    configuration{13} = outputType;   configuration{14} = [jobMemory(1) memoryEstimate];        
 
-outputPath = [rootFolder '.Interpolated\' inputHeader1 num2str(timepoint, timeStamp) inputHeader2];
+outputPath = [rootFolder '.Interpolated' filesep inputHeader1 num2str(timepoint, timeStamp) inputHeader2];
 if exist(outputPath, 'dir') ~= 7
     mkdir(outputPath);
 end;
 
-save([outputPath '\' inputHeader3 num2str(timepoint, timeStamp) inputFooter '.configuration.mat'], 'configuration');
+save([outputPath filesep '' inputHeader3 num2str(timepoint, timeStamp) inputFooter '.configuration.mat'], 'configuration');
 
 switch inputType
     case 0
@@ -39,7 +39,7 @@ end;
 
 disp(['processing time point ' num2str(timepoint, '%.6d')]);
 
-inputName = [rootFolder '\' inputHeader1 num2str(timepoint, timeStamp) inputHeader2 '\' inputHeader3 num2str(timepoint, timeStamp) inputFooter inputExtension];
+inputName = [rootFolder filesep '' inputHeader1 num2str(timepoint, timeStamp) inputHeader2 filesep '' inputHeader3 num2str(timepoint, timeStamp) inputFooter inputExtension];
 
 stack = readImage(inputName);
 xSize = size(stack, 1);
@@ -80,9 +80,9 @@ end;
 interpolatedXYProjection = max(interpolatedStack, [], 3);
 interpolatedXZProjection = squeeze(max(interpolatedStack, [], 2));
 
-outputXYProjectionName = [rootFolder '.Interpolated\' inputHeader1 num2str(timepoint, timeStamp) inputHeader2 '\' inputHeader3 num2str(timepoint, timeStamp) inputFooter '_xyProjection' outputExtension];
-outputXZProjectionName = [rootFolder '.Interpolated\' inputHeader1 num2str(timepoint, timeStamp) inputHeader2 '\' inputHeader3 num2str(timepoint, timeStamp) inputFooter '_xzProjection' outputExtension];
-outputStackName = [rootFolder '.Interpolated\' inputHeader1 num2str(timepoint, timeStamp) inputHeader2 '\' inputHeader3 num2str(timepoint, timeStamp) inputFooter outputExtension];
+outputXYProjectionName = [rootFolder '.Interpolated' filesep inputHeader1 num2str(timepoint, timeStamp) inputHeader2 filesep '' inputHeader3 num2str(timepoint, timeStamp) inputFooter '_xyProjection' outputExtension];
+outputXZProjectionName = [rootFolder '.Interpolated' filesep inputHeader1 num2str(timepoint, timeStamp) inputHeader2 filesep '' inputHeader3 num2str(timepoint, timeStamp) inputFooter '_xzProjection' outputExtension];
+outputStackName = [rootFolder '.Interpolated' filesep inputHeader1 num2str(timepoint, timeStamp) inputHeader2 filesep '' inputHeader3 num2str(timepoint, timeStamp) inputFooter outputExtension];
 
 writeImage(interpolatedXYProjection, outputXYProjectionName);
 writeImage(interpolatedXZProjection, outputXZProjectionName);

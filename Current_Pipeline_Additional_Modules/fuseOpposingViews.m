@@ -33,8 +33,8 @@ if exist(projectionFolder, 'dir') ~= 7
     mkdir(projectionFolder);
 end;
 
-if exist([projectionFolder '\Frames'], 'dir') ~= 7
-    mkdir([projectionFolder '\Frames']);
+if exist([projectionFolder filesep 'Frames'], 'dir') ~= 7
+    mkdir([projectionFolder filesep 'Frames']);
 end;
 
 kernelSizeArray  = [1 1 1] .* kernelSize;
@@ -50,13 +50,13 @@ disp(' ');
 parfor tIndex = 1:numel(timepoints)
     t = timepoints(tIndex);
     
-    if exist([projectionFolder '\Frames\' headers{1} num2str(t, '%.6d') '.yz.klb'], 'file') == 2
+    if exist([projectionFolder filesep 'Frames' filesep headers{1} num2str(t, '%.6d') '.yz.klb'], 'file') == 2
         disp(['skipping time point ' num2str(t)]);
     else
         disp(['processing time point ' num2str(t)]);
         
-        stack1 = readImage(['TM' num2str(t, '%.6d') '\' headers{1} num2str(t, '%.6d') footers{1}]);
-        stack2 = readImage(['TM' num2str(t, '%.6d') '\' headers{2} num2str(t, '%.6d') footers{2}]);
+        stack1 = readImage(['TM' num2str(t, '%.6d') filesep '' headers{1} num2str(t, '%.6d') footers{1}]);
+        stack2 = readImage(['TM' num2str(t, '%.6d') filesep '' headers{2} num2str(t, '%.6d') footers{2}]);
         
         if fusionAxis == 3
             stack1 = permute(stack1, [1 3 2]);
@@ -116,7 +116,7 @@ parfor tIndex = 1:numel(timepoints)
         transitionMask(transitionMask < blending) = round(ySize / 2);
         transitionMask(transitionMask == 0) = round(ySize / 2);
         
-        writeImage(transitionMask, ['TM' num2str(t, '%.6d') '\' headers{1} num2str(t, '%.6d') '.transitionMask.klb']);
+        writeImage(transitionMask, ['TM' num2str(t, '%.6d') filesep '' headers{1} num2str(t, '%.6d') '.transitionMask.klb']);
         
         stitchingMask = bsxfun(@le, reshape(uint16(1:ySize), [1, ySize, 1]), reshape(transitionMask, [xSize, 1, zSize]));
         fusedStack = stack2;
@@ -143,11 +143,11 @@ parfor tIndex = 1:numel(timepoints)
         
         fusedStack = permute(fusedStack, [1 3 2]);
         
-        writeImage(fusedStack, ['TM' num2str(t, '%.6d') '\' headers{1} num2str(t, '%.6d') '.fusedStack.klb']);
+        writeImage(fusedStack, ['TM' num2str(t, '%.6d') filesep '' headers{1} num2str(t, '%.6d') '.fusedStack.klb']);
         
-        writeImage(max(fusedStack, [], 3), [projectionFolder '\Frames\' headers{1} num2str(t, '%.6d') '.xy.klb']);
-        writeImage(squeeze(max(fusedStack, [], 2)), [projectionFolder '\Frames\' headers{1} num2str(t, '%.6d') '.xz.klb']);
-        writeImage(squeeze(max(fusedStack, [], 1)), [projectionFolder '\Frames\' headers{1} num2str(t, '%.6d') '.yz.klb']);
+        writeImage(max(fusedStack, [], 3), [projectionFolder filesep 'Frames' filesep headers{1} num2str(t, '%.6d') '.xy.klb']);
+        writeImage(squeeze(max(fusedStack, [], 2)), [projectionFolder filesep 'Frames' filesep headers{1} num2str(t, '%.6d') '.xz.klb']);
+        writeImage(squeeze(max(fusedStack, [], 1)), [projectionFolder filesep 'Frames' filesep headers{1} num2str(t, '%.6d') '.yz.klb']);
     end;
 end;
 

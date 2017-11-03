@@ -5,8 +5,8 @@ for i = numel(candidates):-1:1
     else    
         timepoint = str2num(candidates(i).name(3:end));
         missingFlag = ...
-            exist([candidates(i).name '\TM' num2str(timepoint, '%.6d') '_overlay.xy.cropped.klb'], 'file') ~= 2 || ...
-            exist([candidates(i).name '\TM' num2str(timepoint, '%.6d') '_overlay.yz.cropped.klb'], 'file') ~= 2;
+            exist([candidates(i).name filesep 'TM' num2str(timepoint, '%.6d') '_overlay.xy.cropped.klb'], 'file') ~= 2 || ...
+            exist([candidates(i).name filesep 'TM' num2str(timepoint, '%.6d') '_overlay.yz.cropped.klb'], 'file') ~= 2;
         if missingFlag
             candidates(i) = [];
         end;
@@ -23,10 +23,10 @@ sizeArray = zeros(numel(candidates), 4);
 for i = 1:numel(candidates)
     timepoint = str2num(candidates(i).name(3:end));
     
-    frames{i, 1} = readImage([candidates(i).name '\TM' num2str(timepoint, '%.6d') '_overlay.xy.cropped.klb']);
+    frames{i, 1} = readImage([candidates(i).name filesep 'TM' num2str(timepoint, '%.6d') '_overlay.xy.cropped.klb']);
     sizeArray(i, 1:2) = [size(frames{i, 1}, 1) size(frames{i, 1}, 2)];
     
-    frames{i, 2} = readImage([candidates(i).name '\TM' num2str(timepoint, '%.6d') '_overlay.yz.cropped.klb']);
+    frames{i, 2} = readImage([candidates(i).name filesep 'TM' num2str(timepoint, '%.6d') '_overlay.yz.cropped.klb']);
     sizeArray(i, 3:4) = [size(frames{i, 2}, 1) size(frames{i, 2}, 2)];
 end;
 
@@ -42,7 +42,7 @@ for i = 1:numel(candidates)
         i) = frames{i, 1};
 end;
 
-writeImage(xyOverlays, 'Overlays\xyCroppedOverlays.klb');
+writeImage(xyOverlays, 'Overlays' filesep 'xyCroppedOverlays.klb');
 
 yMax = max(sizeArray(:, 3));
 zMax = max(sizeArray(:, 4));
@@ -56,4 +56,4 @@ for i = 1:numel(candidates)
         i) = frames{i, 2};
 end;
 
-writeImage(yzOverlays, 'Overlays\yzCroppedOverlays.klb');
+writeImage(yzOverlays, 'Overlays' filesep 'yzCroppedOverlays.klb');

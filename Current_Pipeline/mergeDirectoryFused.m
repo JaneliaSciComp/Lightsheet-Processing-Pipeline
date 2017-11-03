@@ -1,9 +1,9 @@
 %% parameters
 
-sourceDirectory  = 'D:\Temp\Mmu_E1_CAGTAG1_01_23_20140122_154407.corrected\Results\MultiFused\Mmu_E1_CAGTAG1.TM??????_multiFused_blending';
+sourceDirectory  = 'D:' filesep 'Temp' filesep 'Mmu_E1_CAGTAG1_01_23_20140122_154407.corrected' filesep 'Results' filesep 'MultiFused' filesep 'Mmu_E1_CAGTAG1.TM??????_multiFused_blending';
 sourceTimepoints = 0:8;
 
-targetDirectory  = 'D:\Temp\Mmu_E1_CAGTAG1_01_23_20140121_141339.corrected\Results\MultiFused\Mmu_E1_CAGTAG1.TM??????_multiFused_blending';
+targetDirectory  = 'D:' filesep 'Temp' filesep 'Mmu_E1_CAGTAG1_01_23_20140121_141339.corrected' filesep 'Results' filesep 'MultiFused' filesep 'Mmu_E1_CAGTAG1.TM??????_multiFused_blending';
 targetTimepoints = (6 + 0):(6 + 8);
 
 stampDigits      = 6;
@@ -21,14 +21,14 @@ inputDatabase = cell(nTimepoints, 1);
 outputDatabase = cell(nTimepoints, 1);
 
 for n = 1:nTimepoints
-    inputDatabase{n} = [sourceDirectory '\'];
+    inputDatabase{n} = [sourceDirectory filesep ''];
     positions = strfind(inputDatabase{n}, repmat('?', [1 stampDigits]));
     precision = ['%.' num2str(stampDigits) 'd'];
     for k = 1:numel(positions)
         inputDatabase{n}(positions(k):(positions(k) + stampDigits - 1)) = num2str(sourceTimepoints(n), precision);
     end;
     
-    outputDatabase{n} = [targetDirectory '\'];
+    outputDatabase{n} = [targetDirectory filesep ''];
     positions = strfind(outputDatabase{n}, repmat('?', [1 stampDigits]));
     precision = ['%.' num2str(stampDigits) 'd'];
     for k = 1:numel(positions)

@@ -1,6 +1,6 @@
 %% configuration
 
-dataFolder = 'R:\SV1\KM_16-07-26\Mmu_E1_GaleGFPxmKate2nls_01_20160726_162110.corrected\Results\TimeFused.Corrected';
+dataFolder = 'R:' filesep 'SV1' filesep 'KM_16-07-26' filesep 'Mmu_E1_GaleGFPxmKate2nls_01_20160726_162110.corrected' filesep 'Results' filesep 'TimeFused.Corrected';
 dirHeader  = 'Mmu_E1_GaleGFPxmKate2nls.TM';
 dirFooter  = '_timeFused_blending';
 fileHeader = 'SPM00_TM';
@@ -9,12 +9,12 @@ fileFooter = '.corrected.klb';
 
 timepoints = 0:257;
 
-outputDir  = 'E:\Mouse Development\Temp\CHN01';
+outputDir  = 'E:' filesep 'Mouse Development' filesep 'Temp' filesep 'CHN01';
 dataTypes  = [1 0 1];
 background = [0 100];
 fullSearch = 1;
 
-% dataFolder = 'R:\SV1\KM_16-01-13\Mmu_E1_GaleGFP_20160113_171610.corrected\Results\TimeFused.Wavelet';
+% dataFolder = 'R:' filesep 'SV1' filesep 'KM_16-01-13' filesep 'Mmu_E1_GaleGFP_20160113_171610.corrected' filesep 'Results' filesep 'TimeFused.Wavelet';
 % dirHeader  = 'Mmu_E1_GaleGFP.TM';
 % dirFooter  = '_timeFused_wavelet';
 % fileHeader = 'SPM00_TM';
@@ -23,7 +23,7 @@ fullSearch = 1;
 % 
 % timepoints = 0:322;
 % 
-% outputDir  = 'E:\Mouse Development\Temp';
+% outputDir  = 'E:' filesep 'Mouse Development' filesep 'Temp';
 % dataTypes  = [1 1 1];
 % background = [0 100];
 % fullSearch = 1;
@@ -35,10 +35,10 @@ if exist(outputDir, 'dir') ~= 7
 end;
 
 xyHeader = readKLBheader(...
-    [dataFolder '\' dirHeader num2str(timepoints(end), '%.6d') dirFooter '\' ...
+    [dataFolder filesep '' dirHeader num2str(timepoints(end), '%.6d') dirFooter filesep '' ...
     fileHeader num2str(timepoints(end), '%.6d') fileConfig '_xyProjection' fileFooter]);
 xzHeader = readKLBheader(...
-    [dataFolder '\' dirHeader num2str(timepoints(end), '%.6d') dirFooter '\' ...
+    [dataFolder filesep '' dirHeader num2str(timepoints(end), '%.6d') dirFooter filesep '' ...
     fileHeader num2str(timepoints(end), '%.6d') fileConfig '_xzProjection' fileFooter]);
 xSize = xyHeader.xyzct(1);
 ySize = xyHeader.xyzct(2);
@@ -47,7 +47,7 @@ zSize = xzHeader.xyzct(2);
 if fullSearch
     for t = 1:numel(timepoints)
         xzHeader = readKLBheader(...
-            [dataFolder '\' dirHeader num2str(timepoints(t), '%.6d') dirFooter '\' ...
+            [dataFolder filesep '' dirHeader num2str(timepoints(t), '%.6d') dirFooter filesep '' ...
             fileHeader num2str(timepoints(t), '%.6d') fileConfig '_xzProjection' fileFooter]);
         zSize = max(zSize, xzHeader.xyzct(2));
     end;
@@ -68,11 +68,11 @@ disp(' ');
 for t = 1:numel(timepoints)
     disp(['* Integrating time point ' num2str(timepoints(t))]);
     
-    xyProjectionFilename = [dataFolder '\' dirHeader num2str(timepoints(t), '%.6d') dirFooter '\' ...
+    xyProjectionFilename = [dataFolder filesep '' dirHeader num2str(timepoints(t), '%.6d') dirFooter filesep '' ...
         fileHeader num2str(timepoints(t), '%.6d') fileConfig '_xyProjection' fileFooter];
-    xzProjectionFilename = [dataFolder '\' dirHeader num2str(timepoints(t), '%.6d') dirFooter '\' ...
+    xzProjectionFilename = [dataFolder filesep '' dirHeader num2str(timepoints(t), '%.6d') dirFooter filesep '' ...
         fileHeader num2str(timepoints(t), '%.6d') fileConfig '_xzProjection' fileFooter];
-    yzProjectionFilename = [dataFolder '\' dirHeader num2str(timepoints(t), '%.6d') dirFooter '\' ...
+    yzProjectionFilename = [dataFolder filesep '' dirHeader num2str(timepoints(t), '%.6d') dirFooter filesep '' ...
         fileHeader num2str(timepoints(t), '%.6d') fileConfig '_yzProjection' fileFooter];
     if dataTypes(1)
         xyProjection = readImage(xyProjectionFilename);
@@ -92,15 +92,15 @@ disp(' ');
 disp('Saving assembled image sequences');
 
 if dataTypes(1)
-    xySequenceFilename = [outputDir '\xyProjections.klb'];
+    xySequenceFilename = [outputDir filesep 'xyProjections.klb'];
     writeImage(xySequence, xySequenceFilename);
 end;
 if dataTypes(2)
-    xzSequenceFilename = [outputDir '\xzProjections.klb'];
+    xzSequenceFilename = [outputDir filesep 'xzProjections.klb'];
     writeImage(xzSequence, xzSequenceFilename);
 end;
 if dataTypes(3)
-    yzSequenceFilename = [outputDir '\yzProjections.klb'];
+    yzSequenceFilename = [outputDir filesep 'yzProjections.klb'];
     writeImage(yzSequence, yzSequenceFilename);
 end;
 

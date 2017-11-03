@@ -4,8 +4,8 @@ if exist('ProjectionsSVD', 'dir') ~= 7
     mkdir('ProjectionsSVD');
 end;
 
-if exist('ProjectionsSVD\Frames', 'dir') ~= 7
-    mkdir('ProjectionsSVD\Frames');
+if exist('ProjectionsSVD' filesep 'Frames', 'dir') ~= 7
+    mkdir('ProjectionsSVD' filesep 'Frames');
 end;
 
 for s = 1:4
@@ -39,20 +39,20 @@ for s = 1:4
         disp(['reading time point ' num2str(timepoint)]);
         
         allDone = ...
-            exist(['ProjectionsSVD\Frames\SVD_SmallPSF_iter20.TM' num2str(timepoint, '%.3d') '_' specimenString '_' cameraString '_xy.klb'], 'file') == 2 &&...
-            exist(['ProjectionsSVD\Frames\SVD_SmallPSF_iter20.TM' num2str(timepoint, '%.3d') '_' specimenString '_' cameraString '_xz.klb'], 'file') == 2 &&...
-            exist(['ProjectionsSVD\Frames\SVD_SmallPSF_iter20.TM' num2str(timepoint, '%.3d') '_' specimenString '_' cameraString '_yz.klb'], 'file') == 2;
+            exist(['ProjectionsSVD' filesep 'Frames' filesep 'SVD_SmallPSF_iter20.TM' num2str(timepoint, '%.3d') '_' specimenString '_' cameraString '_xy.klb'], 'file') == 2 &&...
+            exist(['ProjectionsSVD' filesep 'Frames' filesep 'SVD_SmallPSF_iter20.TM' num2str(timepoint, '%.3d') '_' specimenString '_' cameraString '_xz.klb'], 'file') == 2 &&...
+            exist(['ProjectionsSVD' filesep 'Frames' filesep 'SVD_SmallPSF_iter20.TM' num2str(timepoint, '%.3d') '_' specimenString '_' cameraString '_yz.klb'], 'file') == 2;
         
         if allDone
-            frames{i, 1} = readImage(['ProjectionsSVD\Frames\SVD_SmallPSF_iter20.TM' num2str(timepoint, '%.3d') '_' specimenString '_' cameraString '_xy.klb']);
-            frames{i, 2} = readImage(['ProjectionsSVD\Frames\SVD_SmallPSF_iter20.TM' num2str(timepoint, '%.3d') '_' specimenString '_' cameraString '_xz.klb']);
-            frames{i, 3} = readImage(['ProjectionsSVD\Frames\SVD_SmallPSF_iter20.TM' num2str(timepoint, '%.3d') '_' specimenString '_' cameraString '_yz.klb']);
+            frames{i, 1} = readImage(['ProjectionsSVD' filesep 'Frames' filesep 'SVD_SmallPSF_iter20.TM' num2str(timepoint, '%.3d') '_' specimenString '_' cameraString '_xy.klb']);
+            frames{i, 2} = readImage(['ProjectionsSVD' filesep 'Frames' filesep 'SVD_SmallPSF_iter20.TM' num2str(timepoint, '%.3d') '_' specimenString '_' cameraString '_xz.klb']);
+            frames{i, 3} = readImage(['ProjectionsSVD' filesep 'Frames' filesep 'SVD_SmallPSF_iter20.TM' num2str(timepoint, '%.3d') '_' specimenString '_' cameraString '_yz.klb']);
             
             sizeArray(i, 1:2) = [size(frames{i, 1}, 1) size(frames{i, 1}, 2)];
             sizeArray(i, 3:4) = [size(frames{i, 2}, 1) size(frames{i, 2}, 2)];
             sizeArray(i, 5:6) = [size(frames{i, 3}, 1) size(frames{i, 3}, 2)];
         else        
-            stack = readImage(['TM' num2str(timepoint, '%.6d') '\' specimenString '_TM' num2str(timepoint, '%.6d') ...
+            stack = readImage(['TM' num2str(timepoint, '%.6d') filesep '' specimenString '_TM' num2str(timepoint, '%.6d') ...
                 '_' cameraString '_CHN00.affine.trsf.cropped.klb_dec_LR_multiGPU_SVD_SmallPSF_iter20_lambdaTV000000.uint16.klb']);
             
             frames{i, 1} = max(stack, [], 3);
@@ -63,28 +63,28 @@ for s = 1:4
             sizeArray(i, 3:4) = [size(frames{i, 2}, 1) size(frames{i, 2}, 2)];
             sizeArray(i, 5:6) = [size(frames{i, 3}, 1) size(frames{i, 3}, 2)];
             
-            writeImage(frames{i, 1}, ['ProjectionsSVD\Frames\SVD_SmallPSF_iter20.TM' num2str(timepoint, '%.3d') '_' specimenString '_' cameraString '_xy.klb']);
-            writeImage(frames{i, 2}, ['ProjectionsSVD\Frames\SVD_SmallPSF_iter20.TM' num2str(timepoint, '%.3d') '_' specimenString '_' cameraString '_xz.klb']);
-            writeImage(frames{i, 3}, ['ProjectionsSVD\Frames\SVD_SmallPSF_iter20.TM' num2str(timepoint, '%.3d') '_' specimenString '_' cameraString '_yz.klb']);
+            writeImage(frames{i, 1}, ['ProjectionsSVD' filesep 'Frames' filesep 'SVD_SmallPSF_iter20.TM' num2str(timepoint, '%.3d') '_' specimenString '_' cameraString '_xy.klb']);
+            writeImage(frames{i, 2}, ['ProjectionsSVD' filesep 'Frames' filesep 'SVD_SmallPSF_iter20.TM' num2str(timepoint, '%.3d') '_' specimenString '_' cameraString '_xz.klb']);
+            writeImage(frames{i, 3}, ['ProjectionsSVD' filesep 'Frames' filesep 'SVD_SmallPSF_iter20.TM' num2str(timepoint, '%.3d') '_' specimenString '_' cameraString '_yz.klb']);
         end;
         
         intensity(i, 2:6, 1) = [min(frames{i, 1}(:)), prctile(frames{i, 1}(:), 10), median(frames{i, 1}(:)), prctile(frames{i, 1}(:), 99.9), max(frames{i, 1}(:))];
         
         allDone = ...
-            exist(['ProjectionsSVD\Frames\SVD_LargePSF_iter50.TM' num2str(timepoint, '%.3d') '_' specimenString '_' cameraString '_xy.klb'], 'file') == 2 &&...
-            exist(['ProjectionsSVD\Frames\SVD_LargePSF_iter50.TM' num2str(timepoint, '%.3d') '_' specimenString '_' cameraString '_xz.klb'], 'file') == 2 &&...
-            exist(['ProjectionsSVD\Frames\SVD_LargePSF_iter50.TM' num2str(timepoint, '%.3d') '_' specimenString '_' cameraString '_yz.klb'], 'file') == 2;
+            exist(['ProjectionsSVD' filesep 'Frames' filesep 'SVD_LargePSF_iter50.TM' num2str(timepoint, '%.3d') '_' specimenString '_' cameraString '_xy.klb'], 'file') == 2 &&...
+            exist(['ProjectionsSVD' filesep 'Frames' filesep 'SVD_LargePSF_iter50.TM' num2str(timepoint, '%.3d') '_' specimenString '_' cameraString '_xz.klb'], 'file') == 2 &&...
+            exist(['ProjectionsSVD' filesep 'Frames' filesep 'SVD_LargePSF_iter50.TM' num2str(timepoint, '%.3d') '_' specimenString '_' cameraString '_yz.klb'], 'file') == 2;
         
         if allDone
-            frames{i, 4} = readImage(['ProjectionsSVD\Frames\SVD_LargePSF_iter50.TM' num2str(timepoint, '%.3d') '_' specimenString '_' cameraString '_xy.klb']);
-            frames{i, 5} = readImage(['ProjectionsSVD\Frames\SVD_LargePSF_iter50.TM' num2str(timepoint, '%.3d') '_' specimenString '_' cameraString '_xz.klb']);
-            frames{i, 6} = readImage(['ProjectionsSVD\Frames\SVD_LargePSF_iter50.TM' num2str(timepoint, '%.3d') '_' specimenString '_' cameraString '_yz.klb']);
+            frames{i, 4} = readImage(['ProjectionsSVD' filesep 'Frames' filesep 'SVD_LargePSF_iter50.TM' num2str(timepoint, '%.3d') '_' specimenString '_' cameraString '_xy.klb']);
+            frames{i, 5} = readImage(['ProjectionsSVD' filesep 'Frames' filesep 'SVD_LargePSF_iter50.TM' num2str(timepoint, '%.3d') '_' specimenString '_' cameraString '_xz.klb']);
+            frames{i, 6} = readImage(['ProjectionsSVD' filesep 'Frames' filesep 'SVD_LargePSF_iter50.TM' num2str(timepoint, '%.3d') '_' specimenString '_' cameraString '_yz.klb']);
             
             sizeArray(i, 7:8) = [size(frames{i, 4}, 1) size(frames{i, 4}, 2)];
             sizeArray(i, 9:10) = [size(frames{i, 5}, 1) size(frames{i, 5}, 2)];
             sizeArray(i, 11:12) = [size(frames{i, 6}, 1) size(frames{i, 6}, 2)];
         else        
-            stack = readImage(['TM' num2str(timepoint, '%.6d') '\' specimenString '_TM' num2str(timepoint, '%.6d') ...
+            stack = readImage(['TM' num2str(timepoint, '%.6d') filesep '' specimenString '_TM' num2str(timepoint, '%.6d') ...
                 '_' cameraString '_CHN00.affine.trsf.cropped.klb_dec_LR_multiGPU_SVD_LargePSF_iter50_lambdaTV000000.uint16.klb']);
             
             frames{i, 4} = max(stack, [], 3);
@@ -95,15 +95,15 @@ for s = 1:4
             sizeArray(i, 9:10) = [size(frames{i, 5}, 1) size(frames{i, 5}, 2)];
             sizeArray(i, 11:12) = [size(frames{i, 6}, 1) size(frames{i, 6}, 2)];
             
-            writeImage(frames{i, 4}, ['ProjectionsSVD\Frames\SVD_LargePSF_iter50.TM' num2str(timepoint, '%.3d') '_' specimenString '_' cameraString '_xy.klb']);
-            writeImage(frames{i, 5}, ['ProjectionsSVD\Frames\SVD_LargePSF_iter50.TM' num2str(timepoint, '%.3d') '_' specimenString '_' cameraString '_xz.klb']);
-            writeImage(frames{i, 6}, ['ProjectionsSVD\Frames\SVD_LargePSF_iter50.TM' num2str(timepoint, '%.3d') '_' specimenString '_' cameraString '_yz.klb']);
+            writeImage(frames{i, 4}, ['ProjectionsSVD' filesep 'Frames' filesep 'SVD_LargePSF_iter50.TM' num2str(timepoint, '%.3d') '_' specimenString '_' cameraString '_xy.klb']);
+            writeImage(frames{i, 5}, ['ProjectionsSVD' filesep 'Frames' filesep 'SVD_LargePSF_iter50.TM' num2str(timepoint, '%.3d') '_' specimenString '_' cameraString '_xz.klb']);
+            writeImage(frames{i, 6}, ['ProjectionsSVD' filesep 'Frames' filesep 'SVD_LargePSF_iter50.TM' num2str(timepoint, '%.3d') '_' specimenString '_' cameraString '_yz.klb']);
         end;
         
         intensity(i, 2:6, 2) = [min(frames{i, 1}(:)), prctile(frames{i, 1}(:), 10), median(frames{i, 1}(:)), prctile(frames{i, 1}(:), 99.9), max(frames{i, 1}(:))];
     end;
     
-    save(['ProjectionsSVD\IntensityStatistics.' specimenString '_' cameraString '.mat'], 'intensity');
+    save(['ProjectionsSVD' filesep 'IntensityStatistics.' specimenString '_' cameraString '.mat'], 'intensity');
     
     disp('writing projection overlay stacks');
     
@@ -122,17 +122,17 @@ for s = 1:4
         
         switch c
             case 1
-                outputName = ['ProjectionsSVD\SVD_SmallPSF_iter20.overlay_' specimenString '_' cameraString '_xy'];
+                outputName = ['ProjectionsSVD' filesep 'SVD_SmallPSF_iter20.overlay_' specimenString '_' cameraString '_xy'];
             case 2
-                outputName = ['ProjectionsSVD\SVD_SmallPSF_iter20.overlay_' specimenString '_' cameraString '_xz'];
+                outputName = ['ProjectionsSVD' filesep 'SVD_SmallPSF_iter20.overlay_' specimenString '_' cameraString '_xz'];
             case 3
-                outputName = ['ProjectionsSVD\SVD_SmallPSF_iter20.overlay_' specimenString '_' cameraString '_yz'];
+                outputName = ['ProjectionsSVD' filesep 'SVD_SmallPSF_iter20.overlay_' specimenString '_' cameraString '_yz'];
             case 4
-                outputName = ['ProjectionsSVD\SVD_LargePSF_iter50.overlay_' specimenString '_' cameraString '_xy'];
+                outputName = ['ProjectionsSVD' filesep 'SVD_LargePSF_iter50.overlay_' specimenString '_' cameraString '_xy'];
             case 5
-                outputName = ['ProjectionsSVD\SVD_LargePSF_iter50.overlay_' specimenString '_' cameraString '_xz'];
+                outputName = ['ProjectionsSVD' filesep 'SVD_LargePSF_iter50.overlay_' specimenString '_' cameraString '_xz'];
             case 6
-                outputName = ['ProjectionsSVD\SVD_LargePSF_iter50.overlay_' specimenString '_' cameraString '_yz'];
+                outputName = ['ProjectionsSVD' filesep 'SVD_LargePSF_iter50.overlay_' specimenString '_' cameraString '_yz'];
         end;
         
         writeImage(projections, [outputName '.klb']);

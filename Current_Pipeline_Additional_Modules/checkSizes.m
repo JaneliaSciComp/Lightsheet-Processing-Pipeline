@@ -1,6 +1,6 @@
 timepoints = 0:278;
 
-rootFolder = 'V:\SV1\KM_15-08-10\Mmu_E1_mKate2_20150810_160708.corrected.registered';
+rootFolder = 'V:' filesep 'SV1' filesep 'KM_15-08-10' filesep 'Mmu_E1_mKate2_20150810_160708.corrected.registered';
 
 headers = {...
     'SPM00_TM';...
@@ -30,7 +30,7 @@ zArray = zeros(numel(timepoints), numel(headers));
 
 for t = timepoints
     for i = 1:numel(headers)
-        currentHeader = readKLBheader([rootFolder '\TM' num2str(t, '%.6d') '\' headers{i} num2str(t, '%.6d') footers{i}]);
+        currentHeader = readKLBheader([rootFolder filesep 'TM' num2str(t, '%.6d') filesep '' headers{i} num2str(t, '%.6d') footers{i}]);
         xArray(find(timepoints == t, 1), i) = currentHeader.xyzct(1);
         yArray(find(timepoints == t, 1), i) = currentHeader.xyzct(2);
         zArray(find(timepoints == t, 1), i) = currentHeader.xyzct(3);

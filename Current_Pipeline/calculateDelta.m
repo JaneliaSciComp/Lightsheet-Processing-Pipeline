@@ -47,14 +47,14 @@ end;
 disp(['Processing time cluster ' num2str(t, '%.4d')]);
 
 if dataType == 0
-    referenceStackPath = [inputString '.registered\SPM' num2str(specimen, '%.2d') '\TM' num2str(timeClusters{t, 1}, '%.6d')];
+    referenceStackPath = [inputString '.registered' filesep 'SPM' num2str(specimen, '%.2d') filesep 'TM' num2str(timeClusters{t, 1}, '%.6d')];
     referenceStackName = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(timeClusters{t, 1}, '%.6d') configurationString '.baseline' inputExtension];
 else
-    referenceStackPath = [inputString '.registered\' header '.TM' num2str(timeClusters{t, 1}, '%.6d') footer];
+    referenceStackPath = [inputString '.registered' filesep header '.TM' num2str(timeClusters{t, 1}, '%.6d') footer];
     referenceStackName = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(timeClusters{t, 1}, '%.6d') configurationString '.fusedStack_baseline' inputExtension];
 end;
 
-fullReferenceStackPath = [referenceStackPath '\' referenceStackName];
+fullReferenceStackPath = [referenceStackPath filesep '' referenceStackName];
 referenceStack = double(readImage(fullReferenceStackPath));
 
 if subOffset(1)
@@ -63,18 +63,18 @@ end;
 
 for currentTP = timeClusters{t, 2}
     if dataType == 0
-        currentStackPath = [inputString '.registered\SPM' num2str(specimen, '%.2d') '\TM' num2str(currentTP, '%.6d')];
+        currentStackPath = [inputString '.registered' filesep 'SPM' num2str(specimen, '%.2d') filesep 'TM' num2str(currentTP, '%.6d')];
         currentStackName = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(currentTP, '%.6d') configurationString inputExtension];
         
-        outputPath = [inputString '.processed\SPM' num2str(specimen, '%.2d') '\TM' num2str(currentTP, '%.6d')];
+        outputPath = [inputString '.processed' filesep 'SPM' num2str(specimen, '%.2d') filesep 'TM' num2str(currentTP, '%.6d')];
     else
-        currentStackPath = [inputString '.registered\' header '.TM' num2str(currentTP, '%.6d') footer];
+        currentStackPath = [inputString '.registered' filesep header '.TM' num2str(currentTP, '%.6d') footer];
         currentStackName = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(currentTP, '%.6d') configurationString '.fusedStack' inputExtension];
         
-        outputPath = [inputString '.processed\' header '.TM' num2str(currentTP, '%.6d') footer];
+        outputPath = [inputString '.processed' filesep header '.TM' num2str(currentTP, '%.6d') footer];
     end;
     
-    fullCurrentStackPath = [currentStackPath '\' currentStackName];
+    fullCurrentStackPath = [currentStackPath filesep '' currentStackName];
     currentStack = double(readImage(fullCurrentStackPath));
     
     if subOffset(1)
@@ -101,10 +101,10 @@ for currentTP = timeClusters{t, 2}
         outputXZProjectionName = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(currentTP, '%.6d') configurationString '.fusedStack_xzProjection' outputExtension];
         outputYZProjectionName = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(currentTP, '%.6d') configurationString '.fusedStack_yzProjection' outputExtension];
     end;
-    fullOutputStackPath = [outputPath '\' outputStackName];
-    fullOutputXYProjectionPath = [outputPath '\' outputXYProjectionName];
-    fullOutputXZProjectionPath = [outputPath '\' outputXZProjectionName];
-    fullOutputYZProjectionPath = [outputPath '\' outputYZProjectionName];
+    fullOutputStackPath = [outputPath filesep '' outputStackName];
+    fullOutputXYProjectionPath = [outputPath filesep '' outputXYProjectionName];
+    fullOutputXZProjectionPath = [outputPath filesep '' outputXZProjectionName];
+    fullOutputYZProjectionPath = [outputPath filesep '' outputYZProjectionName];
     
     writeImage(currentStack, fullOutputStackPath);
     writeImage(max(currentStack, [], 3), fullOutputXYProjectionPath);
@@ -127,10 +127,10 @@ for currentTP = timeClusters{t, 2}
             outputMedianXZProjectionName = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(currentTP, '%.6d') configurationString '.fusedStack_medianFiltered.xzProjection' outputExtension];
             outputMedianYZProjectionName = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(currentTP, '%.6d') configurationString '.fusedStack_medianFiltered.yzProjection' outputExtension];
         end;
-        fullOutputMedianStackPath = [outputPath '\' outputMedianStackName];
-        fullOutputMedianXYProjectionPath = [outputPath '\' outputMedianXYProjectionName];
-        fullOutputMedianXZProjectionPath = [outputPath '\' outputMedianXZProjectionName];
-        fullOutputMedianYZProjectionPath = [outputPath '\' outputMedianYZProjectionName];
+        fullOutputMedianStackPath = [outputPath filesep '' outputMedianStackName];
+        fullOutputMedianXYProjectionPath = [outputPath filesep '' outputMedianXYProjectionName];
+        fullOutputMedianXZProjectionPath = [outputPath filesep '' outputMedianXZProjectionName];
+        fullOutputMedianYZProjectionPath = [outputPath filesep '' outputMedianYZProjectionName];
         
         writeImage(currentStack, fullOutputMedianStackPath);
         writeImage(max(currentStack, [], 3), fullOutputMedianXYProjectionPath);

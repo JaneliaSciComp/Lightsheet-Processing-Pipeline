@@ -1,5 +1,5 @@
-inputRoot1 = 'R:\SV1\KM_15-10-26\Mmu_E1_mKate2_20151026_180901.corrected\Results\TimeFused.Corrected';
-inputRoot2 = 'R:\SV1\KM_15-10-26\Mmu_E1_mKate2_20151027_121216.corrected\Results\TimeFused.Corrected';
+inputRoot1 = 'R:' filesep 'SV1' filesep 'KM_15-10-26' filesep 'Mmu_E1_mKate2_20151026_180901.corrected' filesep 'Results' filesep 'TimeFused.Corrected';
+inputRoot2 = 'R:' filesep 'SV1' filesep 'KM_15-10-26' filesep 'Mmu_E1_mKate2_20151027_121216.corrected' filesep 'Results' filesep 'TimeFused.Corrected';
 
 inputTimepoints1 = 0:270;
 inputTimepoints2 = 0:378;
@@ -16,7 +16,7 @@ projFooterYZ = '_CM00_CM01_CHN00.fusedStack_yzProjection.corrected.klb';
 zLowExpansion  = 198;
 zHighExpansion = 111;
 
-outputRoot = 'R:\SV1\KM_15-10-26\Mmu_E1_mKate2_Combined.corrected\Results\TimeFused.Corrected';
+outputRoot = 'R:' filesep 'SV1' filesep 'KM_15-10-26' filesep 'Mmu_E1_mKate2_Combined.corrected' filesep 'Results' filesep 'TimeFused.Corrected';
 
 poolWorkers = 12;
 
@@ -41,8 +41,8 @@ disp(' ');
 parfor i = 1:numel(inputTimepoints1)
     disp(['Converting time point ' num2str(inputTimepoints1(i)) ' of first time series']);
     
-    currentInputFolder = [inputRoot1 '\' inputHeaderA num2str(inputTimepoints1(i), '%.6d') inputFooterA];
-    currentOutputFolder = [outputRoot '\' inputHeaderA num2str(outputTimepoints1(i), '%.6d') inputFooterA];
+    currentInputFolder = [inputRoot1 filesep '' inputHeaderA num2str(inputTimepoints1(i), '%.6d') inputFooterA];
+    currentOutputFolder = [outputRoot filesep '' inputHeaderA num2str(outputTimepoints1(i), '%.6d') inputFooterA];
     
     currentInputFilename = [inputHeaderB num2str(inputTimepoints1(i), '%.6d') inputFooterB];
     currentOutputFilename = [inputHeaderB num2str(outputTimepoints1(i), '%.6d') inputFooterB];
@@ -55,26 +55,26 @@ parfor i = 1:numel(inputTimepoints1)
         mkdir(currentOutputFolder);
     end;
     
-    if exist([currentOutputFolder '\' currentOutputFilename], 'file') ~= 2 || ...
-            exist([currentOutputFolder '\' currentOutputProjFilenameXY], 'file') ~= 2 || ...
-            exist([currentOutputFolder '\' currentOutputProjFilenameXZ], 'file') ~= 2 || ...
-            exist([currentOutputFolder '\' currentOutputProjFilenameYZ], 'file') ~= 2
+    if exist([currentOutputFolder filesep '' currentOutputFilename], 'file') ~= 2 || ...
+            exist([currentOutputFolder filesep '' currentOutputProjFilenameXY], 'file') ~= 2 || ...
+            exist([currentOutputFolder filesep '' currentOutputProjFilenameXZ], 'file') ~= 2 || ...
+            exist([currentOutputFolder filesep '' currentOutputProjFilenameYZ], 'file') ~= 2
         
-        stack = readImage([currentInputFolder '\' currentInputFilename]);
+        stack = readImage([currentInputFolder filesep '' currentInputFilename]);
         stack = cat(3, zLowSlab, stack, zHighSlab);
-        writeImage(stack, [currentOutputFolder '\' currentOutputFilename]);
+        writeImage(stack, [currentOutputFolder filesep '' currentOutputFilename]);
         
-        writeImage(max(stack, [], 3), [currentOutputFolder '\' currentOutputProjFilenameXY]);
-        writeImage(squeeze(max(stack, [], 2)), [currentOutputFolder '\' currentOutputProjFilenameXZ]);
-        writeImage(squeeze(max(stack, [], 1)), [currentOutputFolder '\' currentOutputProjFilenameYZ]);
+        writeImage(max(stack, [], 3), [currentOutputFolder filesep '' currentOutputProjFilenameXY]);
+        writeImage(squeeze(max(stack, [], 2)), [currentOutputFolder filesep '' currentOutputProjFilenameXZ]);
+        writeImage(squeeze(max(stack, [], 1)), [currentOutputFolder filesep '' currentOutputProjFilenameYZ]);
     end;
 end;
 
 parfor i = 1:numel(inputTimepoints2)
     disp(['Converting time point ' num2str(inputTimepoints2(i)) ' of second time series']);
     
-    currentInputFolder = [inputRoot2 '\' inputHeaderA num2str(inputTimepoints2(i), '%.6d') inputFooterA];
-    currentOutputFolder = [outputRoot '\' inputHeaderA num2str(outputTimepoints2(i), '%.6d') inputFooterA];
+    currentInputFolder = [inputRoot2 filesep '' inputHeaderA num2str(inputTimepoints2(i), '%.6d') inputFooterA];
+    currentOutputFolder = [outputRoot filesep '' inputHeaderA num2str(outputTimepoints2(i), '%.6d') inputFooterA];
     
     currentInputFilename = [inputHeaderB num2str(inputTimepoints2(i), '%.6d') inputFooterB];
     currentOutputFilename = [inputHeaderB num2str(outputTimepoints2(i), '%.6d') inputFooterB];
@@ -91,15 +91,15 @@ parfor i = 1:numel(inputTimepoints2)
         mkdir(currentOutputFolder);
     end;
     
-    if exist([currentOutputFolder '\' currentOutputFilename], 'file') ~= 2 || ...
-            exist([currentOutputFolder '\' currentOutputProjFilenameXY], 'file') ~= 2 || ...
-            exist([currentOutputFolder '\' currentOutputProjFilenameXZ], 'file') ~= 2 || ...
-            exist([currentOutputFolder '\' currentOutputProjFilenameYZ], 'file') ~= 2
+    if exist([currentOutputFolder filesep '' currentOutputFilename], 'file') ~= 2 || ...
+            exist([currentOutputFolder filesep '' currentOutputProjFilenameXY], 'file') ~= 2 || ...
+            exist([currentOutputFolder filesep '' currentOutputProjFilenameXZ], 'file') ~= 2 || ...
+            exist([currentOutputFolder filesep '' currentOutputProjFilenameYZ], 'file') ~= 2
     
-        copyfile([currentInputFolder '\' currentInputFilename], [currentOutputFolder '\' currentOutputFilename]);
-        copyfile([currentInputFolder '\' currentInputProjFilenameXY], [currentOutputFolder '\' currentOutputProjFilenameXY]);
-        copyfile([currentInputFolder '\' currentInputProjFilenameXZ], [currentOutputFolder '\' currentOutputProjFilenameXZ]);
-        copyfile([currentInputFolder '\' currentInputProjFilenameYZ], [currentOutputFolder '\' currentOutputProjFilenameYZ]);
+        copyfile([currentInputFolder filesep '' currentInputFilename], [currentOutputFolder filesep '' currentOutputFilename]);
+        copyfile([currentInputFolder filesep '' currentInputProjFilenameXY], [currentOutputFolder filesep '' currentOutputProjFilenameXY]);
+        copyfile([currentInputFolder filesep '' currentInputProjFilenameXZ], [currentOutputFolder filesep '' currentOutputProjFilenameXZ]);
+        copyfile([currentInputFolder filesep '' currentInputProjFilenameYZ], [currentOutputFolder filesep '' currentOutputProjFilenameYZ]);
     end;
 end;
 

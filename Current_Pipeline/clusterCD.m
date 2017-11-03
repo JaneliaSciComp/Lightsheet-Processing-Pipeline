@@ -11,7 +11,7 @@ forceZero    = [1 20];   % if first value is 1, overwrites signal stack voxels w
 medianFlag   = 0;        % flag for generating and saving median-filtered dF/F stacks and their projections
 kernelSize   = 3;        % kernel size of median filter, only required if medianFlag == 1
 
-inputString  = 'X:\SiMView2\14-01-04\Dme_L1_57C10-GCaMP641_0_20140104_114246.corrected\Results\TimeFused';
+inputString  = 'X:' filesep 'SiMView2' filesep '14-01-04' filesep 'Dme_L1_57C10-GCaMP641_0_20140104_114246.corrected' filesep 'Results' filesep 'TimeFused';
 header       = 'Dme_L1_57C10-GCaMP641'; % only required for dataType == 1
 footer       = '_timeFused_blending';   % only required for dataType == 1
 dataType     = 1;                       % 0: unfused processed data (output of clusterPT), 1: fused processed data (output of clusterMF or clusterTF)
@@ -81,21 +81,21 @@ existingResultsDetected = 0;
 
 for currentTP = length(timepoints):-1:1
     if dataType == 0
-        outputPath = [inputString '.processed\SPM' num2str(specimen, '%.2d') '\TM' num2str(timepoints(currentTP), '%.6d')];
+        outputPath = [inputString '.processed' filesep 'SPM' num2str(specimen, '%.2d') filesep 'TM' num2str(timepoints(currentTP), '%.6d')];
         if medianFlag == 0
             fileName = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(currentTP), '%.6d') configurationString '.yzProjection' outputExtension];
         else
             fileName = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(currentTP), '%.6d') configurationString '.medianFiltered_yzProjection' outputExtension];
         end;
     else
-        outputPath = [inputString '.processed\' header '.TM' num2str(timepoints(currentTP), '%.6d') footer];
+        outputPath = [inputString '.processed' filesep header '.TM' num2str(timepoints(currentTP), '%.6d') footer];
         if medianFlag == 0
             fileName = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(currentTP), '%.6d') configurationString '.fusedStack_yzProjection' outputExtension];
         else
             fileName = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(currentTP), '%.6d') configurationString '.fusedStack_medianFiltered.yzProjection' outputExtension];
         end;
     end;
-    fullFilePath = [outputPath '\' fileName];
+    fullFilePath = [outputPath filesep '' fileName];
     
     if exist(fullFilePath, 'file') == 2
         timepoints(currentTP) = [];
@@ -146,13 +146,13 @@ if ~isempty(timepoints)
         end;
         
         if dataType == 0
-            inputPath = [inputString '.registered\SPM' num2str(specimen, '%.2d') '\TM' num2str(referenceTime, '%.6d')];
+            inputPath = [inputString '.registered' filesep 'SPM' num2str(specimen, '%.2d') filesep 'TM' num2str(referenceTime, '%.6d')];
             fileName = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(referenceTime, '%.6d') configurationString '.baseline' inputExtension];
         else
-            inputPath = [inputString '.registered\' header '.TM' num2str(referenceTime, '%.6d') footer];
+            inputPath = [inputString '.registered' filesep header '.TM' num2str(referenceTime, '%.6d') footer];
             fileName = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(referenceTime, '%.6d') configurationString '.fusedStack_baseline' inputExtension];
         end;
-        fullFilePath = [inputPath '\' fileName];
+        fullFilePath = [inputPath filesep '' fileName];
         
         currentStack = readImage(fullFilePath);
         if subOffset(1)
@@ -160,29 +160,29 @@ if ~isempty(timepoints)
         end;
         referenceOffset = ceil(meanFraction * mean(currentStack(currentStack > 0)));
         
-        referencePath = [outputPath '\Reference'];
+        referencePath = [outputPath filesep 'Reference'];
         if exist(referencePath, 'dir') ~= 7
             mkdir(referencePath);
         end;
         
-        save([referencePath '\SPM' num2str(specimen, '%.2d') configurationString '.referenceOffset.mat'], 'referenceOffset');
+        save([referencePath filesep 'SPM' num2str(specimen, '%.2d') configurationString '.referenceOffset.mat'], 'referenceOffset');
     else
         disp(' ');
         disp('Existing processing results detected. Skipping calculation of denominator offset.');
         
-        referencePath = [inputString '.processed\Reference'];
-        load([referencePath '\SPM' num2str(specimen, '%.2d') configurationString '.referenceOffset.mat']);
+        referencePath = [inputString '.processed' filesep 'Reference'];
+        load([referencePath filesep 'SPM' num2str(specimen, '%.2d') configurationString '.referenceOffset.mat']);
     end;
     
     if jobMemory(1) == 1 && localRun(1) ~= 1
         if dataType == 0
-            inputPath = [inputString '.registered\SPM' num2str(specimen, '%.2d') '\TM' num2str(timepoints(1), '%.6d')];
+            inputPath = [inputString '.registered' filesep 'SPM' num2str(specimen, '%.2d') filesep 'TM' num2str(timepoints(1), '%.6d')];
             fileName = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(1), '%.6d') configurationString inputExtension];
         else
-            inputPath = [inputString '.registered\' header '.TM' num2str(timepoints(1), '%.6d') footer];
+            inputPath = [inputString '.registered' filesep header '.TM' num2str(timepoints(1), '%.6d') footer];
             fileName = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(1), '%.6d') configurationString '.fusedStack' inputExtension];
         end;
-        fullFilePath = [inputPath '\' fileName];
+        fullFilePath = [inputPath filesep '' fileName];
         
         try
             switch inputType
@@ -214,7 +214,7 @@ if ~isempty(timepoints)
     timeString = [...
         num2str(currentTime(1)) num2str(currentTime(2), '%.2d') num2str(currentTime(3), '%.2d') ...
         '_' num2str(currentTime(4), '%.2d') num2str(currentTime(5), '%.2d') num2str(round(currentTime(6) * 1000), '%.5d')];
-    parameterDatabase = [pwd '\jobParameters.calculateDelta.' timeString '.mat'];
+    parameterDatabase = [pwd filesep 'jobParameters.calculateDelta.' timeString '.mat'];
     
     save(parameterDatabase,...
         'timepoints', 'timeClusters', 'dffSampling', 'subOffset', 'meanFraction', 'scaling', 'forceZero', ...

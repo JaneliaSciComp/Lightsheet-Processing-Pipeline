@@ -1,13 +1,13 @@
-inputFolder      = 'X:\SV1\14-05-21\Mmu_E1_CAGTAG1.corrected\Results\TimeFused.Corrected';
+inputFolder      = 'X:' filesep 'SV1' filesep '14-05-21' filesep 'Mmu_E1_CAGTAG1.corrected' filesep 'Results' filesep 'TimeFused.Corrected';
 inputHeader      = 'Mmu_E1_CAGTAG1.TM';
 inputFooter      = '_timeFused_blending';
 inputFileHeader  = 'SPM00_TM';
 inputFileMiddle  = '_CM00_CM01_CHN';
 inputFileFooter  = '.fusedStack.corrected.shifted.klb';
 
-isotropicFolder  = 'X:\SV1\14-05-21\Mmu_E1_CAGTAG1.corrected\Results\TimeFused.Corrected.Interpolated';
-masksFolder      = 'X:\SV1\14-05-21\Mmu_E1_CAGTAG1.corrected\Results\Peeling\Masks.T9.ThetaAP';
-shellsFolder     = 'X:\SV1\14-05-21\Mmu_E1_CAGTAG1.corrected\Results\Peeling\Shells.T9.ThetaAP';
+isotropicFolder  = 'X:' filesep 'SV1' filesep '14-05-21' filesep 'Mmu_E1_CAGTAG1.corrected' filesep 'Results' filesep 'TimeFused.Corrected.Interpolated';
+masksFolder      = 'X:' filesep 'SV1' filesep '14-05-21' filesep 'Mmu_E1_CAGTAG1.corrected' filesep 'Results' filesep 'Peeling' filesep 'Masks.T9.ThetaAP';
+shellsFolder     = 'X:' filesep 'SV1' filesep '14-05-21' filesep 'Mmu_E1_CAGTAG1.corrected' filesep 'Results' filesep 'Peeling' filesep 'Shells.T9.ThetaAP';
 
 timePoints       = 0:531;
 masterChannels   = 1;
@@ -151,7 +151,7 @@ for tIndex = 1:numel(timePoints)
     lastChildStackName = [inputFileHeader num2str(t, '%.6d') inputFileMiddle num2str(childChannels(end), '%.2d') inputFileFooter];
     lastChildShellProjectionName = [lastChildStackName(1:(end-3)) 'shellProjection_' num2str(phiSteps) '_' num2str(thetaSteps) '_' num2str(rShellThickness) medianString smoothString '.klb'];
     
-    if exist([shellsFolder '\' lastMasterShellProjectionName], 'file') == 2 && exist([shellsFolder '\' lastChildShellProjectionName], 'file') == 2
+    if exist([shellsFolder filesep '' lastMasterShellProjectionName], 'file') == 2 && exist([shellsFolder filesep '' lastChildShellProjectionName], 'file') == 2
         disp(['Last master/child shell projections detected for time point ' num2str(t)]);
     else    
         for cIndex = 1:numel(masterChannels)
@@ -163,8 +163,8 @@ for tIndex = 1:numel(timePoints)
             inputStackName = [inputFileHeader num2str(t, '%.6d') inputFileMiddle num2str(c, '%.2d') inputFileFooter];
             outputInterpolatedStackName = [inputStackName(1:(end-3)) 'interpolated.klb'];
             
-            inputFullPath = [inputFolder '\' inputHeader num2str(t, '%.6d') inputFooter '\' inputStackName];
-            outputFullPath = [isotropicFolder '\' outputInterpolatedStackName];
+            inputFullPath = [inputFolder filesep '' inputHeader num2str(t, '%.6d') inputFooter filesep '' inputStackName];
+            outputFullPath = [isotropicFolder filesep '' outputInterpolatedStackName];
             
             if exist(outputFullPath, 'file') == 2
                 disp(['Existing interpolated stack detected for time point ' num2str(t) ', channel ' num2str(c)]);
@@ -257,7 +257,7 @@ for tIndex = 1:numel(timePoints)
             [xSize, ySize, zSize] = size(interpolatedStack);
             
             outputMaskName = [inputStackName(1:(end-3)) 'mask.klb'];
-            outputFullPath = [masksFolder '\' outputMaskName];
+            outputFullPath = [masksFolder filesep '' outputMaskName];
             
             if exist(outputFullPath, 'file') == 2
                 disp(['Existing mask detected for time point ' num2str(t) ', channel ' num2str(c)]);
@@ -306,7 +306,7 @@ for tIndex = 1:numel(timePoints)
             thetaSize = numel(thetaRange);
             
             outputShellMapName = [inputStackName(1:(end-3)) 'shellMap_' num2str(phiSteps) '_' num2str(thetaSteps) '.mat'];
-            outputFullPath = [shellsFolder '\' outputShellMapName];
+            outputFullPath = [shellsFolder filesep '' outputShellMapName];
             
             if exist(outputFullPath, 'file') == 2
                 disp(['Existing shell map detected for time point ' num2str(t) ', channel ' num2str(c)]);
@@ -360,7 +360,7 @@ for tIndex = 1:numel(timePoints)
                 save(outputFullPath, 'shellMap');
                 
                 outputShellMapName = [inputStackName(1:(end-3)) 'shellMap_' num2str(phiSteps) '_' num2str(thetaSteps) '.klb'];
-                outputFullPath = [shellsFolder '\' outputShellMapName];
+                outputFullPath = [shellsFolder filesep '' outputShellMapName];
                 
                 writeImage(shellMap, outputFullPath);
             end;
@@ -371,7 +371,7 @@ for tIndex = 1:numel(timePoints)
                 medianString = ['.filledGaps_' num2str(fillGaps(2))];
                 
                 outputPatchedShellMapName = [inputStackName(1:(end-3)) 'shellMap_' num2str(phiSteps) '_' num2str(thetaSteps) medianString '.mat'];
-                outputFullPath = [shellsFolder '\' outputPatchedShellMapName];
+                outputFullPath = [shellsFolder filesep '' outputPatchedShellMapName];
                 
                 if exist(outputFullPath, 'file') == 2
                     disp(['Existing gap-filled shell map detected for time point ' num2str(t) ', channel ' num2str(c)]);
@@ -396,7 +396,7 @@ for tIndex = 1:numel(timePoints)
                     save(outputFullPath, 'shellMap');
                     
                     outputPatchedShellMapName = [inputStackName(1:(end-3)) 'shellMap_' num2str(phiSteps) '_' num2str(thetaSteps) medianString '.klb'];
-                    outputFullPath = [shellsFolder '\' outputPatchedShellMapName];
+                    outputFullPath = [shellsFolder filesep '' outputPatchedShellMapName];
                     
                     writeImage(shellMap, outputFullPath);
                 end;
@@ -411,7 +411,7 @@ for tIndex = 1:numel(timePoints)
                     smoothString = ['.smoothed_' num2str(removeBumps(1)) '_i' num2str(smoothingIteration)];
                     
                     outputSmoothShellMapName = [inputStackName(1:(end-3)) 'shellMap_' num2str(phiSteps) '_' num2str(thetaSteps) medianString smoothString '.mat'];
-                    outputFullPath = [shellsFolder '\' outputSmoothShellMapName];
+                    outputFullPath = [shellsFolder filesep '' outputSmoothShellMapName];
                     
                     if exist(outputFullPath, 'file') == 2
                         disp(['Existing smoothed shell map (i' num2str(smoothingIteration) ') detected for time point ' num2str(t) ', channel ' num2str(c)]);
@@ -508,7 +508,7 @@ for tIndex = 1:numel(timePoints)
                         save(outputFullPath, 'shellMap');
                         
                         outputSmoothShellMapName = [inputStackName(1:(end-3)) 'shellMap_' num2str(phiSteps) '_' num2str(thetaSteps) medianString smoothString '.klb'];
-                        outputFullPath = [shellsFolder '\' outputSmoothShellMapName];
+                        outputFullPath = [shellsFolder filesep '' outputSmoothShellMapName];
                         
                         writeImage(shellMap, outputFullPath);
                     end;
@@ -578,40 +578,40 @@ for tIndex = 1:numel(timePoints)
             % colorbar;
             
             outputShellProjectionName = [inputStackName(1:(end-3)) 'shellProjection_' num2str(phiSteps) '_' num2str(thetaSteps) '_' num2str(rShellThickness) medianString smoothString '.klb'];
-            outputFullPath = [shellsFolder '\' outputShellProjectionName];
+            outputFullPath = [shellsFolder filesep '' outputShellProjectionName];
             
             writeImage(shellProjection, outputFullPath);
             
             if save3DShells
                 outputShellStackName = [inputStackName(1:(end-3)) 'shellStack_' num2str(phiSteps) '_' num2str(thetaSteps) '_' num2str(rShellThickness) medianString smoothString '.klb'];
-                outputFullPath = [shellsFolder '\' outputShellStackName];
+                outputFullPath = [shellsFolder filesep '' outputShellStackName];
                 
                 writeImage(shellStack, outputFullPath);
             end;
             
             if saveOrthoMaps
                 outputShellOrthoProjectionYZName = [inputStackName(1:(end-3)) 'shellStackOrthoProjectionYZ_' num2str(phiSteps) '_' num2str(thetaSteps) '_' num2str(rShellThickness) medianString smoothString '.klb'];
-                outputFullPath = [shellsFolder '\' outputShellOrthoProjectionYZName];
+                outputFullPath = [shellsFolder filesep '' outputShellOrthoProjectionYZName];
                 
                 writeImage(squeeze(max(shellStack, [], 1)), outputFullPath);
                 
                 outputShellOrthoProjectionXYaName = [inputStackName(1:(end-3)) 'shellStackOrthoProjectionXYa_' num2str(phiSteps) '_' num2str(thetaSteps) '_' num2str(rShellThickness) medianString smoothString '.klb'];
-                outputFullPath = [shellsFolder '\' outputShellOrthoProjectionXYaName];
+                outputFullPath = [shellsFolder filesep '' outputShellOrthoProjectionXYaName];
                 
                 writeImage(max(shellStack(:, :, 1:round(size(shellStack, 3) / 2)), [], 3), outputFullPath);
                 
                 outputShellOrthoProjectionXYbName = [inputStackName(1:(end-3)) 'shellStackOrthoProjectionXYb_' num2str(phiSteps) '_' num2str(thetaSteps) '_' num2str(rShellThickness) medianString smoothString '.klb'];
-                outputFullPath = [shellsFolder '\' outputShellOrthoProjectionXYbName];
+                outputFullPath = [shellsFolder filesep '' outputShellOrthoProjectionXYbName];
                 
                 writeImage(max(shellStack(:, :, (round(size(shellStack, 3) / 2) + 1):end), [], 3), outputFullPath);
                 
                 outputShellOrthoProjectionXZaName = [inputStackName(1:(end-3)) 'shellStackOrthoProjectionXZa_' num2str(phiSteps) '_' num2str(thetaSteps) '_' num2str(rShellThickness) medianString smoothString '.klb'];
-                outputFullPath = [shellsFolder '\' outputShellOrthoProjectionXZaName];
+                outputFullPath = [shellsFolder filesep '' outputShellOrthoProjectionXZaName];
                 
                 writeImage(squeeze(max(shellStack(:, 1:round(size(shellStack, 2) / 2), :), [], 2)), outputFullPath);
                 
                 outputShellOrthoProjectionXZbName = [inputStackName(1:(end-3)) 'shellStackOrthoProjectionXZb_' num2str(phiSteps) '_' num2str(thetaSteps) '_' num2str(rShellThickness) medianString smoothString '.klb'];
-                outputFullPath = [shellsFolder '\' outputShellOrthoProjectionXZbName];
+                outputFullPath = [shellsFolder filesep '' outputShellOrthoProjectionXZbName];
                 
                 writeImage(squeeze(max(shellStack(:, (round(size(shellStack, 2) / 2) + 1):end, :), [], 2)), outputFullPath);
             end;
@@ -628,8 +628,8 @@ for tIndex = 1:numel(timePoints)
                     inputStackName = [inputFileHeader num2str(t, '%.6d') inputFileMiddle num2str(h, '%.2d') inputFileFooter];
                     outputInterpolatedStackName = [inputStackName(1:(end-3)) 'interpolated.klb'];
                     
-                    inputFullPath = [inputFolder '\' inputHeader num2str(t, '%.6d') inputFooter '\' inputStackName];
-                    outputFullPath = [isotropicFolder '\' outputInterpolatedStackName];
+                    inputFullPath = [inputFolder filesep '' inputHeader num2str(t, '%.6d') inputFooter filesep '' inputStackName];
+                    outputFullPath = [isotropicFolder filesep '' outputInterpolatedStackName];
                     
                     if exist(outputFullPath, 'file') == 2
                         disp(['Existing interpolated stack detected for time point ' num2str(t) ', channel ' num2str(h)]);
@@ -772,40 +772,40 @@ for tIndex = 1:numel(timePoints)
                     % colorbar;
                     
                     outputShellProjectionName = [inputStackName(1:(end-3)) 'shellProjection_' num2str(phiSteps) '_' num2str(thetaSteps) '_' num2str(rShellThickness) medianString smoothString '.klb'];
-                    outputFullPath = [shellsFolder '\' outputShellProjectionName];
+                    outputFullPath = [shellsFolder filesep '' outputShellProjectionName];
                     
                     writeImage(shellProjection, outputFullPath);
                     
                     if save3DShells
                         outputShellStackName = [inputStackName(1:(end-3)) 'shellStack_' num2str(phiSteps) '_' num2str(thetaSteps) '_' num2str(rShellThickness) medianString smoothString '.klb'];
-                        outputFullPath = [shellsFolder '\' outputShellStackName];
+                        outputFullPath = [shellsFolder filesep '' outputShellStackName];
                         
                         writeImage(shellStack, outputFullPath);
                     end;
                     
                     if saveOrthoMaps
                         outputShellOrthoProjectionYZName = [inputStackName(1:(end-3)) 'shellStackOrthoProjectionYZ_' num2str(phiSteps) '_' num2str(thetaSteps) '_' num2str(rShellThickness) medianString smoothString '.klb'];
-                        outputFullPath = [shellsFolder '\' outputShellOrthoProjectionYZName];
+                        outputFullPath = [shellsFolder filesep '' outputShellOrthoProjectionYZName];
                         
                         writeImage(squeeze(max(shellStack, [], 1)), outputFullPath);
                         
                         outputShellOrthoProjectionXYaName = [inputStackName(1:(end-3)) 'shellStackOrthoProjectionXYa_' num2str(phiSteps) '_' num2str(thetaSteps) '_' num2str(rShellThickness) medianString smoothString '.klb'];
-                        outputFullPath = [shellsFolder '\' outputShellOrthoProjectionXYaName];
+                        outputFullPath = [shellsFolder filesep '' outputShellOrthoProjectionXYaName];
                         
                         writeImage(max(shellStack(:, :, 1:round(size(shellStack, 3) / 2)), [], 3), outputFullPath);
                         
                         outputShellOrthoProjectionXYbName = [inputStackName(1:(end-3)) 'shellStackOrthoProjectionXYb_' num2str(phiSteps) '_' num2str(thetaSteps) '_' num2str(rShellThickness) medianString smoothString '.klb'];
-                        outputFullPath = [shellsFolder '\' outputShellOrthoProjectionXYbName];
+                        outputFullPath = [shellsFolder filesep '' outputShellOrthoProjectionXYbName];
                         
                         writeImage(max(shellStack(:, :, (round(size(shellStack, 3) / 2) + 1):end), [], 3), outputFullPath);
                         
                         outputShellOrthoProjectionXZaName = [inputStackName(1:(end-3)) 'shellStackOrthoProjectionXZa_' num2str(phiSteps) '_' num2str(thetaSteps) '_' num2str(rShellThickness) medianString smoothString '.klb'];
-                        outputFullPath = [shellsFolder '\' outputShellOrthoProjectionXZaName];
+                        outputFullPath = [shellsFolder filesep '' outputShellOrthoProjectionXZaName];
                         
                         writeImage(squeeze(max(shellStack(:, 1:round(size(shellStack, 2) / 2), :), [], 2)), outputFullPath);
                         
                         outputShellOrthoProjectionXZbName = [inputStackName(1:(end-3)) 'shellStackOrthoProjectionXZb_' num2str(phiSteps) '_' num2str(thetaSteps) '_' num2str(rShellThickness) medianString smoothString '.klb'];
-                        outputFullPath = [shellsFolder '\' outputShellOrthoProjectionXZbName];
+                        outputFullPath = [shellsFolder filesep '' outputShellOrthoProjectionXZbName];
                         
                         writeImage(squeeze(max(shellStack(:, (round(size(shellStack, 2) / 2) + 1):end, :), [], 2)), outputFullPath);
                     end;

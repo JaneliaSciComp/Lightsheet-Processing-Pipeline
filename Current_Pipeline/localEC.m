@@ -1,8 +1,8 @@
 %% parameters
 
-inputRoot        = 'X:\SiMView1\14-01-21\Mmu_E1_CAGTAG1_01_23_20140121_141339.corrected\Results\MultiFused';
-inputPattern     = 'Mmu_E1_CAGTAG1.TM??????_multiFused_blending\SPM00_TM??????_CM00_CM01_CHN00_CHN01.fusedStack';
-configRoot       = 'X:\SiMView1\14-01-21\Mmu_E1_CAGTAG1_01_23_20140121_141339.corrected\Scripts\SPM00_CM00_CM01_CHN00_CHN01_stackCorrection';
+inputRoot        = 'X:' filesep 'SiMView1' filesep '14-01-21' filesep 'Mmu_E1_CAGTAG1_01_23_20140121_141339.corrected' filesep 'Results' filesep 'MultiFused';
+inputPattern     = 'Mmu_E1_CAGTAG1.TM??????_multiFused_blending' filesep 'SPM00_TM??????_CM00_CM01_CHN00_CHN01.fusedStack';
+configRoot       = 'X:' filesep 'SiMView1' filesep '14-01-21' filesep 'Mmu_E1_CAGTAG1_01_23_20140121_141339.corrected' filesep 'Scripts' filesep 'SPM00_CM00_CM01_CHN00_CHN01_stackCorrection';
 
 timepoints       = 0:570;
 gamma            = 1;
@@ -83,7 +83,7 @@ nTimepoints = numel(timepoints);
 inputDatabase = cell(nTimepoints, 1);
 
 for n = 1:nTimepoints
-    inputDatabase{n} = [inputRoot '\' inputPattern];
+    inputDatabase{n} = [inputRoot filesep '' inputPattern];
     for i = maxStampDigits:-1:1
         positions = strfind(inputDatabase{n}, repmat('?', [1 i]));
         precision = ['%.' num2str(i) 'd'];
@@ -154,7 +154,7 @@ if intensityFlag
     intensityCenters = zeros(nTimepoints, 1);
     intensityFactors = zeros(nTimepoints, 1);
     
-    save([configRoot '\intensityThreshold.mat'], 'threshold');
+    save([configRoot filesep 'intensityThreshold.mat'], 'threshold');
 end;
 
 if globalMode == 1
@@ -362,9 +362,9 @@ if intensityFlag == 1
     referenceHistogramCenter = intensityCenters(maximumSlot);
     intensityFactors = referenceHistogramCenter ./ intensityCenters;
     
-    save([configRoot '\intensityBackgrounds.mat'], 'intensityBackgrounds');
-    save([configRoot '\intensityCenters.mat'], 'intensityCenters');
-    save([configRoot '\intensityFactors.mat'], 'intensityFactors');
+    save([configRoot filesep 'intensityBackgrounds.mat'], 'intensityBackgrounds');
+    save([configRoot filesep 'intensityCenters.mat'], 'intensityCenters');
+    save([configRoot filesep 'intensityFactors.mat'], 'intensityFactors');
     
     figure;
     plot(timepoints, intensityBackgrounds);
@@ -372,7 +372,7 @@ if intensityFlag == 1
     xlabel('Time point');
     ylabel('Intensity (grey levels)');
     h = gca;
-    currentFile = [configRoot '\intensityStep1_intensityBackgrounds.png'];
+    currentFile = [configRoot filesep 'intensityStep1_intensityBackgrounds.png'];
     saveas(h, currentFile);
     currentFrame = imread(currentFile);
     imwrite(currentFrame, currentFile, 'png');
@@ -383,7 +383,7 @@ if intensityFlag == 1
     xlabel('Time point');
     ylabel('Intensity (grey levels)');
     h = gca;
-    currentFile = [configRoot '\intensityStep2_intensityCenters.png'];
+    currentFile = [configRoot filesep 'intensityStep2_intensityCenters.png'];
     saveas(h, currentFile);
     currentFrame = imread(currentFile);
     imwrite(currentFrame, currentFile, 'png');
@@ -394,7 +394,7 @@ if intensityFlag == 1
     xlabel('Time point');
     ylabel('Factor');
     h = gca;
-    currentFile = [configRoot '\intensityStep3_intensityFactors.png'];
+    currentFile = [configRoot filesep 'intensityStep3_intensityFactors.png'];
     saveas(h, currentFile);
     currentFrame = imread(currentFile);
     imwrite(currentFrame, currentFile, 'png');
@@ -405,9 +405,9 @@ if correlationFlag == 1 || globalMode ~= 0
         disp('Saving gamma-corrected projections');
         disp(' ');
         
-        writeImage(gammaStackXY, [configRoot '\xyGamma' outputExtension]);
-        writeImage(gammaStackXZ, [configRoot '\xzGamma' outputExtension]);
-        writeImage(gammaStackYZ, [configRoot '\yzGamma' outputExtension]);
+        writeImage(gammaStackXY, [configRoot filesep 'xyGamma' outputExtension]);
+        writeImage(gammaStackXZ, [configRoot filesep 'xzGamma' outputExtension]);
+        writeImage(gammaStackYZ, [configRoot filesep 'yzGamma' outputExtension]);
     end;
     
     cumulativeDriftOffsets = cumsum(driftOffsets, 1);
@@ -419,9 +419,9 @@ if correlationFlag == 1 || globalMode ~= 0
             disp('Saving masked and blurred projections');
             disp(' ');
             
-            writeImage(maskStackXY, [configRoot '\xyMasks' outputExtension]);
-            writeImage(maskStackXZ, [configRoot '\xzMasks' outputExtension]);
-            writeImage(maskStackYZ, [configRoot '\yzMasks' outputExtension]);
+            writeImage(maskStackXY, [configRoot filesep 'xyMasks' outputExtension]);
+            writeImage(maskStackXZ, [configRoot filesep 'xzMasks' outputExtension]);
+            writeImage(maskStackYZ, [configRoot filesep 'yzMasks' outputExtension]);
             
             driftCenters = repmat(driftCenters(1, :), nTimepoints, 1) - driftCenters;
             driftFluctuations = cumulativeDriftOffsets - driftCenters;

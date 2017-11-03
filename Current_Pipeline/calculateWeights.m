@@ -33,8 +33,8 @@
 
 %% Configuration
 
-dataFolder       = 'S:\SiMView1\15-08-10\Mmu_E1_mKate2_20150810_160708.corrected'; % image data input folder
-metaFolder       = 'S:\SiMView1\15-08-10\SpecimenTrackingFiles\Tracking_160708';   % meta data input folder (SiMView specimen tracking)
+dataFolder       = 'S:' filesep 'SiMView1' filesep '15-08-10' filesep 'Mmu_E1_mKate2_20150810_160708.corrected'; % image data input folder
+metaFolder       = 'S:' filesep 'SiMView1' filesep '15-08-10' filesep 'SpecimenTrackingFiles' filesep 'Tracking_160708';   % meta data input folder (SiMView specimen tracking)
                                                                                    % set to '' if specimen tracking and z-range exansion logs are not available
 inputIdentifier  = 'unmasked_r5_d3_e2';                                            % identification string used in file names for input data
 outputIdentifier = 'unmasked_r5_d3_e2.threshold_0.2';                              % identification string used in file names for output data
@@ -95,12 +95,12 @@ end;
 if ~isempty(metaFolder)
     disp(' ');
     
-    metaDataFilename = [metaFolder '\MetaMatrix.mat'];
+    metaDataFilename = [metaFolder filesep 'MetaMatrix.mat'];
     
     if exist(metaDataFilename, 'file')~=2
         disp('Parsing specimen tracking log file');
         
-        trackingLogFilename = [metaFolder '\Specimen tracking diagnostics.txt'];
+        trackingLogFilename = [metaFolder filesep 'Specimen tracking diagnostics.txt'];
         
         fid = fopen(trackingLogFilename, 'r');
         if fid<1
@@ -113,7 +113,7 @@ if ~isempty(metaFolder)
             if ~ischar(s)
                 break;
             end;
-            m = regexp(s, '\t', 'split');
+            m = regexp(s, filesep 't', 'split');
             if numel(m) == 15 && ~strcmp(m{1}, 'Time') && strcmp(m{3}, '0') && strcmp(m{4}, 'X/Z')
                 currentTime = str2double(m{1});
                 currentSpecimen = str2double(m{2});
@@ -140,9 +140,9 @@ if ~isempty(metaFolder)
             if (metaData(i, 6)~=0 || metaData(i, 7)~=0) && i<(size(metaData, 1)-1)
                 currentT = metaData(i, 1);
                 currentS = metaData(i, 2);
-                stackName1Camera0 = [dataFolder '\SPM' num2str(currentS, '%.2d') '\TM' num2str(currentT, '%.6d') '\SPM' num2str(currentS, '%.2d') ...
+                stackName1Camera0 = [dataFolder filesep 'SPM' num2str(currentS, '%.2d') filesep 'TM' num2str(currentT, '%.6d') filesep 'SPM' num2str(currentS, '%.2d') ...
                     '_TM' num2str(currentT, '%.6d') '_CM00_CHN' num2str(channel, '%.2d') inputIdentifier '.klb'];
-                stackName2Camera0 = [dataFolder '\SPM' num2str(currentS, '%.2d') '\TM' num2str(currentT+1, '%.6d') '\SPM' num2str(currentS, '%.2d') ...
+                stackName2Camera0 = [dataFolder filesep 'SPM' num2str(currentS, '%.2d') filesep 'TM' num2str(currentT+1, '%.6d') filesep 'SPM' num2str(currentS, '%.2d') ...
                     '_TM' num2str(currentT+1, '%.6d') '_CM00_CHN' num2str(channel, '%.2d') inputIdentifier '.klb'];
                 stack1Camera0Header = readKLBheader(stackName1Camera0);
                 stack2Camera0Header = readKLBheader(stackName2Camera0);
@@ -151,9 +151,9 @@ if ~isempty(metaFolder)
                     warning(['z-range expansion meta data does not match image data for camera 0 of specimen ' num2str(currentS) ' at time point ' num2str(currentT)]);
                     discrepanciesDetected = discrepanciesDetected+1;
                 end;
-                stackName1Camera1 = [dataFolder '\SPM' num2str(currentS, '%.2d') '\TM' num2str(currentT, '%.6d') '\SPM' num2str(currentS, '%.2d') ...
+                stackName1Camera1 = [dataFolder filesep 'SPM' num2str(currentS, '%.2d') filesep 'TM' num2str(currentT, '%.6d') filesep 'SPM' num2str(currentS, '%.2d') ...
                     '_TM' num2str(currentT, '%.6d') '_CM01_CHN' num2str(channel, '%.2d') inputIdentifier '.klb'];
-                stackName2Camera1 = [dataFolder '\SPM' num2str(currentS, '%.2d') '\TM' num2str(currentT+1, '%.6d') '\SPM' num2str(currentS, '%.2d') ...
+                stackName2Camera1 = [dataFolder filesep 'SPM' num2str(currentS, '%.2d') filesep 'TM' num2str(currentT+1, '%.6d') filesep 'SPM' num2str(currentS, '%.2d') ...
                     '_TM' num2str(currentT+1, '%.6d') '_CM01_CHN' num2str(channel, '%.2d') inputIdentifier '.klb'];
                 stack1Camera1Header = readKLBheader(stackName1Camera1);
                 stack2Camera1Header = readKLBheader(stackName2Camera1);
@@ -166,23 +166,23 @@ if ~isempty(metaFolder)
         end;
         specimen0AddedPlanes = sum(metaData(metaData(1:(end-2), 2) == 0, 6)) + sum(metaData(metaData(1:(end-2), 2) == 0, 7));
         specimen1AddedPlanes = sum(metaData(metaData(1:(end-2), 2) == 1, 6)) + sum(metaData(metaData(1:(end-2), 2) == 1, 7));
-        stackName1Specimen0Camera0 = [dataFolder '\SPM00\TM' num2str(min(metaData(:, 1)), '%.6d') '\SPM00_TM' num2str(min(metaData(:, 1)), '%.6d') '_CM00_CHN' num2str(channel, '%.2d') inputIdentifier '.klb'];
-        stackName2Specimen0Camera0 = [dataFolder '\SPM00\TM' num2str(max(metaData(:, 1)), '%.6d') '\SPM00_TM' num2str(max(metaData(:, 1)), '%.6d') '_CM00_CHN' num2str(channel, '%.2d') inputIdentifier '.klb'];
+        stackName1Specimen0Camera0 = [dataFolder filesep 'SPM00' filesep 'TM' num2str(min(metaData(:, 1)), '%.6d') filesep 'SPM00_TM' num2str(min(metaData(:, 1)), '%.6d') '_CM00_CHN' num2str(channel, '%.2d') inputIdentifier '.klb'];
+        stackName2Specimen0Camera0 = [dataFolder filesep 'SPM00' filesep 'TM' num2str(max(metaData(:, 1)), '%.6d') filesep 'SPM00_TM' num2str(max(metaData(:, 1)), '%.6d') '_CM00_CHN' num2str(channel, '%.2d') inputIdentifier '.klb'];
         stack1Specimen0Camera0Header = readKLBheader(stackName1Specimen0Camera0);
         stack2Specimen0Camera0Header = readKLBheader(stackName2Specimen0Camera0);
         specimen0Camera0zDifference = stack2Specimen0Camera0Header.xyzct(3) - stack1Specimen0Camera0Header.xyzct(3);
-        stackName1Specimen0Camera1 = [dataFolder '\SPM00\TM' num2str(min(metaData(:, 1)), '%.6d') '\SPM00_TM' num2str(min(metaData(:, 1)), '%.6d') '_CM01_CHN' num2str(channel, '%.2d') inputIdentifier '.klb'];
-        stackName2Specimen0Camera1 = [dataFolder '\SPM00\TM' num2str(max(metaData(:, 1)), '%.6d') '\SPM00_TM' num2str(max(metaData(:, 1)), '%.6d') '_CM01_CHN' num2str(channel, '%.2d') inputIdentifier '.klb'];
+        stackName1Specimen0Camera1 = [dataFolder filesep 'SPM00' filesep 'TM' num2str(min(metaData(:, 1)), '%.6d') filesep 'SPM00_TM' num2str(min(metaData(:, 1)), '%.6d') '_CM01_CHN' num2str(channel, '%.2d') inputIdentifier '.klb'];
+        stackName2Specimen0Camera1 = [dataFolder filesep 'SPM00' filesep 'TM' num2str(max(metaData(:, 1)), '%.6d') filesep 'SPM00_TM' num2str(max(metaData(:, 1)), '%.6d') '_CM01_CHN' num2str(channel, '%.2d') inputIdentifier '.klb'];
         stack1Specimen0Camera1Header = readKLBheader(stackName1Specimen0Camera1);
         stack2Specimen0Camera1Header = readKLBheader(stackName2Specimen0Camera1);
         specimen0Camera1zDifference = stack2Specimen0Camera1Header.xyzct(3) - stack1Specimen0Camera1Header.xyzct(3);
-        stackName1Specimen1Camera0 = [dataFolder '\SPM01\TM' num2str(min(metaData(:, 1)), '%.6d') '\SPM01_TM' num2str(min(metaData(:, 1)), '%.6d') '_CM00_CHN' num2str(channel, '%.2d') inputIdentifier '.klb'];
-        stackName2Specimen1Camera0 = [dataFolder '\SPM01\TM' num2str(max(metaData(:, 1)), '%.6d') '\SPM01_TM' num2str(max(metaData(:, 1)), '%.6d') '_CM00_CHN' num2str(channel, '%.2d') inputIdentifier '.klb'];
+        stackName1Specimen1Camera0 = [dataFolder filesep 'SPM01' filesep 'TM' num2str(min(metaData(:, 1)), '%.6d') filesep 'SPM01_TM' num2str(min(metaData(:, 1)), '%.6d') '_CM00_CHN' num2str(channel, '%.2d') inputIdentifier '.klb'];
+        stackName2Specimen1Camera0 = [dataFolder filesep 'SPM01' filesep 'TM' num2str(max(metaData(:, 1)), '%.6d') filesep 'SPM01_TM' num2str(max(metaData(:, 1)), '%.6d') '_CM00_CHN' num2str(channel, '%.2d') inputIdentifier '.klb'];
         stack1Specimen1Camera0Header = readKLBheader(stackName1Specimen1Camera0);
         stack2Specimen1Camera0Header = readKLBheader(stackName2Specimen1Camera0);
         specimen1Camera0zDifference = stack2Specimen1Camera0Header.xyzct(3) - stack1Specimen1Camera0Header.xyzct(3);
-        stackName1Specimen1Camera1 = [dataFolder '\SPM01\TM' num2str(min(metaData(:, 1)), '%.6d') '\SPM01_TM' num2str(min(metaData(:, 1)), '%.6d') '_CM01_CHN' num2str(channel, '%.2d') inputIdentifier '.klb'];
-        stackName2Specimen1Camera1 = [dataFolder '\SPM01\TM' num2str(max(metaData(:, 1)), '%.6d') '\SPM01_TM' num2str(max(metaData(:, 1)), '%.6d') '_CM01_CHN' num2str(channel, '%.2d') inputIdentifier '.klb'];
+        stackName1Specimen1Camera1 = [dataFolder filesep 'SPM01' filesep 'TM' num2str(min(metaData(:, 1)), '%.6d') filesep 'SPM01_TM' num2str(min(metaData(:, 1)), '%.6d') '_CM01_CHN' num2str(channel, '%.2d') inputIdentifier '.klb'];
+        stackName2Specimen1Camera1 = [dataFolder filesep 'SPM01' filesep 'TM' num2str(max(metaData(:, 1)), '%.6d') filesep 'SPM01_TM' num2str(max(metaData(:, 1)), '%.6d') '_CM01_CHN' num2str(channel, '%.2d') inputIdentifier '.klb'];
         stack1Specimen1Camera1Header = readKLBheader(stackName1Specimen1Camera1);
         stack2Specimen1Camera1Header = readKLBheader(stackName2Specimen1Camera1);
         specimen1Camera1zDifference = stack2Specimen1Camera1Header.xyzct(3) - stack1Specimen1Camera1Header.xyzct(3);
@@ -269,16 +269,16 @@ for t = 1:numel(timepoints)
         else
             xRangeString = '';
         end;
-        maskFilename = [dataFolder '\SPM' num2str(specimen, '%.2d') '\TM' num2str(timepoints(t), '%.6d') ...
-            '\SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(t), '%.6d') '_CM' num2str(camera, '%.2d') '_CHN' num2str(channel, '%.2d') inputIdentifier '.binaryMask_' num2str(threshold) xRangeString '.klb'];
-        logsFilename = [dataFolder '\SPM' num2str(specimen, '%.2d') '\TM' num2str(timepoints(t), '%.6d') ...
-            '\SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(t), '%.6d') '_CM' num2str(camera, '%.2d') '_CHN' num2str(channel, '%.2d') inputIdentifier '.processingLogs_' num2str(threshold) xRangeString '.mat'];
+        maskFilename = [dataFolder filesep 'SPM' num2str(specimen, '%.2d') filesep 'TM' num2str(timepoints(t), '%.6d') ...
+            filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(t), '%.6d') '_CM' num2str(camera, '%.2d') '_CHN' num2str(channel, '%.2d') inputIdentifier '.binaryMask_' num2str(threshold) xRangeString '.klb'];
+        logsFilename = [dataFolder filesep 'SPM' num2str(specimen, '%.2d') filesep 'TM' num2str(timepoints(t), '%.6d') ...
+            filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(t), '%.6d') '_CM' num2str(camera, '%.2d') '_CHN' num2str(channel, '%.2d') inputIdentifier '.processingLogs_' num2str(threshold) xRangeString '.mat'];
         
         if exist(logsFilename, 'file')~=2 || forceCentroids
             disp(['    Creating binary mask for camera ' num2str(camera)]);
             
-            stackFilename = [dataFolder '\SPM' num2str(specimen, '%.2d') '\TM' num2str(timepoints(t), '%.6d') ...
-                '\SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(t), '%.6d') '_CM' num2str(camera, '%.2d') '_CHN' num2str(channel, '%.2d') inputIdentifier '.klb'];
+            stackFilename = [dataFolder filesep 'SPM' num2str(specimen, '%.2d') filesep 'TM' num2str(timepoints(t), '%.6d') ...
+                filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(t), '%.6d') '_CM' num2str(camera, '%.2d') '_CHN' num2str(channel, '%.2d') inputIdentifier '.klb'];
             stack = readImage(stackFilename);
             
             [xSize, ySize, zSize] = size(stack);
@@ -942,23 +942,23 @@ parfor t = 1:numel(timepoints)
     end;
     
     for camera = [0 1]
-        weightsMatrixFilename = [dataFolder '\SPM' num2str(specimen, '%.2d') '\TM' num2str(timepoints(t), '%.6d') ...
-            '\SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(t), '%.6d') '_CM' num2str(camera, '%.2d') '_CHN' num2str(channel, '%.2d') '.weightsMatrix' outputIdentifier '.klb'];
-        weightedStackFilename = [dataFolder '\SPM' num2str(specimen, '%.2d') '\TM' num2str(timepoints(t), '%.6d') ...
-            '\SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(t), '%.6d') '_CM' num2str(camera, '%.2d') '_CHN' num2str(channel, '%.2d') '.weighted' outputIdentifier '.klb'];
+        weightsMatrixFilename = [dataFolder filesep 'SPM' num2str(specimen, '%.2d') filesep 'TM' num2str(timepoints(t), '%.6d') ...
+            filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(t), '%.6d') '_CM' num2str(camera, '%.2d') '_CHN' num2str(channel, '%.2d') '.weightsMatrix' outputIdentifier '.klb'];
+        weightedStackFilename = [dataFolder filesep 'SPM' num2str(specimen, '%.2d') filesep 'TM' num2str(timepoints(t), '%.6d') ...
+            filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(t), '%.6d') '_CM' num2str(camera, '%.2d') '_CHN' num2str(channel, '%.2d') '.weighted' outputIdentifier '.klb'];
         
-        weightedStackXYProjectionFilename = [dataFolder '\SPM' num2str(specimen, '%.2d') '\TM' num2str(timepoints(t), '%.6d') ...
-            '\SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(t), '%.6d') '_CM' num2str(camera, '%.2d') '_CHN' num2str(channel, '%.2d') '.weighted' outputIdentifier '.xyProjection.klb'];
-        weightedStackXZProjectionFilename = [dataFolder '\SPM' num2str(specimen, '%.2d') '\TM' num2str(timepoints(t), '%.6d') ...
-            '\SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(t), '%.6d') '_CM' num2str(camera, '%.2d') '_CHN' num2str(channel, '%.2d') '.weighted' outputIdentifier '.xzProjection.klb'];
-        weightedStackYZProjectionFilename = [dataFolder '\SPM' num2str(specimen, '%.2d') '\TM' num2str(timepoints(t), '%.6d') ...
-            '\SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(t), '%.6d') '_CM' num2str(camera, '%.2d') '_CHN' num2str(channel, '%.2d') '.weighted' outputIdentifier '.yzProjection.klb'];
+        weightedStackXYProjectionFilename = [dataFolder filesep 'SPM' num2str(specimen, '%.2d') filesep 'TM' num2str(timepoints(t), '%.6d') ...
+            filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(t), '%.6d') '_CM' num2str(camera, '%.2d') '_CHN' num2str(channel, '%.2d') '.weighted' outputIdentifier '.xyProjection.klb'];
+        weightedStackXZProjectionFilename = [dataFolder filesep 'SPM' num2str(specimen, '%.2d') filesep 'TM' num2str(timepoints(t), '%.6d') ...
+            filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(t), '%.6d') '_CM' num2str(camera, '%.2d') '_CHN' num2str(channel, '%.2d') '.weighted' outputIdentifier '.xzProjection.klb'];
+        weightedStackYZProjectionFilename = [dataFolder filesep 'SPM' num2str(specimen, '%.2d') filesep 'TM' num2str(timepoints(t), '%.6d') ...
+            filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(t), '%.6d') '_CM' num2str(camera, '%.2d') '_CHN' num2str(channel, '%.2d') '.weighted' outputIdentifier '.yzProjection.klb'];
         
         if exist(weightsMatrixFilename, 'file') ~= 2 || (applyWeights && exist(weightedStackFilename, 'file') ~= 2) || (applyWeights && saveProjections && exist(weightedStackYZProjectionFilename, 'file') ~= 2) || forceWeights
             disp(['    Creating and/or applying weights matrix for camera ' num2str(camera)]);
             
-            stackFilename = [dataFolder '\SPM' num2str(specimen, '%.2d') '\TM' num2str(timepoints(t), '%.6d') ...
-                '\SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(t), '%.6d') '_CM' num2str(camera, '%.2d') '_CHN' num2str(channel, '%.2d') inputIdentifier '.klb'];
+            stackFilename = [dataFolder filesep 'SPM' num2str(specimen, '%.2d') filesep 'TM' num2str(timepoints(t), '%.6d') ...
+                filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(t), '%.6d') '_CM' num2str(camera, '%.2d') '_CHN' num2str(channel, '%.2d') inputIdentifier '.klb'];
             stack = readImage(stackFilename);
             
             if exist(weightsMatrixFilename, 'file') ~= 2 || forceWeights

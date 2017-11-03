@@ -5,7 +5,7 @@ dffSampling  = 5;      % time interval in which new dF/F reference stacks are co
 dffRadius    = 20;
 percentile   = 30;
 
-inputString  = 'X:\SiMView2\14-01-04\Dme_L1_57C10-GCaMP641_0_20140104_114246.corrected\Results\TimeFused';
+inputString  = 'X:' filesep 'SiMView2' filesep '14-01-04' filesep 'Dme_L1_57C10-GCaMP641_0_20140104_114246.corrected' filesep 'Results' filesep 'TimeFused';
 header       = 'Dme_L1_57C10-GCaMP641'; % only required for dataType == 1
 footer       = '_timeFused_blending';   % only required for dataType == 1
 dataType     = 1;                       % 0: unfused processed data (output of clusterPT), 1: fused processed data (output of clusterMF or clusterTF)
@@ -74,13 +74,13 @@ end;
 matlabpool(poolWorkers);
 
 if dataType == 0
-    sampleStackPath = [inputString '.registered\SPM' num2str(specimen, '%.2d') '\TM' num2str(timepoints(1), '%.6d')];
+    sampleStackPath = [inputString '.registered' filesep 'SPM' num2str(specimen, '%.2d') filesep 'TM' num2str(timepoints(1), '%.6d')];
     sampleStackName = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(1), '%.6d') configurationString '.medianFiltered' inputExtension];
 else
-    sampleStackPath = [inputString '.registered\' header '.TM' num2str(timepoints(1), '%.6d') footer];
+    sampleStackPath = [inputString '.registered' filesep header '.TM' num2str(timepoints(1), '%.6d') footer];
     sampleStackName = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(1), '%.6d') configurationString '.fusedStack_medianFiltered' inputExtension];
 end;
-fullSampleStackPath = [sampleStackPath '\' sampleStackName];
+fullSampleStackPath = [sampleStackPath filesep '' sampleStackName];
 
 switch inputType
     case 0
@@ -113,13 +113,13 @@ for t = 1:numel(ticks)
             disp(['* Loading image data at t = ' num2str(currentTime)]);
             
             if dataType == 0
-                stackPath = [inputString '.registered\SPM' num2str(specimen, '%.2d') '\TM' num2str(currentTime, '%.6d')];
+                stackPath = [inputString '.registered' filesep 'SPM' num2str(specimen, '%.2d') filesep 'TM' num2str(currentTime, '%.6d')];
                 stackName = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(currentTime, '%.6d') configurationString '.medianFiltered' inputExtension];
             else
-                stackPath = [inputString '.registered\' header '.TM' num2str(currentTime, '%.6d') footer];
+                stackPath = [inputString '.registered' filesep header '.TM' num2str(currentTime, '%.6d') footer];
                 stackName = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(currentTime, '%.6d') configurationString '.fusedStack_medianFiltered' inputExtension];
             end;
-            fullStackPath = [stackPath '\' stackName];
+            fullStackPath = [stackPath filesep '' stackName];
             
             dataPool(:, :, :, r) = readImage(fullStackPath);
         end;
@@ -134,13 +134,13 @@ for t = 1:numel(ticks)
             disp(['* Loading image data at t = ' num2str(newTime)]);
             
             if dataType == 0
-                stackPath = [inputString '.registered\SPM' num2str(specimen, '%.2d') '\TM' num2str(newTime, '%.6d')];
+                stackPath = [inputString '.registered' filesep 'SPM' num2str(specimen, '%.2d') filesep 'TM' num2str(newTime, '%.6d')];
                 stackName = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(newTime, '%.6d') configurationString '.medianFiltered' inputExtension];
             else
-                stackPath = [inputString '.registered\' header '.TM' num2str(newTime, '%.6d') footer];
+                stackPath = [inputString '.registered' filesep header '.TM' num2str(newTime, '%.6d') footer];
                 stackName = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(newTime, '%.6d') configurationString '.fusedStack_medianFiltered' inputExtension];
             end;
-            fullStackPath = [stackPath '\' stackName];
+            fullStackPath = [stackPath filesep '' stackName];
             
             dataPool(:, :, :, newSlot) = readImage(fullStackPath);
             
@@ -174,22 +174,22 @@ for t = 1:numel(ticks)
     currentTimepoint = timepoints(ticks(t));
     
     if dataType == 0
-        outputStackPath = [inputString '.registered\SPM' num2str(specimen, '%.2d') '\TM' num2str(currentTimepoint, '%.6d')];
+        outputStackPath = [inputString '.registered' filesep 'SPM' num2str(specimen, '%.2d') filesep 'TM' num2str(currentTimepoint, '%.6d')];
         outputStackName = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(currentTimepoint, '%.6d') configurationString '.baseline' outputExtension];
         outputXYProjectionName = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(currentTimepoint, '%.6d') configurationString '.baseline_xyProjection' outputExtension];
         outputXZProjectionName = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(currentTimepoint, '%.6d') configurationString '.baseline_xzProjection' outputExtension];
         outputYZProjectionName = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(currentTimepoint, '%.6d') configurationString '.baseline_yzProjection' outputExtension];
     else
-        outputStackPath = [inputString '.registered\' header '.TM' num2str(currentTimepoint, '%.6d') footer];
+        outputStackPath = [inputString '.registered' filesep header '.TM' num2str(currentTimepoint, '%.6d') footer];
         outputStackName = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(currentTimepoint, '%.6d') configurationString '.fusedStack_baseline' outputExtension];
         outputXYProjectionName = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(currentTimepoint, '%.6d') configurationString '.fusedStack_baseline.xyProjection' outputExtension];
         outputXZProjectionName = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(currentTimepoint, '%.6d') configurationString '.fusedStack_baseline.xzProjection' outputExtension];
         outputYZProjectionName = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(currentTimepoint, '%.6d') configurationString '.fusedStack_baseline.yzProjection' outputExtension];
     end;
-    fullOutputStackPath = [outputStackPath '\' outputStackName];
-    fullOutputXYProjectionPath = [outputStackPath '\' outputXYProjectionName];
-    fullOutputXZProjectionPath = [outputStackPath '\' outputXZProjectionName];
-    fullOutputYZProjectionPath = [outputStackPath '\' outputYZProjectionName];
+    fullOutputStackPath = [outputStackPath filesep '' outputStackName];
+    fullOutputXYProjectionPath = [outputStackPath filesep '' outputXYProjectionName];
+    fullOutputXZProjectionPath = [outputStackPath filesep '' outputXZProjectionName];
+    fullOutputYZProjectionPath = [outputStackPath filesep '' outputYZProjectionName];
     
     writeImage(referenceStack, fullOutputStackPath);
     writeImage(max(referenceStack, [], 3), fullOutputXYProjectionPath);

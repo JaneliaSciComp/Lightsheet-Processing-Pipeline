@@ -56,14 +56,14 @@ end;
 disp(['processing time point ' num2str(timepoint, '%.6d')]);
 
 fileNameHeader = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') configurationString];
-stackName = [inputDir header '.TM' num2str(timepoint, '%.6d') footer '\' fileNameHeader '.fusedStack' stackLabel inputExtension];
+stackName = [inputDir header '.TM' num2str(timepoint, '%.6d') footer filesep '' fileNameHeader '.fusedStack' stackLabel inputExtension];
 
 stack = readImage(stackName);
 
 outputPath = [outputDir header '.TM' num2str(timepoint, '%.6d') footer];
 mkdir(outputPath);
 
-save([outputPath '\' fileNameHeader '.configuration.mat'], 'configuration');
+save([outputPath filesep '' fileNameHeader '.configuration.mat'], 'configuration');
 
 stackMask = stack > threshold;
 
@@ -81,20 +81,20 @@ end;
 
 stack(~stackMask) = 0;
 
-xyProjectedName = [outputPath '\' fileNameHeader '.fusedStack_xyProjection.masked' outputExtension];
-xzProjectedName = [outputPath '\' fileNameHeader '.fusedStack_xzProjection.masked' outputExtension];
-yzProjectedName = [outputPath '\' fileNameHeader '.fusedStack_yzProjection.masked' outputExtension];
+xyProjectedName = [outputPath filesep '' fileNameHeader '.fusedStack_xyProjection.masked' outputExtension];
+xzProjectedName = [outputPath filesep '' fileNameHeader '.fusedStack_xzProjection.masked' outputExtension];
+yzProjectedName = [outputPath filesep '' fileNameHeader '.fusedStack_yzProjection.masked' outputExtension];
 
 writeImage(max(stack, [], 3), xyProjectedName);
 writeImage(squeeze(max(stack, [], 2)), xzProjectedName);
 writeImage(squeeze(max(stack, [], 1)), yzProjectedName);
 
-maskStackName = [outputPath '\' fileNameHeader '.fusedStack.mask' outputExtension];
+maskStackName = [outputPath filesep '' fileNameHeader '.fusedStack.mask' outputExtension];
 writeImage(uint8(stackMask), maskStackName);
 
-xyProjectedName = [outputPath '\' fileNameHeader '.fusedStack_xyProjection.mask' outputExtension];
-xzProjectedName = [outputPath '\' fileNameHeader '.fusedStack_xzProjection.mask' outputExtension];
-yzProjectedName = [outputPath '\' fileNameHeader '.fusedStack_yzProjection.mask' outputExtension];
+xyProjectedName = [outputPath filesep '' fileNameHeader '.fusedStack_xyProjection.mask' outputExtension];
+xzProjectedName = [outputPath filesep '' fileNameHeader '.fusedStack_xzProjection.mask' outputExtension];
+yzProjectedName = [outputPath filesep '' fileNameHeader '.fusedStack_yzProjection.mask' outputExtension];
 
 writeImage(uint8(max(stackMask, [], 3)), xyProjectedName);
 writeImage(uint8(squeeze(max(stackMask, [], 2))), xzProjectedName);

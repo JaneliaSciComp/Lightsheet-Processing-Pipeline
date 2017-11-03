@@ -1,9 +1,9 @@
 %% parameters
 
-sourceDirectory  = 'D:\Temp\Dme_L2_57C10-GCaMP641-0_20140104_143744.corrected\SPM00\TM??????';
+sourceDirectory  = 'D:' filesep 'Temp' filesep 'Dme_L2_57C10-GCaMP641-0_20140104_143744.corrected' filesep 'SPM00' filesep 'TM??????';
 sourceTimepoints = 0:10;
 
-targetDirectory  = 'D:\Temp\Dme_L1_57C10-GCaMP641_0_20140104_114246.corrected\SPM00\TM??????';
+targetDirectory  = 'D:' filesep 'Temp' filesep 'Dme_L1_57C10-GCaMP641_0_20140104_114246.corrected' filesep 'SPM00' filesep 'TM??????';
 targetTimepoints = 11:21;
 
 stampDigits      = 6;
@@ -21,14 +21,14 @@ inputDatabase = cell(nTimepoints, 1);
 outputDatabase = cell(nTimepoints, 1);
 
 for n = 1:nTimepoints
-    inputDatabase{n} = [sourceDirectory '\'];
+    inputDatabase{n} = [sourceDirectory filesep ''];
     positions = strfind(inputDatabase{n}, repmat('?', [1 stampDigits]));
     precision = ['%.' num2str(stampDigits) 'd'];
     for k = 1:numel(positions)
         inputDatabase{n}(positions(k):(positions(k) + stampDigits - 1)) = num2str(sourceTimepoints(n), precision);
     end;
     
-    outputDatabase{n} = [targetDirectory '\'];
+    outputDatabase{n} = [targetDirectory filesep ''];
     positions = strfind(outputDatabase{n}, repmat('?', [1 stampDigits]));
     precision = ['%.' num2str(stampDigits) 'd'];
     for k = 1:numel(positions)
@@ -60,7 +60,7 @@ for n = 1:nTimepoints
         end;
     end;
     
-    projectionFiles = dir([inputDatabase{n}(1:(end - 16)) '.projections\*TM' num2str(sourceTimepoints(n), '%.6d') '*.*']);
+    projectionFiles = dir([inputDatabase{n}(1:(end - 16)) '.projections' filesep '*TM' num2str(sourceTimepoints(n), '%.6d') '*.*']);
     if ~isempty(projectionFiles)
         for i = 1:numel(projectionFiles)
             sourceFileName = projectionFiles(i).name;
@@ -70,8 +70,8 @@ for n = 1:nTimepoints
                 targetFileName(positions(k):(positions(k) + stampDigits + 1)) = ['TM' num2str(targetTimepoints(n), ['%.' num2str(stampDigits) 'd'])];
             end;
             
-            sourceFileFullPath = [inputDatabase{n}(1:(end - 16)) '.projections\' sourceFileName];
-            targetFileFullPath = [outputDatabase{n}(1:(end - 16)) '.projections\' targetFileName];
+            sourceFileFullPath = [inputDatabase{n}(1:(end - 16)) '.projections' filesep sourceFileName];
+            targetFileFullPath = [outputDatabase{n}(1:(end - 16)) '.projections' filesep targetFileName];
             [status, cmdout] = system(['move ' sourceFileFullPath ' ' targetFileFullPath]);
         end;
     end;

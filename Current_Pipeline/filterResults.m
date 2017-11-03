@@ -59,7 +59,7 @@ end;
 disp(['processing time point ' num2str(timepoint, '%.6d')]);
 
 fileNameHeader = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') configurationString];
-stackName = [inputDir header '.TM' num2str(timepoint, '%.6d') footer '\' fileNameHeader '.fusedStack' stackLabel inputExtension];
+stackName = [inputDir header '.TM' num2str(timepoint, '%.6d') footer filesep '' fileNameHeader '.fusedStack' stackLabel inputExtension];
 
 stack = readImage(stackName);
 xSize = size(stack, 1);
@@ -69,7 +69,7 @@ zSize = size(stack, 3);
 outputPath = [outputDir header '.TM' num2str(timepoint, '%.6d') footer];
 mkdir(outputPath);
 
-save([outputPath '\' fileNameHeader '.configuration.mat'], 'configuration');
+save([outputPath filesep '' fileNameHeader '.configuration.mat'], 'configuration');
 
 if subProject
     center = round(zSize / 2);
@@ -77,17 +77,17 @@ if subProject
     firstHalfProjected  = max(stack(:, :, 1:center), [], 3);
     secondHalfProjected = max(stack(:, :, (center + 1):end), [], 3);
     
-    firstHalfProjectedName  = [outputPath '\' fileNameHeader '.fusedStack_xyFProjection' outputExtension];
-    secondHalfProjectedName = [outputPath '\' fileNameHeader '.fusedStack_xyBProjection' outputExtension];
+    firstHalfProjectedName  = [outputPath filesep '' fileNameHeader '.fusedStack_xyFProjection' outputExtension];
+    secondHalfProjectedName = [outputPath filesep '' fileNameHeader '.fusedStack_xyBProjection' outputExtension];
     
     writeImage(firstHalfProjected, firstHalfProjectedName);
     writeImage(secondHalfProjected, secondHalfProjectedName);
 end;
 
 if saveRawMax
-    xyProjectedName = [outputPath '\' fileNameHeader '.fusedStack_xyProjection' outputExtension];
-    xzProjectedName = [outputPath '\' fileNameHeader '.fusedStack_xzProjection' outputExtension];
-    yzProjectedName = [outputPath '\' fileNameHeader '.fusedStack_yzProjection' outputExtension];
+    xyProjectedName = [outputPath filesep '' fileNameHeader '.fusedStack_xyProjection' outputExtension];
+    xzProjectedName = [outputPath filesep '' fileNameHeader '.fusedStack_xzProjection' outputExtension];
+    yzProjectedName = [outputPath filesep '' fileNameHeader '.fusedStack_yzProjection' outputExtension];
     
     writeImage(max(stack, [], 3), xyProjectedName);
     writeImage(squeeze(max(stack, [], 2)), xzProjectedName);
@@ -108,7 +108,7 @@ if removeDirt(1)
     stack(stackMask) = 0;
     
     if saveStacks
-        cleanedStackName = [outputPath '\' fileNameHeader '.fusedStack.cleaned' outputExtension];
+        cleanedStackName = [outputPath filesep '' fileNameHeader '.fusedStack.cleaned' outputExtension];
         writeImage(stack, cleanedStackName);
     end;
     
@@ -116,16 +116,16 @@ if removeDirt(1)
         firstHalfProjected  = max(stack(:, :, 1:center), [], 3);
         secondHalfProjected = max(stack(:, :, (center + 1):end), [], 3);
         
-        firstHalfProjectedName  = [outputPath '\' fileNameHeader '.fusedStack_xyFProjection.cleaned' outputExtension];
-        secondHalfProjectedName = [outputPath '\' fileNameHeader '.fusedStack_xyBProjection.cleaned' outputExtension];
+        firstHalfProjectedName  = [outputPath filesep '' fileNameHeader '.fusedStack_xyFProjection.cleaned' outputExtension];
+        secondHalfProjectedName = [outputPath filesep '' fileNameHeader '.fusedStack_xyBProjection.cleaned' outputExtension];
         
         writeImage(firstHalfProjected, firstHalfProjectedName);
         writeImage(secondHalfProjected, secondHalfProjectedName);
     end;
     
-    xyProjectedName = [outputPath '\' fileNameHeader '.fusedStack_xyProjection.cleaned' outputExtension];
-    xzProjectedName = [outputPath '\' fileNameHeader '.fusedStack_xzProjection.cleaned' outputExtension];
-    yzProjectedName = [outputPath '\' fileNameHeader '.fusedStack_yzProjection.cleaned' outputExtension];
+    xyProjectedName = [outputPath filesep '' fileNameHeader '.fusedStack_xyProjection.cleaned' outputExtension];
+    xzProjectedName = [outputPath filesep '' fileNameHeader '.fusedStack_xzProjection.cleaned' outputExtension];
+    yzProjectedName = [outputPath filesep '' fileNameHeader '.fusedStack_yzProjection.cleaned' outputExtension];
     
     writeImage(max(stack, [], 3), xyProjectedName);
     writeImage(squeeze(max(stack, [], 2)), xzProjectedName);
@@ -140,9 +140,9 @@ if preMedian(1)
     
     if saveStacks
         if removeDirt(1)
-            filteredStackName = [outputPath '\' fileNameHeader '.fusedStack.cleaned_median' outputExtension];
+            filteredStackName = [outputPath filesep '' fileNameHeader '.fusedStack.cleaned_median' outputExtension];
         else
-            filteredStackName = [outputPath '\' fileNameHeader '.fusedStack.median' outputExtension];
+            filteredStackName = [outputPath filesep '' fileNameHeader '.fusedStack.median' outputExtension];
         end;
         writeImage(stackCopy, filteredStackName);
     end;
@@ -152,11 +152,11 @@ if preMedian(1)
         secondHalfFilteredProjected = max(stackCopy(:, :, (center + 1):end), [], 3);
         
         if removeDirt(1)
-            firstHalfFilteredProjectedName  = [outputPath '\' fileNameHeader '.fusedStack_xyFProjection.cleaned_median' outputExtension];
-            secondHalfFilteredProjectedName = [outputPath '\' fileNameHeader '.fusedStack_xyBProjection.cleaned_median' outputExtension];
+            firstHalfFilteredProjectedName  = [outputPath filesep '' fileNameHeader '.fusedStack_xyFProjection.cleaned_median' outputExtension];
+            secondHalfFilteredProjectedName = [outputPath filesep '' fileNameHeader '.fusedStack_xyBProjection.cleaned_median' outputExtension];
         else
-            firstHalfFilteredProjectedName  = [outputPath '\' fileNameHeader '.fusedStack_xyFProjection.median' outputExtension];
-            secondHalfFilteredProjectedName = [outputPath '\' fileNameHeader '.fusedStack_xyBProjection.median' outputExtension];
+            firstHalfFilteredProjectedName  = [outputPath filesep '' fileNameHeader '.fusedStack_xyFProjection.median' outputExtension];
+            secondHalfFilteredProjectedName = [outputPath filesep '' fileNameHeader '.fusedStack_xyBProjection.median' outputExtension];
         end;
         
         writeImage(firstHalfFilteredProjected, firstHalfFilteredProjectedName);
@@ -164,13 +164,13 @@ if preMedian(1)
     end;
     
     if removeDirt(1)
-        xyFilteredProjectedName = [outputPath '\' fileNameHeader '.fusedStack_xyProjection.cleaned_median' outputExtension];
-        xzFilteredProjectedName = [outputPath '\' fileNameHeader '.fusedStack_xzProjection.cleaned_median' outputExtension];
-        yzFilteredProjectedName = [outputPath '\' fileNameHeader '.fusedStack_yzProjection.cleaned_median' outputExtension];
+        xyFilteredProjectedName = [outputPath filesep '' fileNameHeader '.fusedStack_xyProjection.cleaned_median' outputExtension];
+        xzFilteredProjectedName = [outputPath filesep '' fileNameHeader '.fusedStack_xzProjection.cleaned_median' outputExtension];
+        yzFilteredProjectedName = [outputPath filesep '' fileNameHeader '.fusedStack_yzProjection.cleaned_median' outputExtension];
     else
-        xyFilteredProjectedName = [outputPath '\' fileNameHeader '.fusedStack_xyProjection.median' outputExtension];
-        xzFilteredProjectedName = [outputPath '\' fileNameHeader '.fusedStack_xzProjection.median' outputExtension];
-        yzFilteredProjectedName = [outputPath '\' fileNameHeader '.fusedStack_yzProjection.median' outputExtension];
+        xyFilteredProjectedName = [outputPath filesep '' fileNameHeader '.fusedStack_xyProjection.median' outputExtension];
+        xzFilteredProjectedName = [outputPath filesep '' fileNameHeader '.fusedStack_xzProjection.median' outputExtension];
+        yzFilteredProjectedName = [outputPath filesep '' fileNameHeader '.fusedStack_yzProjection.median' outputExtension];
     end;
     
     writeImage(max(stackCopy, [], 3), xyFilteredProjectedName);
@@ -217,7 +217,7 @@ if ~isempty(filterMode)
         end;
         
         if saveStacks
-            filteredStackName = [outputPath '\' fileNameHeader '.fusedStack.filtered_' num2str(r) outputExtension];
+            filteredStackName = [outputPath filesep '' fileNameHeader '.fusedStack.filtered_' num2str(r) outputExtension];
             writeImage(filteredStack, filteredStackName);
         end;
         
@@ -225,16 +225,16 @@ if ~isempty(filterMode)
             firstHalfFilteredProjected  = max(filteredStack(:, :, 1:center), [], 3);
             secondHalfFilteredProjected = max(filteredStack(:, :, (center + 1):end), [], 3);
             
-            firstHalfFilteredProjectedName  = [outputPath '\' fileNameHeader '.fusedStack_xyFProjection.filtered_' num2str(r) outputExtension];
-            secondHalfFilteredProjectedName = [outputPath '\' fileNameHeader '.fusedStack_xyBProjection.filtered_' num2str(r) outputExtension];
+            firstHalfFilteredProjectedName  = [outputPath filesep '' fileNameHeader '.fusedStack_xyFProjection.filtered_' num2str(r) outputExtension];
+            secondHalfFilteredProjectedName = [outputPath filesep '' fileNameHeader '.fusedStack_xyBProjection.filtered_' num2str(r) outputExtension];
             
             writeImage(firstHalfFilteredProjected, firstHalfFilteredProjectedName);
             writeImage(secondHalfFilteredProjected, secondHalfFilteredProjectedName);
         end;
         
-        xyFilteredProjectedName = [outputPath '\' fileNameHeader '.fusedStack_xyProjection.filtered_' num2str(r) outputExtension];
-        xzFilteredProjectedName = [outputPath '\' fileNameHeader '.fusedStack_xzProjection.filtered_' num2str(r) outputExtension];
-        yzFilteredProjectedName = [outputPath '\' fileNameHeader '.fusedStack_yzProjection.filtered_' num2str(r) outputExtension];
+        xyFilteredProjectedName = [outputPath filesep '' fileNameHeader '.fusedStack_xyProjection.filtered_' num2str(r) outputExtension];
+        xzFilteredProjectedName = [outputPath filesep '' fileNameHeader '.fusedStack_xzProjection.filtered_' num2str(r) outputExtension];
+        yzFilteredProjectedName = [outputPath filesep '' fileNameHeader '.fusedStack_yzProjection.filtered_' num2str(r) outputExtension];
         
         writeImage(max(filteredStack, [], 3), xyFilteredProjectedName);
         writeImage(squeeze(max(filteredStack, [], 2)), xzFilteredProjectedName);
@@ -246,7 +246,7 @@ if ~isempty(filterMode)
             end;
             
             if saveStacks
-                filteredStackName = [outputPath '\' fileNameHeader '.fusedStack.filtered_' num2str(r) '_median' outputExtension];
+                filteredStackName = [outputPath filesep '' fileNameHeader '.fusedStack.filtered_' num2str(r) '_median' outputExtension];
                 writeImage(filteredStack, filteredStackName);
             end;
             
@@ -254,16 +254,16 @@ if ~isempty(filterMode)
                 firstHalfFilteredProjected  = max(filteredStack(:, :, 1:center), [], 3);
                 secondHalfFilteredProjected = max(filteredStack(:, :, (center + 1):end), [], 3);
                 
-                firstHalfFilteredProjectedName  = [outputPath '\' fileNameHeader '.fusedStack_xyFProjection.filtered_' num2str(r) '_median' outputExtension];
-                secondHalfFilteredProjectedName = [outputPath '\' fileNameHeader '.fusedStack_xyBProjection.filtered_' num2str(r) '_median' outputExtension];
+                firstHalfFilteredProjectedName  = [outputPath filesep '' fileNameHeader '.fusedStack_xyFProjection.filtered_' num2str(r) '_median' outputExtension];
+                secondHalfFilteredProjectedName = [outputPath filesep '' fileNameHeader '.fusedStack_xyBProjection.filtered_' num2str(r) '_median' outputExtension];
                 
                 writeImage(firstHalfFilteredProjected, firstHalfFilteredProjectedName);
                 writeImage(secondHalfFilteredProjected, secondHalfFilteredProjectedName);
             end;
             
-            xyFilteredProjectedName = [outputPath '\' fileNameHeader '.fusedStack_xyProjection.filtered_' num2str(r) '_median' outputExtension];
-            xzFilteredProjectedName = [outputPath '\' fileNameHeader '.fusedStack_xzProjection.filtered_' num2str(r) '_median' outputExtension];
-            yzFilteredProjectedName = [outputPath '\' fileNameHeader '.fusedStack_yzProjection.filtered_' num2str(r) '_median' outputExtension];
+            xyFilteredProjectedName = [outputPath filesep '' fileNameHeader '.fusedStack_xyProjection.filtered_' num2str(r) '_median' outputExtension];
+            xzFilteredProjectedName = [outputPath filesep '' fileNameHeader '.fusedStack_xzProjection.filtered_' num2str(r) '_median' outputExtension];
+            yzFilteredProjectedName = [outputPath filesep '' fileNameHeader '.fusedStack_yzProjection.filtered_' num2str(r) '_median' outputExtension];
             
             writeImage(max(filteredStack, [], 3), xyFilteredProjectedName);
             writeImage(squeeze(max(filteredStack, [], 2)), xzFilteredProjectedName);

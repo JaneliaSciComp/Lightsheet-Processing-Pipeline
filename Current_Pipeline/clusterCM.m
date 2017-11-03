@@ -2,8 +2,8 @@
 
 timepoints   = 0:350;
 
-inputDir     = 'R:\SV1\KM_15-12-05\Mmu_E1_mKate2\Results\TimeFused.Corrected\';
-outputDir    = 'R:\SV1\KM_15-12-05\Mmu_E1_mKate2\Results\TimeFused.Corrected.Masks\';
+inputDir     = 'R:' filesep 'SV1' filesep 'KM_15-12-05' filesep 'Mmu_E1_mKate2' filesep 'Results' filesep 'TimeFused.Corrected' filesep;
+outputDir    = 'R:' filesep 'SV1' filesep 'KM_15-12-05' filesep 'Mmu_E1_mKate2' filesep 'Results' filesep 'TimeFused.Corrected.Masks' filesep;
 header       = 'Mmu_E1_mKate2';
 footer       = '_timeFused_blending';
 stackLabel   = '.corrected.shifted';
@@ -73,7 +73,7 @@ end;
 for currentTP = length(timepoints):-1:1
     outputPath = [outputDir header '.TM' num2str(timepoints(currentTP), '%.6d') footer];
     fileNameHeader = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(currentTP), '%.6d') configurationString];
-    outputName = [outputPath '\' fileNameHeader '.fusedStack_yzProjection.mask' outputExtension];
+    outputName = [outputPath filesep '' fileNameHeader '.fusedStack_yzProjection.mask' outputExtension];
     
     if exist(outputName, 'file') == 2
         timepoints(currentTP) = [];
@@ -85,7 +85,7 @@ if ~isempty(timepoints)
     
     if jobMemory(1) == 1 && localRun(1) ~= 1
         fileNameHeader = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(1), '%.6d') configurationString];
-        fileName = [inputDir header '.TM' num2str(timepoints(1), '%.6d') footer '\' fileNameHeader '.fusedStack' stackLabel inputExtension];
+        fileName = [inputDir header '.TM' num2str(timepoints(1), '%.6d') footer filesep '' fileNameHeader '.fusedStack' stackLabel inputExtension];
         
         try
             switch inputType
@@ -128,7 +128,7 @@ if ~isempty(timepoints)
         timeString = [...
             num2str(currentTime(1)) num2str(currentTime(2), '%.2d') num2str(currentTime(3), '%.2d') ...
             '_' num2str(currentTime(4), '%.2d') num2str(currentTime(5), '%.2d') num2str(round(currentTime(6) * 1000), '%.5d')];
-        parameterDatabase = [pwd '\jobParameters.createMask.' timeString '.mat'];
+        parameterDatabase = [pwd filesep 'jobParameters.createMask.' timeString '.mat'];
         
         save(parameterDatabase,...
             'timepoints', 'inputDir', 'outputDir', 'header', 'footer', 'stackLabel', 'specimen', 'cameras', 'channels', ...
@@ -154,7 +154,7 @@ if ~isempty(timepoints)
         timeString = [...
             num2str(currentTime(1)) num2str(currentTime(2), '%.2d') num2str(currentTime(3), '%.2d') ...
             '_' num2str(currentTime(4), '%.2d') num2str(currentTime(5), '%.2d') num2str(round(currentTime(6) * 1000), '%.5d')];
-        parameterDatabase = [pwd '\jobParameters.createMask.' timeString '.mat'];
+        parameterDatabase = [pwd filesep 'jobParameters.createMask.' timeString '.mat'];
         
         save(parameterDatabase,...
             'timepoints', 'inputDir', 'outputDir', 'header', 'footer', 'stackLabel', 'specimen', 'cameras', 'channels', ...
@@ -165,7 +165,7 @@ if ~isempty(timepoints)
         if localRun(1) ~= 1
             for t = 1:nTimepoints
                 fileNameHeader = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(t), '%.6d') configurationString];
-                fileName = [inputDir header '.TM' num2str(timepoints(t), '%.6d') footer '\' fileNameHeader '.fusedStack' stackLabel inputExtension];
+                fileName = [inputDir header '.TM' num2str(timepoints(t), '%.6d') footer filesep '' fileNameHeader '.fusedStack' stackLabel inputExtension];
                 
                 try
                     switch inputType

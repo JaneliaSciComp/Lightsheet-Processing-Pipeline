@@ -13,13 +13,13 @@ FNSearchThreshold  = 0.1;
 processAnnotations = 1;
 processPredictions = 1;
 
-dataFolder        = 'E:\Mouse Development\Division Detection\MK5 Sparse';
+dataFolder        = 'E:' filesep 'Mouse Development' filesep 'Division Detection' filesep 'MK5 Sparse';
 
-imagePathSegment1 = 'X:\SV1\14-05-21\Mmu_E1_CAGTAG1.corrected\Results\TimeFused.Corrected\Mmu_E1_CAGTAG1.TM';
-imagePathSegment2 = '_timeFused_blending\SPM00_TM';
+imagePathSegment1 = 'X:' filesep 'SV1' filesep '14-05-21' filesep 'Mmu_E1_CAGTAG1.corrected' filesep 'Results' filesep 'TimeFused.Corrected' filesep 'Mmu_E1_CAGTAG1.TM';
+imagePathSegment2 = '_timeFused_blending' filesep 'SPM00_TM';
 imagePathSegment3 = '_CM00_CM01_CHN00.fusedStack.corrected.shifted.klb';
 
-outputFolder      = 'E:\Mouse Development\Division Detection\MK5 Inspection';
+outputFolder      = 'E:' filesep 'Mouse Development' filesep 'Division Detection' filesep 'MK5 Inspection';
 
 saveVolumes       = 0;
 saveProjections   = 1;
@@ -30,15 +30,15 @@ if exist(outputFolder, 'dir') ~= 7
     mkdir(outputFolder);
 end;
 
-if exist([outputFolder '\Tables'], 'dir') ~= 7
-    mkdir([outputFolder '\Tables']);
+if exist([outputFolder filesep 'Tables'], 'dir') ~= 7
+    mkdir([outputFolder filesep 'Tables']);
 end;
 
 load annotations;
 annotations(:, 4) = annotations(:, 4) ./ anisotropy;
 
-load([dataFolder '\predictions.mat']);
-load([dataFolder '\thresholds.mat']);
+load([dataFolder filesep 'predictions.mat']);
+load([dataFolder filesep 'thresholds.mat']);
 
 disp(' ');
 
@@ -107,32 +107,32 @@ for c = 1:2
             annotatedPositives = annotationSelection(:, [2 3 4 1 5]);
             presumedFalseNegatives = annotationSelection(annotationSelection(:, 5) == 0, [2 3 4 1 5]);
             
-            save([outputFolder '\Tables\' outputLabel '.Timepoint_' num2str(t) '.annotatedPositives.mat'], 'annotatedPositives');
-            save([outputFolder '\Tables\' outputLabel '.Timepoint_' num2str(t) '.presumedFalseNegatives.mat'], 'presumedFalseNegatives');
+            save([outputFolder filesep 'Tables' filesep outputLabel '.Timepoint_' num2str(t) '.annotatedPositives.mat'], 'annotatedPositives');
+            save([outputFolder filesep 'Tables' filesep outputLabel '.Timepoint_' num2str(t) '.presumedFalseNegatives.mat'], 'presumedFalseNegatives');
             
             disp(['extracting image windows around annotations for ' displayLabel ' timepoint ' num2str(t)]);
             
             for y = 1:2
                 switch y
                     case 1
-                        outputSubfolder = [outputFolder '\' outputLabel '.Timepoint_' num2str(t) '.annotatedPositives'];
+                        outputSubfolder = [outputFolder filesep '' outputLabel '.Timepoint_' num2str(t) '.annotatedPositives'];
                         dataTable = annotatedPositives;
                     case 2
-                        outputSubfolder = [outputFolder '\' outputLabel '.Timepoint_' num2str(t) '.presumedFalseNegatives'];
+                        outputSubfolder = [outputFolder filesep '' outputLabel '.Timepoint_' num2str(t) '.presumedFalseNegatives'];
                         dataTable = presumedFalseNegatives;
                 end;
                 
                 if exist(outputSubfolder, 'dir') ~= 7
                     mkdir(outputSubfolder);
                 end;
-                if saveVolumes && exist([outputSubfolder '\Volumes'], 'dir') ~= 7
-                    mkdir([outputSubfolder '\Volumes']);
+                if saveVolumes && exist([outputSubfolder filesep 'Volumes'], 'dir') ~= 7
+                    mkdir([outputSubfolder filesep 'Volumes']);
                 end;
-                if saveProjections && exist([outputSubfolder '\ProjectionsXY'], 'dir') ~= 7
-                    mkdir([outputSubfolder '\ProjectionsXY']);
+                if saveProjections && exist([outputSubfolder filesep 'ProjectionsXY'], 'dir') ~= 7
+                    mkdir([outputSubfolder filesep 'ProjectionsXY']);
                 end;
-                if saveProjections && exist([outputSubfolder '\ProjectionsXZ'], 'dir') ~= 7
-                    mkdir([outputSubfolder '\ProjectionsXZ']);
+                if saveProjections && exist([outputSubfolder filesep 'ProjectionsXZ'], 'dir') ~= 7
+                    mkdir([outputSubfolder filesep 'ProjectionsXZ']);
                 end;
                 
                 if ~isempty(dataTable)
@@ -169,11 +169,11 @@ for c = 1:2
                         subProjectionXY = squeeze(max(subVolume, [], 3));
                         subProjectionXZ = squeeze(max(subVolume, [], 2));
                         
-                        outputStackName = [outputSubfolder '\Volumes\Volume_' num2str(i, '%.4d') ...
+                        outputStackName = [outputSubfolder filesep 'Volumes' filesep 'Volume_' num2str(i, '%.4d') ...
                             '.X' num2str(dataTable(i, 1)) '_Y' num2str(dataTable(i, 2)) '_Z' num2str(dataTable(i, 3)) '.klb'];
-                        outputProjectionXYName = [outputSubfolder '\ProjectionsXY\ProjectionXY_' num2str(i, '%.4d') ...
+                        outputProjectionXYName = [outputSubfolder filesep 'ProjectionsXY' filesep 'ProjectionXY_' num2str(i, '%.4d') ...
                             '.X' num2str(dataTable(i, 1)) '_Y' num2str(dataTable(i, 2)) '_Z' num2str(dataTable(i, 3)) '.tif'];
-                        outputProjectionXZName = [outputSubfolder '\ProjectionsXZ\ProjectionXZ_' num2str(i, '%.4d') ...
+                        outputProjectionXZName = [outputSubfolder filesep 'ProjectionsXZ' filesep 'ProjectionXZ_' num2str(i, '%.4d') ...
                             '.X' num2str(dataTable(i, 1)) '_Y' num2str(dataTable(i, 2)) '_Z' num2str(dataTable(i, 3)) '.tif'];
                         
                         if saveVolumes
@@ -220,32 +220,32 @@ for c = 1:2
             confirmedTruePositives = annotatedPredictionsSelection(annotatedPredictionsSelection(:, 6) == 1, :);
             presumedFalsePositives = annotatedPredictionsSelection(annotatedPredictionsSelection(:, 6) == 0, :);
             
-            save([outputFolder '\Tables\' outputLabel '.Timepoint_' num2str(t) '.confirmedTruePositives.mat'], 'confirmedTruePositives');
-            save([outputFolder '\Tables\' outputLabel '.Timepoint_' num2str(t) '.presumedFalsePositives.mat'], 'presumedFalsePositives');
+            save([outputFolder filesep 'Tables' filesep outputLabel '.Timepoint_' num2str(t) '.confirmedTruePositives.mat'], 'confirmedTruePositives');
+            save([outputFolder filesep 'Tables' filesep outputLabel '.Timepoint_' num2str(t) '.presumedFalsePositives.mat'], 'presumedFalsePositives');
             
             disp(['extracting image windows around predictions for ' displayLabel ' timepoint ' num2str(t)]);
             
             for y = 1:2
                 switch y
                     case 1
-                        outputSubfolder = [outputFolder '\' outputLabel '.Timepoint_' num2str(t) '.confirmedTruePositives'];
+                        outputSubfolder = [outputFolder filesep '' outputLabel '.Timepoint_' num2str(t) '.confirmedTruePositives'];
                         dataTable = confirmedTruePositives;
                     case 2
-                        outputSubfolder = [outputFolder '\' outputLabel '.Timepoint_' num2str(t) '.presumedFalsePositives'];
+                        outputSubfolder = [outputFolder filesep '' outputLabel '.Timepoint_' num2str(t) '.presumedFalsePositives'];
                         dataTable = presumedFalsePositives;
                 end;
                 
                 if exist(outputSubfolder, 'dir') ~= 7
                     mkdir(outputSubfolder);
                 end;
-                if saveVolumes && exist([outputSubfolder '\Volumes'], 'dir') ~= 7
-                    mkdir([outputSubfolder '\Volumes']);
+                if saveVolumes && exist([outputSubfolder filesep 'Volumes'], 'dir') ~= 7
+                    mkdir([outputSubfolder filesep 'Volumes']);
                 end;
-                if saveProjections && exist([outputSubfolder '\ProjectionsXY'], 'dir') ~= 7
-                    mkdir([outputSubfolder '\ProjectionsXY']);
+                if saveProjections && exist([outputSubfolder filesep 'ProjectionsXY'], 'dir') ~= 7
+                    mkdir([outputSubfolder filesep 'ProjectionsXY']);
                 end;
-                if saveProjections && exist([outputSubfolder '\ProjectionsXZ'], 'dir') ~= 7
-                    mkdir([outputSubfolder '\ProjectionsXZ']);
+                if saveProjections && exist([outputSubfolder filesep 'ProjectionsXZ'], 'dir') ~= 7
+                    mkdir([outputSubfolder filesep 'ProjectionsXZ']);
                 end;
                 
                 if ~isempty(dataTable)
@@ -282,11 +282,11 @@ for c = 1:2
                         subProjectionXY = squeeze(max(subVolume, [], 3));
                         subProjectionXZ = squeeze(max(subVolume, [], 2));
                         
-                        outputStackName = [outputSubfolder '\Volumes\Volume_' num2str(i, '%.4d') '.Score_' num2str(dataTable(i, 5), '%.8f') ...
+                        outputStackName = [outputSubfolder filesep 'Volumes' filesep 'Volume_' num2str(i, '%.4d') '.Score_' num2str(dataTable(i, 5), '%.8f') ...
                             '.X' num2str(dataTable(i, 1)) '_Y' num2str(dataTable(i, 2)) '_Z' num2str(dataTable(i, 3)) '.klb'];
-                        outputProjectionXYName = [outputSubfolder '\ProjectionsXY\ProjectionXY_' num2str(i, '%.4d') '.Score_' num2str(dataTable(i, 5), '%.8f') ...
+                        outputProjectionXYName = [outputSubfolder filesep 'ProjectionsXY' filesep 'ProjectionXY_' num2str(i, '%.4d') '.Score_' num2str(dataTable(i, 5), '%.8f') ...
                             '.X' num2str(dataTable(i, 1)) '_Y' num2str(dataTable(i, 2)) '_Z' num2str(dataTable(i, 3)) '.tif'];
-                        outputProjectionXZName = [outputSubfolder '\ProjectionsXZ\ProjectionXZ_' num2str(i, '%.4d') '.Score_' num2str(dataTable(i, 5), '%.8f') ...
+                        outputProjectionXZName = [outputSubfolder filesep 'ProjectionsXZ' filesep 'ProjectionXZ_' num2str(i, '%.4d') '.Score_' num2str(dataTable(i, 5), '%.8f') ...
                             '.X' num2str(dataTable(i, 1)) '_Y' num2str(dataTable(i, 2)) '_Z' num2str(dataTable(i, 3)) '.tif'];
                         
                         if saveVolumes

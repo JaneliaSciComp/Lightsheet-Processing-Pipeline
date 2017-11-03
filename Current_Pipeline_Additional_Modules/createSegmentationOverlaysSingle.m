@@ -23,5 +23,5 @@ emptyFrame = zeros(size(edgeStack, 1), size(edgeStack, 2), 'uint8');
 folderName = [segmentationStackName(1:(end - 3)) 'overlay'];
 mkdir(folderName);
 for z = 1:size(imageStack, 3)
-    imwrite(cat(3, edgeStack(:, :, z), imageStack(:, :, z), emptyFrame), [folderName '\' num2str(z, '%.4d') '.tif'], 'Compression', 'none');
+    imwrite(cat(3, edgeStack(:, :, z), imageStack(:, :, z), emptyFrame), [folderName filesep '' num2str(z, '%.4d') '.tif'], 'Compression', 'none');
 end;

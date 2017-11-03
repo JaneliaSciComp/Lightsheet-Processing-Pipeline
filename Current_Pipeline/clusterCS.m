@@ -1,10 +1,10 @@
 %% parameters
 
-inputRoot        = 'X:\SiMView1\14-01-21\Mmu_E1_CAGTAG1_01_23_20140121_141339.corrected\Results\MultiFused';
-outputRoot       = 'X:\SiMView1\14-01-21\Mmu_E1_CAGTAG1_01_23_20140121_141339.corrected\Results\MultiFused.Corrected';
-headerPattern    = 'Mmu_E1_CAGTAG1.TM??????_multiFused_blending\';
+inputRoot        = 'X:' filesep 'SiMView1' filesep '14-01-21' filesep 'Mmu_E1_CAGTAG1_01_23_20140121_141339.corrected' filesep 'Results' filesep 'MultiFused';
+outputRoot       = 'X:' filesep 'SiMView1' filesep '14-01-21' filesep 'Mmu_E1_CAGTAG1_01_23_20140121_141339.corrected' filesep 'Results' filesep 'MultiFused.Corrected';
+headerPattern    = 'Mmu_E1_CAGTAG1.TM??????_multiFused_blending' filesep;
 filePattern      = 'SPM00_TM??????_CM00_CM01_CHN00_CHN01.fusedStack';
-configRoot       = 'X:\SiMView1\14-01-21\Mmu_E1_CAGTAG1_01_23_20140121_141339.corrected\Scripts\SPM00_CM00_CM01_CHN00_CHN01_stackCorrection';
+configRoot       = 'X:' filesep 'SiMView1' filesep '14-01-21' filesep 'Mmu_E1_CAGTAG1_01_23_20140121_141339.corrected' filesep 'Scripts' filesep 'SPM00_CM00_CM01_CHN00_CHN01_stackCorrection';
 
 timepoints       = 0:570;
 dataType         = 1;      % 0: process projections only, 1: process stacks and projections
@@ -60,9 +60,9 @@ inputDatabase = cell(nTimepoints, 1);
 outputDatabase = cell(nTimepoints, 2);
 
 for n = 1:nTimepoints
-    inputDatabase{n} = [inputRoot '\' headerPattern filePattern];
-    outputDatabase{n, 1} = [outputRoot '\' headerPattern];
-    outputDatabase{n, 2} = [outputRoot '\' headerPattern filePattern];
+    inputDatabase{n} = [inputRoot filesep '' headerPattern filePattern];
+    outputDatabase{n, 1} = [outputRoot filesep '' headerPattern];
+    outputDatabase{n, 2} = [outputRoot filesep '' headerPattern filePattern];
     for i = maxStampDigits:-1:1
         precision = ['%.' num2str(i) 'd'];
         
@@ -106,8 +106,8 @@ else
 end;
 
 if correctIntensity
-    load([configRoot '\intensityBackgrounds.mat']);
-    load([configRoot '\intensityFactors.mat']);
+    load([configRoot filesep 'intensityBackgrounds.mat']);
+    load([configRoot filesep 'intensityFactors.mat']);
 else
     intensityBackgrounds = [];
     intensityFactors = [];
@@ -139,7 +139,7 @@ if ~isempty(timepoints)
     timeString = [...
         num2str(currentTime(1)) num2str(currentTime(2), '%.2d') num2str(currentTime(3), '%.2d') ...
         '_' num2str(currentTime(4), '%.2d') num2str(currentTime(5), '%.2d') num2str(round(currentTime(6) * 1000), '%.5d')];
-    parameterDatabase = [pwd '\jobParameters.correctStack.' timeString '.mat'];
+    parameterDatabase = [pwd filesep 'jobParameters.correctStack.' timeString '.mat'];
     
     save(parameterDatabase, ...
         'inputDatabase', 'outputDatabase', 'dataType', 'timepoints', 'dimensions', 'dimensionsMax', 'dimensionsDeltas', ...

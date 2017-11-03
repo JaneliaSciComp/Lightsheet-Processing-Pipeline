@@ -1,6 +1,6 @@
 scriptName         = 'createSegmentationStacks.bat';
-executableFullPath = 'E:\Mouse Development\Segmentation\Tracking_GMM_project-0.2.3-win64\bin\ProcessStack.exe';
-dataPath           = 'E:\Mouse Development\Segmentation\Stacks';
+executableFullPath = 'E:' filesep 'Mouse Development' filesep 'Segmentation' filesep 'Tracking_GMM_project-0.2.3-win64' filesep 'bin' filesep 'ProcessStack.exe';
+dataPath           = 'E:' filesep 'Mouse Development' filesep 'Segmentation' filesep 'Stacks';
 timePoints         = [1 125 250];
 dataTypes          = {...
     'CBFLarge.b300';...
@@ -20,7 +20,7 @@ fid = fopen(scriptName, 'w');
 
 for t = 1:numel(timePoints)
     for i = 1:numel(dataTypes)
-        dataFullPath = [dataPath '\TM' num2str(timePoints(t), '%.6d') '.' dataTypes{i} '.bin'];
+        dataFullPath = [dataPath filesep 'TM' num2str(timePoints(t), '%.6d') '.' dataTypes{i} '.bin'];
         for j = 1:numel(taus{i})
             fwrite(fid, ['"' executableFullPath '" "' dataFullPath '" ' num2str(taus{i}(j)) ' ' num2str(voxelThreshold)]);
             fprintf(fid, '\n');

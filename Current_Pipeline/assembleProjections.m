@@ -1,9 +1,9 @@
 %% configuration
 
-logFilename  = 'T:\SiMView1\15-04-21\Scripts\createMasks.processingLogs_SPM0.mat';
-              %'T:\SiMView1\15-04-21\Scripts\createMasks.processingLogs_SPM1.mat';
+logFilename  = 'T:' filesep 'SiMView1' filesep '15-04-21' filesep 'Scripts' filesep 'createMasks.processingLogs_SPM0.mat';
+              %'T:' filesep 'SiMView1' filesep '15-04-21' filesep 'Scripts' filesep 'createMasks.processingLogs_SPM1.mat';
 
-dataFolder   = 'S:\SiMView1\15-04-21\Mmu_E1_mKate2_20150421_143006.corrected';
+dataFolder   = 'S:' filesep 'SiMView1' filesep '15-04-21' filesep 'Mmu_E1_mKate2_20150421_143006.corrected';
 specimen     = 0;
               %1;
 
@@ -13,8 +13,8 @@ cameras      = 0:1;
 
 identifier   = 'unmasked_r5_d3_e2.threshold_0.2'; % identification string used in file names for calculateWeights output data
 
-outputFolder = 'T:\SiMView1\15-04-21\Scripts\WeightedStackProjections.SPM0';
-              %'T:\SiMView1\15-04-21\Scripts\WeightedStackProjections.SPM1';
+outputFolder = 'T:' filesep 'SiMView1' filesep '15-04-21' filesep 'Scripts' filesep 'WeightedStackProjections.SPM0';
+              %'T:' filesep 'SiMView1' filesep '15-04-21' filesep 'Scripts' filesep 'WeightedStackProjections.SPM1';
 
 background   = [1 100];
 
@@ -39,10 +39,10 @@ if ~isempty(logFilename)
     end;
 end;
 
-xyHeader = readKLBheader([dataFolder '\SPM' num2str(specimen, '%.2d') '\TM' num2str(timepoints(end), '%.6d') ...
-    '\SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(end), '%.6d') '_CM' num2str(cameras(1), '%.2d') '_CHN' num2str(channel, '%.2d') '.weighted' identifier '.xyProjection.klb']);
-xzHeader = readKLBheader([dataFolder '\SPM' num2str(specimen, '%.2d') '\TM' num2str(timepoints(end), '%.6d') ...
-    '\SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(end), '%.6d') '_CM' num2str(cameras(1), '%.2d') '_CHN' num2str(channel, '%.2d') '.weighted' identifier '.xzProjection.klb']);
+xyHeader = readKLBheader([dataFolder filesep 'SPM' num2str(specimen, '%.2d') filesep 'TM' num2str(timepoints(end), '%.6d') ...
+    filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(end), '%.6d') '_CM' num2str(cameras(1), '%.2d') '_CHN' num2str(channel, '%.2d') '.weighted' identifier '.xyProjection.klb']);
+xzHeader = readKLBheader([dataFolder filesep 'SPM' num2str(specimen, '%.2d') filesep 'TM' num2str(timepoints(end), '%.6d') ...
+    filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(end), '%.6d') '_CM' num2str(cameras(1), '%.2d') '_CHN' num2str(channel, '%.2d') '.weighted' identifier '.xzProjection.klb']);
 xSize = xyHeader.xyzct(1);
 ySize = xyHeader.xyzct(2);
 zSize = xzHeader.xyzct(2);
@@ -64,12 +64,12 @@ for camera = cameras
     for t = 1:numel(timepoints)
         disp(['* Integrating time point ' num2str(timepoints(t))]);
         
-        weightedStackXYProjectionFilename = [dataFolder '\SPM' num2str(specimen, '%.2d') '\TM' num2str(timepoints(t), '%.6d') ...
-            '\SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(t), '%.6d') '_CM' num2str(camera, '%.2d') '_CHN' num2str(channel, '%.2d') '.weighted' identifier '.xyProjection.klb'];
-        weightedStackXZProjectionFilename = [dataFolder '\SPM' num2str(specimen, '%.2d') '\TM' num2str(timepoints(t), '%.6d') ...
-            '\SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(t), '%.6d') '_CM' num2str(camera, '%.2d') '_CHN' num2str(channel, '%.2d') '.weighted' identifier '.xzProjection.klb'];
-        weightedStackYZProjectionFilename = [dataFolder '\SPM' num2str(specimen, '%.2d') '\TM' num2str(timepoints(t), '%.6d') ...
-            '\SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(t), '%.6d') '_CM' num2str(camera, '%.2d') '_CHN' num2str(channel, '%.2d') '.weighted' identifier '.yzProjection.klb'];
+        weightedStackXYProjectionFilename = [dataFolder filesep 'SPM' num2str(specimen, '%.2d') filesep 'TM' num2str(timepoints(t), '%.6d') ...
+            filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(t), '%.6d') '_CM' num2str(camera, '%.2d') '_CHN' num2str(channel, '%.2d') '.weighted' identifier '.xyProjection.klb'];
+        weightedStackXZProjectionFilename = [dataFolder filesep 'SPM' num2str(specimen, '%.2d') filesep 'TM' num2str(timepoints(t), '%.6d') ...
+            filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(t), '%.6d') '_CM' num2str(camera, '%.2d') '_CHN' num2str(channel, '%.2d') '.weighted' identifier '.xzProjection.klb'];
+        weightedStackYZProjectionFilename = [dataFolder filesep 'SPM' num2str(specimen, '%.2d') filesep 'TM' num2str(timepoints(t), '%.6d') ...
+            filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(t), '%.6d') '_CM' num2str(camera, '%.2d') '_CHN' num2str(channel, '%.2d') '.weighted' identifier '.yzProjection.klb'];
         xyProjection = readImage(weightedStackXYProjectionFilename);
         xzProjection = readImage(weightedStackXZProjectionFilename);
         yzProjection = readImage(weightedStackYZProjectionFilename);
@@ -87,9 +87,9 @@ for camera = cameras
     disp(' ');
     disp('Saving assembled image sequences');
     
-    assembledXYSequenceFilename = [outputFolder '\assembledWeightedProjections_CM' num2str(camera) '.xy.klb'];
-    assembledXZSequenceFilename = [outputFolder '\assembledWeightedProjections_CM' num2str(camera) '.xz.klb'];
-    assembledYZSequenceFilename = [outputFolder '\assembledWeightedProjections_CM' num2str(camera) '.yz.klb'];
+    assembledXYSequenceFilename = [outputFolder filesep 'assembledWeightedProjections_CM' num2str(camera) '.xy.klb'];
+    assembledXZSequenceFilename = [outputFolder filesep 'assembledWeightedProjections_CM' num2str(camera) '.xz.klb'];
+    assembledYZSequenceFilename = [outputFolder filesep 'assembledWeightedProjections_CM' num2str(camera) '.yz.klb'];
     writeImage(xySequence, assembledXYSequenceFilename);
     writeImage(xzSequence, assembledXZSequenceFilename);
     writeImage(yzSequence, assembledYZSequenceFilename);

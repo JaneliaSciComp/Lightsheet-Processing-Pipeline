@@ -38,18 +38,18 @@ if poolWorkers == -1
         currentSubs = dir(currentDir);
         for i = 1:length(currentSubs)
             if currentSubs(i).isdir && ~strcmp(currentSubs(i).name, '.') && ~strcmp(currentSubs(i).name, '..')
-                directoryList = cat(1, directoryList, {[currentDir '\' currentSubs(i).name]});
+                directoryList = cat(1, directoryList, {[currentDir filesep '' currentSubs(i).name]});
             end;
         end;
         
         switch processingMode
             case 0
-                currentUncompressedFiles = dir([currentDir '\*.tif']);
+                currentUncompressedFiles = dir([currentDir filesep '*.tif']);
                 
                 if ~isempty(currentUncompressedFiles)
                     for currentIndex = 1:numel(currentUncompressedFiles)
-                        inputName   = [currentDir '\' currentUncompressedFiles(currentIndex).name];
-                        outputName  = [currentDir '\' currentUncompressedFiles(currentIndex).name(1:(end - 3)) compressionExtension];
+                        inputName   = [currentDir filesep '' currentUncompressedFiles(currentIndex).name];
+                        outputName  = [currentDir filesep '' currentUncompressedFiles(currentIndex).name(1:(end - 3)) compressionExtension];
                         fileRead    = 0;
                         fileWritten = 0;
                         
@@ -87,12 +87,12 @@ if poolWorkers == -1
                 end;
                 
             case 1
-                currentCompressedFiles = dir([currentDir '\*.' compressionExtension]);
+                currentCompressedFiles = dir([currentDir filesep '*.' compressionExtension]);
                 
                 if ~isempty(currentCompressedFiles)
                     for currentIndex = 1:numel(currentCompressedFiles)
-                        inputName   = [currentDir '\' currentCompressedFiles(currentIndex).name];
-                        outputName  = [currentDir '\' currentCompressedFiles(currentIndex).name(1:(end - 3)) 'tif'];
+                        inputName   = [currentDir filesep '' currentCompressedFiles(currentIndex).name];
+                        outputName  = [currentDir filesep '' currentCompressedFiles(currentIndex).name(1:(end - 3)) 'tif'];
                         fileRead    = 0;
                         fileWritten = 0;
                         
@@ -130,12 +130,12 @@ if poolWorkers == -1
                 end;
                 
             case 2
-                currentCompressedFiles = dir([currentDir '\*.' compressionExtension1]);
+                currentCompressedFiles = dir([currentDir filesep '*.' compressionExtension1]);
                 
                 if ~isempty(currentCompressedFiles)
                     for currentIndex = 1:numel(currentCompressedFiles)
-                        inputName   = [currentDir '\' currentCompressedFiles(currentIndex).name];
-                        outputName  = [currentDir '\' currentCompressedFiles(currentIndex).name(1:(end - 3)) compressionExtension2];
+                        inputName   = [currentDir filesep '' currentCompressedFiles(currentIndex).name];
+                        outputName  = [currentDir filesep '' currentCompressedFiles(currentIndex).name(1:(end - 3)) compressionExtension2];
                         fileRead    = 0;
                         fileWritten = 0;
                         
@@ -192,18 +192,18 @@ else
         currentSubs = dir(currentDir);
         for i = 1:length(currentSubs)
             if currentSubs(i).isdir && ~strcmp(currentSubs(i).name, '.') && ~strcmp(currentSubs(i).name, '..')
-                directoryList = cat(1, directoryList, {[currentDir '\' currentSubs(i).name]});
+                directoryList = cat(1, directoryList, {[currentDir filesep '' currentSubs(i).name]});
             end;
         end;
         
         switch processingMode
             case 0
-                currentUncompressedFiles = dir([currentDir '\*.tif']);
+                currentUncompressedFiles = dir([currentDir filesep '*.tif']);
                 
                 if ~isempty(currentUncompressedFiles)
                     parfor currentIndex = 1:numel(currentUncompressedFiles)
-                        inputName   = [currentDir '\' currentUncompressedFiles(currentIndex).name];
-                        outputName  = [currentDir '\' currentUncompressedFiles(currentIndex).name(1:(end - 3)) compressionExtension];
+                        inputName   = [currentDir filesep '' currentUncompressedFiles(currentIndex).name];
+                        outputName  = [currentDir filesep '' currentUncompressedFiles(currentIndex).name(1:(end - 3)) compressionExtension];
                         fileRead    = 0;
                         fileWritten = 0;
                         
@@ -241,12 +241,12 @@ else
                 end;
                 
             case 1
-                currentCompressedFiles = dir([currentDir '\*.' compressionExtension]);
+                currentCompressedFiles = dir([currentDir filesep '*.' compressionExtension]);
                 
                 if ~isempty(currentCompressedFiles)
                     parfor currentIndex = 1:numel(currentCompressedFiles)
-                        inputName   = [currentDir '\' currentCompressedFiles(currentIndex).name];
-                        outputName  = [currentDir '\' currentCompressedFiles(currentIndex).name(1:(end - 3)) 'tif'];
+                        inputName   = [currentDir filesep '' currentCompressedFiles(currentIndex).name];
+                        outputName  = [currentDir filesep '' currentCompressedFiles(currentIndex).name(1:(end - 3)) 'tif'];
                         fileRead    = 0;
                         fileWritten = 0;
                         
@@ -284,12 +284,12 @@ else
                 end;
                 
             case 2
-                currentCompressedFiles = dir([currentDir '\*.' compressionExtension1]);
+                currentCompressedFiles = dir([currentDir filesep '*.' compressionExtension1]);
                 
                 if ~isempty(currentCompressedFiles)
                     parfor currentIndex = 1:numel(currentCompressedFiles)
-                        inputName   = [currentDir '\' currentCompressedFiles(currentIndex).name];
-                        outputName  = [currentDir '\' currentCompressedFiles(currentIndex).name(1:(end - 3)) compressionExtension2];
+                        inputName   = [currentDir filesep '' currentCompressedFiles(currentIndex).name];
+                        outputName  = [currentDir filesep '' currentCompressedFiles(currentIndex).name(1:(end - 3)) compressionExtension2];
                         fileRead    = 0;
                         fileWritten = 0;
                         

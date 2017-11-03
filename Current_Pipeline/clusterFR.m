@@ -2,8 +2,8 @@
 
 timepoints   = 0:531;
 
-inputDir     = 'X:\SV1\14-05-21\Mmu_E1_CAGTAG1.corrected\Results\TimeFused.Corrected\';
-outputDir    = 'X:\SV1\14-05-21\Mmu_E1_CAGTAG1.corrected\Results\TimeFused.Corrected.Filtered\';
+inputDir     = 'X:' filesep 'SV1' filesep '14-05-21' filesep 'Mmu_E1_CAGTAG1.corrected' filesep 'Results' filesep 'TimeFused.Corrected' filesep;
+outputDir    = 'X:' filesep 'SV1' filesep '14-05-21' filesep 'Mmu_E1_CAGTAG1.corrected' filesep 'Results' filesep 'TimeFused.Corrected.Filtered' filesep;
 header       = 'Mmu_E1_CAGTAG1';
 footer       = '_timeFused_blending';
 stackLabel   = '.corrected.shifted';
@@ -89,15 +89,15 @@ for currentTP = length(timepoints):-1:1
     fileNameHeader = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(currentTP), '%.6d') configurationString];
     if isempty(filterMode) && removeDirt(1)
         if preMedian(1) == 0
-            outputName = [outputPath '\' fileNameHeader '.fusedStack_yzProjection.cleaned' outputExtension];
+            outputName = [outputPath filesep '' fileNameHeader '.fusedStack_yzProjection.cleaned' outputExtension];
         else
-            outputName = [outputPath '\' fileNameHeader '.fusedStack_yzProjection.cleaned_median' outputExtension];
+            outputName = [outputPath filesep '' fileNameHeader '.fusedStack_yzProjection.cleaned_median' outputExtension];
         end;
     elseif ~isempty(filterMode)
         if postMedian(1) == 0
-            outputName = [outputPath '\' fileNameHeader '.fusedStack_yzProjection.filtered_' num2str(rangeArray(end)) outputExtension];
+            outputName = [outputPath filesep '' fileNameHeader '.fusedStack_yzProjection.filtered_' num2str(rangeArray(end)) outputExtension];
         else
-            outputName = [outputPath '\' fileNameHeader '.fusedStack_yzProjection.filtered_' num2str(rangeArray(end)) '_median' outputExtension];
+            outputName = [outputPath filesep '' fileNameHeader '.fusedStack_yzProjection.filtered_' num2str(rangeArray(end)) '_median' outputExtension];
         end;
     else
         error('Bad script configuration: both filtering and dirt removal are deactivated.');
@@ -113,7 +113,7 @@ if ~isempty(timepoints)
     
     if jobMemory(1) == 1 && localRun(1) ~= 1
         fileNameHeader = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(1), '%.6d') configurationString];
-        fileName = [inputDir header '.TM' num2str(timepoints(1), '%.6d') footer '\' fileNameHeader '.fusedStack' stackLabel inputExtension];
+        fileName = [inputDir header '.TM' num2str(timepoints(1), '%.6d') footer filesep '' fileNameHeader '.fusedStack' stackLabel inputExtension];
         
         try
             switch inputType
@@ -156,7 +156,7 @@ if ~isempty(timepoints)
         timeString = [...
             num2str(currentTime(1)) num2str(currentTime(2), '%.2d') num2str(currentTime(3), '%.2d') ...
             '_' num2str(currentTime(4), '%.2d') num2str(currentTime(5), '%.2d') num2str(round(currentTime(6) * 1000), '%.5d')];
-        parameterDatabase = [pwd '\jobParameters.filterResults.' timeString '.mat'];
+        parameterDatabase = [pwd filesep 'jobParameters.filterResults.' timeString '.mat'];
         
         save(parameterDatabase,...
             'timepoints', 'inputDir', 'outputDir', 'header', 'footer', 'stackLabel', 'specimen', 'cameras', 'channels', ...
@@ -183,7 +183,7 @@ if ~isempty(timepoints)
         timeString = [...
             num2str(currentTime(1)) num2str(currentTime(2), '%.2d') num2str(currentTime(3), '%.2d') ...
             '_' num2str(currentTime(4), '%.2d') num2str(currentTime(5), '%.2d') num2str(round(currentTime(6) * 1000), '%.5d')];
-        parameterDatabase = [pwd '\jobParameters.filterResults.' timeString '.mat'];
+        parameterDatabase = [pwd filesep 'jobParameters.filterResults.' timeString '.mat'];
         
         save(parameterDatabase,...
             'timepoints', 'inputDir', 'outputDir', 'header', 'footer', 'stackLabel', 'specimen', 'cameras', 'channels', ...
@@ -195,7 +195,7 @@ if ~isempty(timepoints)
         if localRun(1) ~= 1
             for t = 1:nTimepoints
                 fileNameHeader = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(t), '%.6d') configurationString];
-                fileName = [inputDir header '.TM' num2str(timepoints(t), '%.6d') footer '\' fileNameHeader '.fusedStack' stackLabel inputExtension];
+                fileName = [inputDir header '.TM' num2str(timepoints(t), '%.6d') footer filesep '' fileNameHeader '.fusedStack' stackLabel inputExtension];
                 
                 try
                     switch inputType

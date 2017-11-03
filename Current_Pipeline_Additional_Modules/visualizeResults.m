@@ -2,11 +2,11 @@
 
 timepoints = [100 120 180 240 250 300 360 400 420 480]; % [60 100 120 180 240 250 300 360 400 420 480];
 
-imageFileNameSegment1 = 'X:\SV1\14-05-21\Mmu_E1_CAGTAG1.corrected\Results\TimeFused.Corrected\Mmu_E1_CAGTAG1.TM';
-imageFileNameSegment2 = '_timeFused_blending\SPM00_TM';
+imageFileNameSegment1 = 'X:' filesep 'SV1' filesep '14-05-21' filesep 'Mmu_E1_CAGTAG1.corrected' filesep 'Results' filesep 'TimeFused.Corrected' filesep 'Mmu_E1_CAGTAG1.TM';
+imageFileNameSegment2 = '_timeFused_blending' filesep 'SPM00_TM';
 imageFileNameSegment3 = '_CM00_CM01_CHN00.fusedStack.corrected.shifted.klb';
 
-predictionFileNameSegment1  = 'X:\SV1\14-05-21\DivisionDetection\Kristin\MK5 Sparse\';
+predictionFileNameSegment1  = 'X:' filesep 'SV1' filesep '14-05-21' filesep 'DivisionDetection' filesep 'Kristin' filesep 'MK5 Sparse' filesep;
 predictionFileNameSegment2  = '.h5';
 predictionsDataName         = '/coo';
 writePredictionsSingleFlag  = 0;
@@ -17,7 +17,7 @@ annotationFileName    = 'annotations.mat';
 annotationLateralSize = 10;
 annotationAxialSize   = 5;
 
-outputFolder = 'X:\SV1\14-05-21\DivisionDetection\Kristin\MK5 Visualization';
+outputFolder = 'X:' filesep 'SV1' filesep '14-05-21' filesep 'DivisionDetection' filesep 'Kristin' filesep 'MK5 Visualization';
 
 for t = 1:numel(timepoints)
     timepoint = timepoints(t);
@@ -67,17 +67,17 @@ for t = 1:numel(timepoints)
         zStop = zSize;
     end;
     
-    writeImage(imageStack(xStart:xStop, yStart:yStop, zStart:zStop), [outputFolder '\Timepoint_' num2str(timepoint) '.Images.klb']);
+    writeImage(imageStack(xStart:xStop, yStart:yStop, zStart:zStop), [outputFolder filesep 'Timepoint_' num2str(timepoint) '.Images.klb']);
     
     predictionSlots = sub2ind([xSize, ySize, zSize], predictionCoordinates(1, :), predictionCoordinates(2, :), predictionCoordinates(3, :));
     predictionStack = zeros([xSize, ySize, zSize], 'single');
     predictionStack(predictionSlots) = predictionScores;
     if writePredictionsSingleFlag
-        writeImage(predictionStack(xStart:xStop, yStart:yStop, zStart:zStop), [outputFolder '\Timepoint_' num2str(timepoint) '.Predictions.SinglePrecision.klb']);
+        writeImage(predictionStack(xStart:xStop, yStart:yStop, zStart:zStop), [outputFolder filesep 'Timepoint_' num2str(timepoint) '.Predictions.SinglePrecision.klb']);
     end;
     
     predictionStack = uint16(predictionStack .* (2^16 - 1));
-    writeImage(predictionStack(xStart:xStop, yStart:yStop, zStart:zStop), [outputFolder '\Timepoint_' num2str(timepoint) '.Predictions.klb']);
+    writeImage(predictionStack(xStart:xStop, yStart:yStop, zStart:zStop), [outputFolder filesep 'Timepoint_' num2str(timepoint) '.Predictions.klb']);
     
     %% process annotation data
     
@@ -114,5 +114,5 @@ for t = 1:numel(timepoints)
             end;
         end;
     end;
-    writeImage(annotationStack(xStart:xStop, yStart:yStop, zStart:zStop), [outputFolder '\Timepoint_' num2str(timepoint) '.Annotations.klb']);
+    writeImage(annotationStack(xStart:xStop, yStart:yStop, zStart:zStop), [outputFolder filesep 'Timepoint_' num2str(timepoint) '.Annotations.klb']);
 end;

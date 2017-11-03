@@ -1,28 +1,27 @@
 %% parameters
 
 % root folder with raw data
-inputFolder  = 'W:\SiMView2\13-12-30\Pha_E1_H2bRFP_01_20131230_140802';
+inputFolder  = '/groups/lightsheet/lightsheet/home/ackermand/Lightsheet_Data/Paper/Supplementary_Data_1/Image_Data';
 outputLabel  = '';
-
 specimen     = 0;                   % specimen index to be processed
-timepoints   = 0:733;               % time points to be processed
+timepoints   = 0;                   % time points to be processed
 cameras      = [0 1];               % camera indices to be processed
 channels     = [0 1];               % channel indices to be processed
 
-dimensions   = [];                  % override parameter for user-provided raw stack dimensions (ImageJ-x, ImageJ-y, z/t)
-                                    % note: assign empty vector [] to indicate that override is not needed
+dimensions   = [603 1272 125];      % override parameter for user-provided raw stack dimensions (ImageJ-x, ImageJ-y, z/t)
+                                    % note: assign empty vector [] to indicate that override is not needed (requires XML meta data)
 
 % use highly saturated global XY projection to determine the following four parameters (can be left empty to enforce maximum ROI)
-startsLeft   = [ 372  216];         % cropping left start coordinates for each camera (ImageJ-x convention)
-startsTop    = [  68   55];         % cropping top start coordinates for each camera (ImageJ-y convention)
-widths       = [1148 1148];         % cropping width for each camera (ImageJ-w convention)
-heights      = [1468 1468];         % cropping height for each camera (ImageJ-h convention)
+startsLeft   = [  75   24];         % cropping left start coordinates for each camera (ImageJ-x convention)
+startsTop    = [  24   17];         % cropping top start coordinates for each camera (ImageJ-y convention)
+widths       = [ 500  500];         % cropping width for each camera (ImageJ-w convention)
+heights      = [1172 1172];         % cropping height for each camera (ImageJ-h convention)
 
 % use highly saturated global XZ projection to determine the following two parameters (can be left empty to enforce maximum ROI)
-startsFront  = [   0    0];         % cropping front start coordinates for each camera (ImageJ-y convention)
-depths       = [ 234  234];         % cropping depth for each camera (ImageJ-h convention)
+startsFront  = [   3    3];         % cropping front start coordinates for each camera (ImageJ-y convention)
+depths       = [ 120  120];         % cropping depth for each camera (ImageJ-h convention)
 
-inputType    = 0;                   % 0: input data in TIFF format
+inputType    = 0;                   % 0: input data in TIF format
                                     % 1: input data in JP2 format
                                     % 2: input data in binary stack format (normal experiment mode, structured)
                                     % 3: input data in binary stack format (normal experiment mode, unstructured)
@@ -31,37 +30,30 @@ inputType    = 0;                   % 0: input data in TIFF format
 outputType   = 0;                   % 0: output data saved in KLB format
                                     % 1: output data saved in JP2 format
                                     % 2: output data saved in TIF format
-correctTIFF  = 0;                   % 0: never transpose output data, 1: transpose output data if TIFF parity is odd
 
+rotationFlag = 0;                   % 0: do not rotate image stacks, 1: rotate image stacks by 90 degrees clockwise, -1: rotate image stacks by 90 degrees counter-clockwise
 medianRange  = [3 3];               % kernel x/y-size for median filter for dead pixel detection and removal
-                                    % note: set to [] to disable dead pixel detection and removal
 percentile   = [1 5 100];           % slot 1: background percentile for mask calculation
                                     % slot 2: background percentile for intensity correction
                                     % slot 3: volume sub-sampling for background estimation
 
-segmentFlag  = 1;                   % 0: do not remove background in output stacks
-                                    % 1: remove background in output stacks (default)
-                                    % 2: compute and save only 3D segmentation masks (first step of global masking workflow);
-                                    %    once all masks have been generated, rerunning clusterPT will generate a global mask (second step of global masking workflow)
-                                    % 3: apply global 3D segmentation mask to all image stacks (third step of global masking workflow)
-rotationFlag = 0;                   % 0: do not rotate image stacks, 1: rotate image stacks by 90 degrees clockwise, -1: rotate image stacks by 90 degrees counter-clockwise
-flipHFlag    = 0;                   % indicates whether the stack recorded with the second camera should be flipped horizontally
-flipVFlag    = 0;                   % indicates whether the stack recorded with the second camera should be flipped vertically
+segmentFlag  = 1;                   % 0: do not remove background in output stacks, 1: remove background in output stacks (default)
 splitting    = 10;                  % level of stack splitting when performing Gauss convolution
 kernelSize   = 5;                   % Gauss kernel size
 kernelSigma  = 2;                   % Gauss kernel sigma
 scaling      = 2.031 / (6.5 / 16);  % axial step size <divided by> (pixel pitch <divided by> magnification)
-references   = [0; 1];              % list of reference channel groups that define segmentation masks for (content-)dependent channel groups
+references   = [0 1];               % list of reference channel groups that define segmentation masks for (content-)dependent channel groups
                                     % note 1: leave empty if all channels are to be treated as independent channels
                                     % note 2: provide multiple elements per row (i.e. a channel group) to fuse segmentation masks
 dependents   = [];                  % list of (content-)dependent channel groups that relate to each reference channel group
-thresholds   = [0.4 0.4];           % adaptive thresholds for each reference channel group
+thresholds   = [0.5 0.5];           % adaptive thresholds for each reference channel group
                                     % note: provide single threshold if "references" is left empty
 
 loggingFlag  = 0;                   % 0: do not save processing logs (default), 1: save processing logs
-verbose      = 1;                   % 0: do not display processing information, 1: display processing information
+verbose      = 0;                   % 0: do not display processing information, 1: display processing information
 
-localRun     = [0 0];               % slot 1: flag for local vs. cluster execution (0: cluster submission, 1: local workstation)
+localRun     = [1 0];               % slot 1: flag for local vs. cluster execution (0: cluster submission, 1: local workstation)
+                                    %         note: cluster submission requires a Windows cluster with HPC 2008 support (see "job submit" commands below)
                                     % slot 2: number of parallel workers for execution on local workstation (only needed if slot 1 is set to 1)
                                     %         note: use "0" to enable automated detection of available CPU cores
 
@@ -72,6 +64,79 @@ jobMemory    = [1 0];               % slot 1: flag for automated memory manageme
                                     %         note 2: "0" indicates memory consumption below "coreMemory" threshold and enables parametric submission mode
 
 coreMemory   = floor(((96 - 8) * 1024) / (12 * 1024)); % memory boundary for switching from parametric to memory-managed submission (in GB)
+                                                       % note: parameter is only required for cluster submission
+
+%% keller-provided inputs
+% % %inputFolder  = ['W:' filesep 'SiMView2' filesep '13-12-30' filesep 'Pha_E1_H2bRFP_01_20131230_140802'];
+% % %outputLabel  = '';
+% % % specimen     = 0;                   % specimen index to be processed
+% % % timepoints   = 0:733;               % time points to be processed
+% % % cameras      = [0 1];               % camera indices to be processed
+% % % channels     = [0 1];               % channel indices to be processed
+% % % 
+% % % dimensions   = [603 1272 125]; %[];                  % override parameter for user-provided raw stack dimensions (ImageJ-x, ImageJ-y, z/t)
+% % %                                     % note: assign empty vector [] to indicate that override is not needed
+% % % 
+% % % % use highly saturated global XY projection to determine the following four parameters (can be left empty to enforce maximum ROI)
+% % % startsLeft   = [ 372  216];         % cropping left start coordinates for each camera (ImageJ-x convention)
+% % % startsTop    = [  68   55];         % cropping top start coordinates for each camera (ImageJ-y convention)
+% % % widths       = [1148 1148];         % cropping width for each camera (ImageJ-w convention)
+% % % heights      = [1468 1468];         % cropping height for each camera (ImageJ-h convention)
+% % % 
+% % % % use highly saturated global XZ projection to determine the following two parameters (can be left empty to enforce maximum ROI)
+% % % startsFront  = [   0    0];         % cropping front start coordinates for each camera (ImageJ-y convention)
+% % % depths       = [ 234  234];         % cropping depth for each camera (ImageJ-h convention)
+% % % 
+% % % inputType    = 0;                   % 0: input data in TIFF format
+% % %                                     % 1: input data in JP2 format
+% % %                                     % 2: input data in binary stack format (normal experiment mode, structured)
+% % %                                     % 3: input data in binary stack format (normal experiment mode, unstructured)
+% % %                                     % 4: input data in binary stack format (HS single-plane experiment mode)
+% % %                                     %    note: pixel correction and segmentFlag are inactive in this mode
+% % % outputType   = 0;                   % 0: output data saved in KLB format
+% % %                                     % 1: output data saved in JP2 format
+% % %                                     % 2: output data saved in TIF format
+% % % correctTIFF  = 0;                   % 0: never transpose output data, 1: transpose output data if TIFF parity is odd
+% % % 
+% % % medianRange  = [3 3];               % kernel x/y-size for median filter for dead pixel detection and removal
+% % %                                     % note: set to [] to disable dead pixel detection and removal
+% % % percentile   = [1 5 100];           % slot 1: background percentile for mask calculation
+% % %                                     % slot 2: background percentile for intensity correction
+% % %                                     % slot 3: volume sub-sampling for background estimation
+% % % 
+% % % segmentFlag  = 1;                   % 0: do not remove background in output stacks
+% % %                                     % 1: remove background in output stacks (default)
+% % %                                     % 2: compute and save only 3D segmentation masks (first step of global masking workflow);
+% % %                                     %    once all masks have been generated, rerunning clusterPT will generate a global mask (second step of global masking workflow)
+% % %                                     % 3: apply global 3D segmentation mask to all image stacks (third step of global masking workflow)
+% % % rotationFlag = 0;                   % 0: do not rotate image stacks, 1: rotate image stacks by 90 degrees clockwise, -1: rotate image stacks by 90 degrees counter-clockwise
+% % % flipHFlag    = 0;                   % indicates whether the stack recorded with the second camera should be flipped horizontally
+% % % flipVFlag    = 0;                   % indicates whether the stack recorded with the second camera should be flipped vertically
+% % % splitting    = 10;                  % level of stack splitting when performing Gauss convolution
+% % % kernelSize   = 5;                   % Gauss kernel size
+% % % kernelSigma  = 2;                   % Gauss kernel sigma
+% % % scaling      = 2.031 / (6.5 / 16);  % axial step size <divided by> (pixel pitch <divided by> magnification)
+% % % references   = [0; 1];              % list of reference channel groups that define segmentation masks for (content-)dependent channel groups
+% % %                                     % note 1: leave empty if all channels are to be treated as independent channels
+% % %                                     % note 2: provide multiple elements per row (i.e. a channel group) to fuse segmentation masks
+% % % dependents   = [];                  % list of (content-)dependent channel groups that relate to each reference channel group
+% % % thresholds   = [0.4 0.4];           % adaptive thresholds for each reference channel group
+% % %                                     % note: provide single threshold if "references" is left empty
+% % % 
+% % % loggingFlag  = 0;                   % 0: do not save processing logs (default), 1: save processing logs
+% % % verbose      = 1;                   % 0: do not display processing information, 1: display processing information
+% % % 
+% % % localRun     = [1 0];               % slot 1: flag for local vs. cluster execution (0: cluster submission, 1: local workstation)
+% % %                                     % slot 2: number of parallel workers for execution on local workstation (only needed if slot 1 is set to 1)
+% % %                                     %         note: use "0" to enable automated detection of available CPU cores
+% % % 
+% % % jobMemory    = [1 0];               % slot 1: flag for automated memory management (0: disable, 1: enable, 2: enable and time-dependent)
+% % %                                     %         note: setting jobMemory(1) to "2" is incompatible with inputType == 4 or numel(dimensions) ~= 0
+% % %                                     % slot 2: estimated upper boundary for memory consumption per submitted time point (in GB)
+% % %                                     %         note 1: slot 2 is only evaluated if automated memory management is disabled
+% % %                                     %         note 2: "0" indicates memory consumption below "coreMemory" threshold and enables parametric submission mode
+% % % 
+% % % coreMemory   = floor(((96 - 8) * 1024) / (12 * 1024)); % memory boundary for switching from parametric to memory-managed submission (in GB)
 
 %% initialization
 
@@ -118,9 +183,9 @@ if inputType == 4
     end;
 else
     if ~isempty(outputLabel)
-        outputFolder = [inputFolder '.corrected.' outputLabel '\SPM' num2str(specimen, '%.2d')];
+        outputFolder = [inputFolder '.corrected.' outputLabel filesep 'SPM' num2str(specimen, '%.2d')];
     else
-        outputFolder = [inputFolder '.corrected\SPM' num2str(specimen, '%.2d')];
+        outputFolder = [inputFolder '.corrected' filesep 'SPM' num2str(specimen, '%.2d')];
     end;
 end;
 if ~isempty(outputLabel)
@@ -129,7 +194,7 @@ else
     globalMaskFolder = [inputFolder '.globalMask'];
 end;
 if inputType ~= 3 && inputType ~= 4
-    inputFolder = [inputFolder '\SPM' num2str(specimen, '%.2d')];
+    inputFolder = [inputFolder filesep 'SPM' num2str(specimen, '%.2d')];
 end;
 
 if exist(outputFolder, 'dir') == 7 && exist(projectionFolder, 'dir') == 7
@@ -152,16 +217,16 @@ end;
 
 % evalute background files and copy to output folder
 if inputType == 0 || inputType == 2 || inputType == 3 || inputType == 4
-    backgroundFiles = dir([inputFolder '\*.tif']);
+    backgroundFiles = dir([inputFolder filesep '*.tif']);
 else % inputType == 1
-    backgroundFiles = dir([inputFolder '\*.jp2']);
+    backgroundFiles = dir([inputFolder filesep '*.jp2']);
 end;
 if isempty(backgroundFiles)
     error('Error: Background files are missing.');
 end;
 backgroundValues = zeros(length(backgroundFiles), 1);
 for i = 1:length(backgroundFiles)
-    source = [inputFolder '\' backgroundFiles(i).name];
+    source = [inputFolder filesep '' backgroundFiles(i).name];
     
     backgroundImage = readImage(source);
     backgroundValues(i) = single(prctile(backgroundImage(:), 3));
@@ -172,7 +237,7 @@ for i = 1:length(backgroundFiles)
         backgroundImage = rot90(backgroundImage, 1);
     end;
     
-    target = [outputFolder '\' backgroundFiles(i).name(1:(end - 4)) outputExtension];
+    target = [outputFolder filesep '' backgroundFiles(i).name(1:(end - 4)) outputExtension];
     writeImage(backgroundImage, target);
 end;
 
@@ -184,7 +249,7 @@ for currentTP = length(timepoints):-1:1
         for c = cameras
             for h = channels
                 % check for presence of final image file written by each processTimepoint.m process
-                outputFile = [outputFolder '\Sequence' num2str(timepoints(currentTP), '%.6d') '_CM' num2str(c, '%.2d') '_CHN' num2str(h, '%.2d') outputExtension];
+                outputFile = [outputFolder filesep 'Sequence' num2str(timepoints(currentTP), '%.6d') '_CM' num2str(c, '%.2d') '_CHN' num2str(h, '%.2d') outputExtension];
                 if exist(outputFile, 'file') ~= 2
                     currentMissingFlag = 1;
                     break;
@@ -199,7 +264,7 @@ for currentTP = length(timepoints):-1:1
                 if ~isempty(references)
                     for h = references(1, :)
                         % check for presence of final image file written by each processTimepoint.m process
-                        outputFile = [outputFolder '\TM' num2str(timepoints(currentTP), '%.6d') '\' currentHeader ...
+                        outputFile = [outputFolder filesep 'TM' num2str(timepoints(currentTP), '%.6d') filesep '' currentHeader ...
                             '_CM' num2str(c, '%.2d') '_CHN' num2str(h, '%.2d') '.segmentationMask' outputExtension];
                         if exist(outputFile, 'file') ~= 2
                             currentMissingFlag = 1;
@@ -209,7 +274,7 @@ for currentTP = length(timepoints):-1:1
                 else
                     for h = channels
                         % check for presence of final image file written by each processTimepoint.m process
-                        outputFile = [outputFolder '\TM' num2str(timepoints(currentTP), '%.6d') '\' currentHeader ...
+                        outputFile = [outputFolder filesep 'TM' num2str(timepoints(currentTP), '%.6d') filesep '' currentHeader ...
                             '_CM' num2str(c, '%.2d') '_CHN' num2str(h, '%.2d') '.segmentationMask' outputExtension];
                         if exist(outputFile, 'file') ~= 2
                             currentMissingFlag = 1;
@@ -220,7 +285,7 @@ for currentTP = length(timepoints):-1:1
             else
                 for h = channels
                     % check for presence of final image file written by each processTimepoint.m process
-                    outputFile = [projectionFolder '\' currentHeader '_CM' num2str(c, '%.2d') '_CHN' num2str(h, '%.2d') '.yzProjection' outputExtension];
+                    outputFile = [projectionFolder filesep '' currentHeader '_CM' num2str(c, '%.2d') '_CHN' num2str(h, '%.2d') '.yzProjection' outputExtension];
                     if exist(outputFile, 'file') ~= 2
                         currentMissingFlag = 1;
                         break;
@@ -242,9 +307,9 @@ if ~isempty(timepoints)
             unitX = 2 * dimensions(1) * dimensions(2) * dimensions(3) / (1024 ^ 3);
         else
             if inputType == 3 || inputType == 4
-                xmlName = [inputFolder '\ch' num2str(channels(1)) '.xml'];
+                xmlName = [inputFolder filesep 'ch' num2str(channels(1)) '.xml'];
             else
-                xmlName = [inputFolder '\TM' num2str(timepoints(1), '%.5d') '\ch' num2str(channels(1)) '.xml'];
+                xmlName = [inputFolder filesep 'TM' num2str(timepoints(1), '%.5d') filesep 'ch' num2str(channels(1)) '.xml'];
             end;
             
             try
@@ -324,7 +389,7 @@ if ~isempty(timepoints)
         timeString = [...
             num2str(currentTime(1)) num2str(currentTime(2), '%.2d') num2str(currentTime(3), '%.2d') ...
             '_' num2str(currentTime(4), '%.2d') num2str(currentTime(5), '%.2d') num2str(round(currentTime(6) * 1000), '%.5d')];
-        parameterDatabase = [pwd '\jobParameters.processTimepoint.' timeString '.mat'];
+        parameterDatabase = [pwd filesep 'jobParameters.processTimepoint.' timeString '.mat'];
         
         save(parameterDatabase, ...
             'inputFolder', 'outputFolder', 'projectionFolder', 'globalMaskFolder', 'specimen', 'timepoints', 'cameras', 'channels', 'dimensions', ...
@@ -370,7 +435,7 @@ if ~isempty(timepoints)
         timeString = [...
             num2str(currentTime(1)) num2str(currentTime(2), '%.2d') num2str(currentTime(3), '%.2d') ...
             '_' num2str(currentTime(4), '%.2d') num2str(currentTime(5), '%.2d') num2str(round(currentTime(6) * 1000), '%.5d')];
-        parameterDatabase = [pwd '\jobParameters.processTimepoint.' timeString '.mat'];
+        parameterDatabase = [pwd filesep 'jobParameters.processTimepoint.' timeString '.mat'];
         
         save(parameterDatabase, ...
             'inputFolder', 'outputFolder', 'projectionFolder', 'globalMaskFolder', 'specimen', 'timepoints', 'cameras', 'channels', 'dimensions', ...
@@ -382,7 +447,7 @@ if ~isempty(timepoints)
         
         if localRun(1) ~= 1
             for t = 1:nTimepoints
-                xmlName = [inputFolder '\TM' num2str(timepoints(t), '%.5d') '\ch' num2str(channels(1)) '.xml'];
+                xmlName = [inputFolder filesep 'TM' num2str(timepoints(t), '%.5d') filesep 'ch' num2str(channels(1)) '.xml'];
                 
                 try
                     stackDimensions = [];
@@ -482,7 +547,7 @@ elseif segmentFlag == 2
     for t = 1:nTimepoints
         disp(['Reading masks for time point ' num2str(timepointsBackup(t), '%.4d')]);
         
-        maskFolder = [outputFolder '\TM' num2str(timepointsBackup(t), '%.6d') '\'];
+        maskFolder = [outputFolder filesep 'TM' num2str(timepointsBackup(t), '%.6d') filesep ''];
         maskHeader = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(timepointsBackup(t), '%.6d') '_CM*_CHN*.segmentationMask' outputExtension];
         maskFiles = dir([maskFolder maskHeader]);
         
@@ -501,7 +566,7 @@ elseif segmentFlag == 2
     disp(['Total number of masks read: ' num2str(maskCount)]);
     disp('Writing global mask to disk');
     
-    writeImage(uint16(globalMask), [globalMaskFolder '\Global.segmentationMask' outputExtension]);
+    writeImage(uint16(globalMask), [globalMaskFolder filesep 'Global.segmentationMask' outputExtension]);
     
     xzSliceMask = zeros(size(globalMask, 1), size(globalMask, 3), 'uint16');
     for i = 1:splitting
@@ -523,8 +588,8 @@ elseif segmentFlag == 2
     end;
     clear coordinateMask;
     
-    writeImage(xzSliceMask, [globalMaskFolder '\Global.xzMask' outputExtension]);
-    writeImage(xySliceMask, [globalMaskFolder '\Global.xyMask' outputExtension]);
+    writeImage(xzSliceMask, [globalMaskFolder filesep 'Global.xzMask' outputExtension]);
+    writeImage(xySliceMask, [globalMaskFolder filesep 'Global.xyMask' outputExtension]);
     
     disp(' ');
 else

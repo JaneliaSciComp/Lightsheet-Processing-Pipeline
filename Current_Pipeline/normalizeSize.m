@@ -1,8 +1,8 @@
 %% parameters
 
-inputRoot       = 'X:\SiMView1\14-01-21\Mmu_E1_CAGTAG1_01_23_20140121_141339.corrected\Results\MultiFused';
-outputRoot      = 'X:\SiMView1\14-01-21\Mmu_E1_CAGTAG1_01_23_20140121_141339.corrected\Results\MultiFused.NormalizedSize';
-headerPattern   = 'Mmu_E1_CAGTAG1.TM??????_multiFused_blending\';
+inputRoot       = 'X:' filesep 'SiMView1' filesep '14-01-21' filesep 'Mmu_E1_CAGTAG1_01_23_20140121_141339.corrected' filesep 'Results' filesep 'MultiFused';
+outputRoot      = 'X:' filesep 'SiMView1' filesep '14-01-21' filesep 'Mmu_E1_CAGTAG1_01_23_20140121_141339.corrected' filesep 'Results' filesep 'MultiFused.NormalizedSize';
+headerPattern   = 'Mmu_E1_CAGTAG1.TM??????_multiFused_blending' filesep;
 filePattern     = 'SPM00_TM??????_CM00_CM01_CHN00_CHN01.fusedStack';
 
 timepoints      = 0:305;
@@ -42,7 +42,7 @@ inputDatabase = cell(nTimepoints, 4);
 outputDatabase = cell(nTimepoints, 4);
 
 for n = 1:nTimepoints
-    outputDatabase{n, 1} = [outputRoot '\' headerPattern filePattern];
+    outputDatabase{n, 1} = [outputRoot filesep '' headerPattern filePattern];
     for i = maxStampDigits:-1:1
         positions = strfind(outputDatabase{n, 1}, repmat('?', [1 i]));
         precision = ['%.' num2str(i) 'd'];
@@ -51,7 +51,7 @@ for n = 1:nTimepoints
         end;
     end;
     
-    outputDatabase{n, 5} = [outputRoot '\' headerPattern];
+    outputDatabase{n, 5} = [outputRoot filesep '' headerPattern];
     for i = maxStampDigits:-1:1
         positions = strfind(outputDatabase{n, 5}, repmat('?', [1 i]));
         precision = ['%.' num2str(i) 'd'];
@@ -66,7 +66,7 @@ for n = 1:nTimepoints
     
     outputDatabase{n, 1} = [outputDatabase{n, 1} inputExtension];
     
-    inputDatabase{n, 1} = [inputRoot '\' headerPattern filePattern];
+    inputDatabase{n, 1} = [inputRoot filesep '' headerPattern filePattern];
     for i = maxStampDigits:-1:1
         positions = strfind(inputDatabase{n, 1}, repmat('?', [1 i]));
         precision = ['%.' num2str(i) 'd'];
@@ -108,7 +108,7 @@ end;
 save([outputRoot '\dimensions.mat'], 'dimensions');
 
 maxDimensions = max(dimensions(:, 2:4), [], 1);
-save([outputRoot '\maxDimensions.mat'], 'maxDimensions');
+save([outputRoot filesep 'maxDimensions.mat'], 'maxDimensions');
 
 deltas = zeros(numel(timepoints), 4);
 deltas(:, 1) = timepoints;

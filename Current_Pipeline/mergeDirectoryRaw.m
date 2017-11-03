@@ -1,9 +1,9 @@
 %% parameters
 
-sourceDirectory  = 'D:\Temp\Dme_L2_57C10-GCaMP641-0_20140104_143744\SPM00\TM?????\ANG000';
+sourceDirectory  = 'D:' filesep 'Temp' filesep 'Dme_L2_57C10-GCaMP641-0_20140104_143744' filesep 'SPM00' filesep 'TM?????' filesep 'ANG000';
 sourceTimepoints = 0:10;
 
-targetDirectory  = 'D:\Temp\Dme_L1_57C10-GCaMP641_0_20140104_114246\SPM00\TM?????\ANG000';
+targetDirectory  = 'D:' filesep 'Temp' filesep 'Dme_L1_57C10-GCaMP641_0_20140104_114246' filesep 'SPM00' filesep 'TM?????' filesep 'ANG000';
 targetTimepoints = 11:21;
 
 stampDigits      = 5;
@@ -21,14 +21,14 @@ inputDatabase = cell(nTimepoints, 1);
 outputDatabase = cell(nTimepoints, 1);
 
 for n = 1:nTimepoints
-    inputDatabase{n} = [sourceDirectory '\'];
+    inputDatabase{n} = [sourceDirectory filesep ''];
     positions = strfind(inputDatabase{n}, repmat('?', [1 stampDigits]));
     precision = ['%.' num2str(stampDigits) 'd'];
     for k = 1:numel(positions)
         inputDatabase{n}(positions(k):(positions(k) + stampDigits - 1)) = num2str(sourceTimepoints(n), precision);
     end;
     
-    outputDatabase{n} = [targetDirectory '\'];
+    outputDatabase{n} = [targetDirectory filesep ''];
     positions = strfind(outputDatabase{n}, repmat('?', [1 stampDigits]));
     precision = ['%.' num2str(stampDigits) 'd'];
     for k = 1:numel(positions)

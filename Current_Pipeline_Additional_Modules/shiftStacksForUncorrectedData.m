@@ -1,52 +1,52 @@
 %% general parameters
 
-% shiftsName    = 'Shift Data\shifts_160113.mat';
-% inputString2  = '_timeFused_wavelet\SPM00_TM';
-% inputString1  = 'R:\SV1\KM_16-01-13\Mmu_E1_GaleGFP_20160113_171610.corrected\Results\TimeFused.Wavelet\Mmu_E1_GaleGFP.TM';
+% shiftsName    = 'Shift Data' filesep 'shifts_160113.mat';
+% inputString2  = '_timeFused_wavelet' filesep 'SPM00_TM';
+% inputString1  = 'R:' filesep 'SV1' filesep 'KM_16-01-13' filesep 'Mmu_E1_GaleGFP_20160113_171610.corrected' filesep 'Results' filesep 'TimeFused.Wavelet' filesep 'Mmu_E1_GaleGFP.TM';
 % allTimepoints = 0:322;
 % timeSelection = 0:322;
 % channels      = 0:1;
-% copyLocation  = 'E:\Mouse Development\Time-Lapse Registration\16-01-13 Temporal Registration Assessment\TimeFused.Wavelet.Shifted.Projections';
+% copyLocation  = 'E:' filesep 'Mouse Development' filesep 'Time-Lapse Registration' filesep '16-01-13 Temporal Registration Assessment' filesep 'TimeFused.Wavelet.Shifted.Projections';
 
-% shiftsName    = 'Shift Data\shifts_160614.mat';
-% inputString1  = 'R:\SV1\KM_16-06-14\Mmu_E1_Foxa2eGFPxTmCherry_01_20160614_121243.corrected\Results\TimeFused.Geometric\Mmu_E1_Foxa2eGFPxTmCherry.TM';
-% inputString2  = '_timeFused_blending\SPM00_TM';
+% shiftsName    = 'Shift Data' filesep 'shifts_160614.mat';
+% inputString1  = 'R:' filesep 'SV1' filesep 'KM_16-06-14' filesep 'Mmu_E1_Foxa2eGFPxTmCherry_01_20160614_121243.corrected' filesep 'Results' filesep 'TimeFused.Geometric' filesep 'Mmu_E1_Foxa2eGFPxTmCherry.TM';
+% inputString2  = '_timeFused_blending' filesep 'SPM00_TM';
 % allTimepoints = 0:258;
 % timeSelection = 0:258;
 % channels      = 0:1;
-% copyLocation  = 'E:\Mouse Development\Time-Lapse Registration\16-06-14 Temporal Registration Assessment\TimeFused.Geometric.Shifted.Projections';
+% copyLocation  = 'E:' filesep 'Mouse Development' filesep 'Time-Lapse Registration' filesep '16-06-14 Temporal Registration Assessment' filesep 'TimeFused.Geometric.Shifted.Projections';
 
-% shiftsName    = 'Shift Data\shifts_160716.mat';
-% inputString1  = 'R:\SV1\KM_16-07-16\Mmu_E1_GaleGFPxH2BmCherry_20160716_131448.corrected\Results\TimeFused.Blending\Mmu_E1_GaleGFPxH2BmCherry.TM';
-% inputString2  = '_timeFused_blending\SPM00_TM';
+% shiftsName    = 'Shift Data' filesep 'shifts_160716.mat';
+% inputString1  = 'R:' filesep 'SV1' filesep 'KM_16-07-16' filesep 'Mmu_E1_GaleGFPxH2BmCherry_20160716_131448.corrected' filesep 'Results' filesep 'TimeFused.Blending' filesep 'Mmu_E1_GaleGFPxH2BmCherry.TM';
+% inputString2  = '_timeFused_blending' filesep 'SPM00_TM';
 % allTimepoints = 0:271;
 % timeSelection = 0:271;
 % channels      = 0:1;
-% copyLocation  = 'E:\Mouse Development\Time-Lapse Registration\16-07-16 Temporal Registration Assessment\TimeFused.Blending.Shifted.Projections';
+% copyLocation  = 'E:' filesep 'Mouse Development' filesep 'Time-Lapse Registration' filesep '16-07-16 Temporal Registration Assessment' filesep 'TimeFused.Blending.Shifted.Projections';
 
-% shiftsName    = 'Shift Data\shifts_160716.mat';
-% inputString1  = 'R:\SV1\KM_16-07-16\Mmu_E1_GaleGFPxH2BmCherry_20160716_131448.corrected\Results\TimeFused.Wavelet\Mmu_E1_GaleGFPxH2BmCherry.TM';
-% inputString2  = '_timeFused_blending\SPM00_TM';
+% shiftsName    = 'Shift Data' filesep 'shifts_160716.mat';
+% inputString1  = 'R:' filesep 'SV1' filesep 'KM_16-07-16' filesep 'Mmu_E1_GaleGFPxH2BmCherry_20160716_131448.corrected' filesep 'Results' filesep 'TimeFused.Wavelet' filesep 'Mmu_E1_GaleGFPxH2BmCherry.TM';
+% inputString2  = '_timeFused_blending' filesep 'SPM00_TM';
 % allTimepoints = 0:271;
 % timeSelection = 0:271;
 % channels      = 0:1;
-% copyLocation  = 'E:\Mouse Development\Time-Lapse Registration\16-07-16 Temporal Registration Assessment\TimeFused.Wavelet.Shifted.Projections';
+% copyLocation  = 'E:' filesep 'Mouse Development' filesep 'Time-Lapse Registration' filesep '16-07-16 Temporal Registration Assessment' filesep 'TimeFused.Wavelet.Shifted.Projections';
 
-% shiftsName    = 'Shift Data\shifts_161215.mat';
-% inputString1  = 'R:\SV1\KM_16-12-15\Mmu_E1_Fucci2_01_20161215_185256.corrected\Results\TimeFused.Geometric\Mmu_E1_Fucci2.TM';
-% inputString2  = '_timeFused_blending\SPM00_TM';
+% shiftsName    = 'Shift Data' filesep 'shifts_161215.mat';
+% inputString1  = 'R:' filesep 'SV1' filesep 'KM_16-12-15' filesep 'Mmu_E1_Fucci2_01_20161215_185256.corrected' filesep 'Results' filesep 'TimeFused.Geometric' filesep 'Mmu_E1_Fucci2.TM';
+% inputString2  = '_timeFused_blending' filesep 'SPM00_TM';
 % allTimepoints = 0:192;
 % timeSelection = 0:192;
 % channels      = 0:1;
-% copyLocation  = 'E:\Mouse Development\Time-Lapse Registration\16-12-15 Temporal Registration Assessment\TimeFused.Geometric.Shifted.Projections';
+% copyLocation  = 'E:' filesep 'Mouse Development' filesep 'Time-Lapse Registration' filesep '16-12-15 Temporal Registration Assessment' filesep 'TimeFused.Geometric.Shifted.Projections';
 
-shiftsName    = 'Shift Data\shifts_161215.mat';
-inputString1  = 'R:\SV1\KM_16-12-15\Mmu_E1_Fucci2_01_20161215_185256.corrected\Results\TimeFused.Wavelet\Mmu_E1_Fucci2.TM';
-inputString2  = '_timeFused_wavelet\SPM00_TM';
+shiftsName    = 'Shift Data' filesep 'shifts_161215.mat';
+inputString1  = 'R:' filesep 'SV1' filesep 'KM_16-12-15' filesep 'Mmu_E1_Fucci2_01_20161215_185256.corrected' filesep 'Results' filesep 'TimeFused.Wavelet' filesep 'Mmu_E1_Fucci2.TM';
+inputString2  = '_timeFused_wavelet' filesep 'SPM00_TM';
 allTimepoints = 0:192;
 timeSelection = 0:192;
 channels      = 0:1;
-copyLocation  = 'E:\Mouse Development\Time-Lapse Registration\16-12-15 Temporal Registration Assessment\TimeFused.Wavelet.Shifted.Projections';
+copyLocation  = 'E:' filesep 'Mouse Development' filesep 'Time-Lapse Registration' filesep '16-12-15 Temporal Registration Assessment' filesep 'TimeFused.Wavelet.Shifted.Projections';
 
 inputString3  = '_CM00_CM01_CHN';
 inputString4  = '.fusedStack.klb';              % assumption in code below: stack name ends on 'corrected.klb'

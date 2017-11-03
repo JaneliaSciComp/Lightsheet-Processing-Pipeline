@@ -1,134 +1,134 @@
 %% data sets with automated shift computations
 
-% shiftsName    = 'Shift Data\shifts_151026.v2.mat';
-% inputString1  = 'R:\SV1\KM_15-10-26\Mmu_E1_mKate2_Combined.corrected\Results\TimeFused.Corrected\Mmu_E1_mKate2.TM';
+% shiftsName    = 'Shift Data' filesep 'shifts_151026.v2.mat';
+% inputString1  = 'R:' filesep 'SV1' filesep 'KM_15-10-26' filesep 'Mmu_E1_mKate2_Combined.corrected' filesep 'Results' filesep 'TimeFused.Corrected' filesep 'Mmu_E1_mKate2.TM';
 % allTimepoints = 0:649;
 % timeSelection = 0:649;
 % channels      = 0;
-% copyLocation  = 'E:\Mouse Development\Time-Lapse Registration\15-10-26 Temporal Registration Assessment\TimeFused.Corrected.Shifted.Projections.Combined';
+% copyLocation  = 'E:' filesep 'Mouse Development' filesep 'Time-Lapse Registration' filesep '15-10-26 Temporal Registration Assessment' filesep 'TimeFused.Corrected.Shifted.Projections.Combined';
 
-% shiftsName    = 'Shift Data\shifts_141009.mat';
-% inputString1  = 'X:\SV1\KM_14-10-09\Mmu_E1_H2BmCherryRIKEN_TipTilt_TopScrew_20141009_200202.corrected\Results\TimeFused.Corrected\Mmu_E1_H2BmCherryRIKEN.TM';
+% shiftsName    = 'Shift Data' filesep 'shifts_141009.mat';
+% inputString1  = 'X:' filesep 'SV1' filesep 'KM_14-10-09' filesep 'Mmu_E1_H2BmCherryRIKEN_TipTilt_TopScrew_20141009_200202.corrected' filesep 'Results' filesep 'TimeFused.Corrected' filesep 'Mmu_E1_H2BmCherryRIKEN.TM';
 % allTimepoints = 0:312;
 % timeSelection = 0:312;
 % channels      = 0;
-% copyLocation  = 'E:\Mouse Development\Time-Lapse Registration\14-10-09 Temporal Registration Assessment\TimeFused.Corrected.Shifted.Projections.200202';
+% copyLocation  = 'E:' filesep 'Mouse Development' filesep 'Time-Lapse Registration' filesep '14-10-09 Temporal Registration Assessment' filesep 'TimeFused.Corrected.Shifted.Projections.200202';
 
-% shiftsName    = 'Shift Data\shifts_150403.mat';
-% inputString1  = 'X:\SV1\KM_15-04-03\Mmu_E1_mKate2_0_20150403_151711.corrected\Results\TimeFused.Corrected\Mmu_E1_mKate2.TM';
+% shiftsName    = 'Shift Data' filesep 'shifts_150403.mat';
+% inputString1  = 'X:' filesep 'SV1' filesep 'KM_15-04-03' filesep 'Mmu_E1_mKate2_0_20150403_151711.corrected' filesep 'Results' filesep 'TimeFused.Corrected' filesep 'Mmu_E1_mKate2.TM';
 % allTimepoints = 0:499;
 % timeSelection = 0:499;
 % channels      = 0;
-% copyLocation  = 'E:\Mouse Development\Time-Lapse Registration\15-04-03 Temporal Registration Assessment\TimeFused.Corrected.Shifted.Projections';
+% copyLocation  = 'E:' filesep 'Mouse Development' filesep 'Time-Lapse Registration' filesep '15-04-03 Temporal Registration Assessment' filesep 'TimeFused.Corrected.Shifted.Projections';
 
-% shiftsName    = 'Shift Data\shifts_151026.v1.mat';
-% inputString1  = 'R:\SV1\KM_15-10-26\Mmu_E1_mKate2_20151026_180901.corrected\Results\TimeFused.Corrected\Mmu_E1_mKate2.TM';
+% shiftsName    = 'Shift Data' filesep 'shifts_151026.v1.mat';
+% inputString1  = 'R:' filesep 'SV1' filesep 'KM_15-10-26' filesep 'Mmu_E1_mKate2_20151026_180901.corrected' filesep 'Results' filesep 'TimeFused.Corrected' filesep 'Mmu_E1_mKate2.TM';
 % allTimepoints = 0:270;
 % timeSelection = 0:270;
 % channels      = 0;
-% copyLocation  = 'E:\Mouse Development\Time-Lapse Registration\15-10-26 Temporal Registration Assessment\TimeFused.Corrected.Shifted.Projections.180901';
+% copyLocation  = 'E:' filesep 'Mouse Development' filesep 'Time-Lapse Registration' filesep '15-10-26 Temporal Registration Assessment' filesep 'TimeFused.Corrected.Shifted.Projections.180901';
 
-% shiftsName    = 'Shift Data\shifts_151117.mat';
-% inputString1  = 'R:\SV1\KM_15-11-17\Mmu_E1_CATGAG1_20151117_175603.corrected\Results\TimeFused.Corrected\Mmu_E1_CATGAG1.TM';
+% shiftsName    = 'Shift Data' filesep 'shifts_151117.mat';
+% inputString1  = 'R:' filesep 'SV1' filesep 'KM_15-11-17' filesep 'Mmu_E1_CATGAG1_20151117_175603.corrected' filesep 'Results' filesep 'TimeFused.Corrected' filesep 'Mmu_E1_CATGAG1.TM';
 % allTimepoints = 0:307;
 % timeSelection = 0:307;
 % channels      = 0:1;
-% copyLocation  = 'E:\Mouse Development\Time-Lapse Registration\15-11-17 Temporal Registration Assessment\TimeFused.Corrected.Shifted.Projections';
+% copyLocation  = 'E:' filesep 'Mouse Development' filesep 'Time-Lapse Registration' filesep '15-11-17 Temporal Registration Assessment' filesep 'TimeFused.Corrected.Shifted.Projections';
 
-% shiftsName    = 'Shift Data\shifts_160112.mat';
-% inputString1  = 'R:\SV1\KM_16-01-12\Mmu_H2BmCherry_20160112_135031.corrected\Results\TimeFused.Corrected\Mmu_H2BmCherry.TM';
+% shiftsName    = 'Shift Data' filesep 'shifts_160112.mat';
+% inputString1  = 'R:' filesep 'SV1' filesep 'KM_16-01-12' filesep 'Mmu_H2BmCherry_20160112_135031.corrected' filesep 'Results' filesep 'TimeFused.Corrected' filesep 'Mmu_H2BmCherry.TM';
 % allTimepoints = 0:324;
 % timeSelection = 0:324;
 % channels      = 0;
-% copyLocation  = 'E:\Mouse Development\Time-Lapse Registration\16-01-12 Temporal Registration Assessment\TimeFused.Corrected.Shifted.Projections';
+% copyLocation  = 'E:' filesep 'Mouse Development' filesep 'Time-Lapse Registration' filesep '16-01-12 Temporal Registration Assessment' filesep 'TimeFused.Corrected.Shifted.Projections';
 
-% shiftsName    = 'Shift Data\shifts_160315.mat';
-% inputString1  = 'X:\SV1\KM_16-03-15\Mmu_E1_CAGTAG1_20160315_164340.corrected\Results\TimeFused.Corrected\Mmu_E1_CAGTAG1.TM';
+% shiftsName    = 'Shift Data' filesep 'shifts_160315.mat';
+% inputString1  = 'X:' filesep 'SV1' filesep 'KM_16-03-15' filesep 'Mmu_E1_CAGTAG1_20160315_164340.corrected' filesep 'Results' filesep 'TimeFused.Corrected' filesep 'Mmu_E1_CAGTAG1.TM';
 % allTimepoints = 0:291;
 % timeSelection = 0:291;
 % channels      = 0:1;
-% copyLocation  = 'E:\Mouse Development\Time-Lapse Registration\16-03-15 Temporal Registration Assessment\TimeFused.Corrected.Shifted.Projections';
+% copyLocation  = 'E:' filesep 'Mouse Development' filesep 'Time-Lapse Registration' filesep '16-03-15 Temporal Registration Assessment' filesep 'TimeFused.Corrected.Shifted.Projections';
 
-% shiftsName    = 'Shift Data\shifts_160326.mat';
-% inputString1  = 'X:\SV1\KM_16-03-26\Mmu_E1_mKate2_20160326_124921.corrected\Results\TimeFused.Corrected\Mmu_E1_mKate2.TM';
+% shiftsName    = 'Shift Data' filesep 'shifts_160326.mat';
+% inputString1  = 'X:' filesep 'SV1' filesep 'KM_16-03-26' filesep 'Mmu_E1_mKate2_20160326_124921.corrected' filesep 'Results' filesep 'TimeFused.Corrected' filesep 'Mmu_E1_mKate2.TM';
 % allTimepoints = 0:368;
 % timeSelection = 0:368;
 % channels      = 0;
-% copyLocation  = 'E:\Mouse Development\Time-Lapse Registration\16-03-26 Temporal Registration Assessment\TimeFused.Corrected.Shifted.Projections';
+% copyLocation  = 'E:' filesep 'Mouse Development' filesep 'Time-Lapse Registration' filesep '16-03-26 Temporal Registration Assessment' filesep 'TimeFused.Corrected.Shifted.Projections';
 
 %% data sets with manual shift annotations
 
-% shiftsName    = 'Shift Data\shifts_160328.mat';
-% inputString1  = 'R:\SV1\KM_16-03-28\Mmu_E1_H2BmCherry_20160328_170713.corrected\Results\TimeFused.Corrected\Mmu_H2BmCherry.TM';
+% shiftsName    = 'Shift Data' filesep 'shifts_160328.mat';
+% inputString1  = 'R:' filesep 'SV1' filesep 'KM_16-03-28' filesep 'Mmu_E1_H2BmCherry_20160328_170713.corrected' filesep 'Results' filesep 'TimeFused.Corrected' filesep 'Mmu_H2BmCherry.TM';
 % allTimepoints = 0:600;
 % timeSelection = 0:600;
 % channels      = 0;
 
-% shiftsName    = 'Shift Data\shifts_160601.mat';
-% inputString1  = 'R:\SV1\KM_16-06-01\Mmu_E1_CAGTAG1_01_20160601_143144.corrected\Results\TimeFused.Corrected\Mmu_E1_CAGTAG1.TM';
+% shiftsName    = 'Shift Data' filesep 'shifts_160601.mat';
+% inputString1  = 'R:' filesep 'SV1' filesep 'KM_16-06-01' filesep 'Mmu_E1_CAGTAG1_01_20160601_143144.corrected' filesep 'Results' filesep 'TimeFused.Corrected' filesep 'Mmu_E1_CAGTAG1.TM';
 % allTimepoints = 0:500;
 % timeSelection = 0:500;
 % channels      = 0:1;
 
-% shiftsName    = 'Shift Data\shifts_160723.mat';
-% inputString1  = 'R:\SV1\KM_16-07-23\Mmu_E1_GFPLifeactxmKate2nls_20160723_142607.corrected\Results\TimeFused.Corrected\Mmu_E1_GFPLifeactxmKate2nls.TM';
+% shiftsName    = 'Shift Data' filesep 'shifts_160723.mat';
+% inputString1  = 'R:' filesep 'SV1' filesep 'KM_16-07-23' filesep 'Mmu_E1_GFPLifeactxmKate2nls_20160723_142607.corrected' filesep 'Results' filesep 'TimeFused.Corrected' filesep 'Mmu_E1_GFPLifeactxmKate2nls.TM';
 % allTimepoints = 0:265;
 % timeSelection = 0:265;
 % channels      = 0:1;
 
-% shiftsName    = 'Shift Data\shifts_160726.mat';
-% inputString1  = 'R:\SV1\KM_16-07-26\Mmu_E1_GaleGFPxmKate2nls_01_20160726_162110.corrected\Results\TimeFused.Corrected\Mmu_E1_GaleGFPxmKate2nls.TM';
+% shiftsName    = 'Shift Data' filesep 'shifts_160726.mat';
+% inputString1  = 'R:' filesep 'SV1' filesep 'KM_16-07-26' filesep 'Mmu_E1_GaleGFPxmKate2nls_01_20160726_162110.corrected' filesep 'Results' filesep 'TimeFused.Corrected' filesep 'Mmu_E1_GaleGFPxmKate2nls.TM';
 % allTimepoints = 0:257;
 % timeSelection = 0:257;
 % channels      = 0:1;
-% copyLocation  = 'E:\Mouse Development\Time-Lapse Registration\16-07-26 Temporal Registration Assessment\TimeFused.Corrected.Shifted.Projections';
+% copyLocation  = 'E:' filesep 'Mouse Development' filesep 'Time-Lapse Registration' filesep '16-07-26 Temporal Registration Assessment' filesep 'TimeFused.Corrected.Shifted.Projections';
 
-% shiftsName    = 'Shift Data\shifts_160729.mat';
-% inputString1  = 'R:\SV1\KM_16-07-29\Mmu_E1_H2BeGFP_20160729_145328.corrected\Results\TimeFused.Corrected\Mmu_E1_H2BeGFP.TM';
+% shiftsName    = 'Shift Data' filesep 'shifts_160729.mat';
+% inputString1  = 'R:' filesep 'SV1' filesep 'KM_16-07-29' filesep 'Mmu_E1_H2BeGFP_20160729_145328.corrected' filesep 'Results' filesep 'TimeFused.Corrected' filesep 'Mmu_E1_H2BeGFP.TM';
 % allTimepoints = 0:600;
 % timeSelection = 0:600;
 % channels      = 0;
 
-% shiftsName    = 'Shift Data\shifts_160616.mat';
-% inputString1  = 'R:\SV1\KM_16-06-16\Mmu_E1_TmCherryxH2BeGFP_20160616_155129.corrected\Results\TimeFused.Corrected\Mmu_E1_TmCherryxH2BeGFP.TM';
+% shiftsName    = 'Shift Data' filesep 'shifts_160616.mat';
+% inputString1  = 'R:' filesep 'SV1' filesep 'KM_16-06-16' filesep 'Mmu_E1_TmCherryxH2BeGFP_20160616_155129.corrected' filesep 'Results' filesep 'TimeFused.Corrected' filesep 'Mmu_E1_TmCherryxH2BeGFP.TM';
 % allTimepoints = 0:300;
 % timeSelection = 0:300;
 % channels      = 0:1;
 
-% shiftsName    = 'Shift Data\shifts_151205.mat';
-% inputString1  = 'R:\SV1\KM_15-12-05\Mmu_E1_mKate2\Results\TimeFused.Corrected\Mmu_E1_mKate2.TM';
+% shiftsName    = 'Shift Data' filesep 'shifts_151205.mat';
+% inputString1  = 'R:' filesep 'SV1' filesep 'KM_15-12-05' filesep 'Mmu_E1_mKate2' filesep 'Results' filesep 'TimeFused.Corrected' filesep 'Mmu_E1_mKate2.TM';
 % allTimepoints = 0:500;
 % timeSelection = 0:500;
 % channels      = 0;
 
-% shiftsName    = 'Shift Data\shifts_151114.mat';
-% inputString1  = 'R:\SV1\KM_15-11-14\Mmu_E1_CAGTAG1_01_20151114_123033.corrected\Results\TimeFused.Corrected\Mmu_E1_CAGTAG1.TM';
+% shiftsName    = 'Shift Data' filesep 'shifts_151114.mat';
+% inputString1  = 'R:' filesep 'SV1' filesep 'KM_15-11-14' filesep 'Mmu_E1_CAGTAG1_01_20151114_123033.corrected' filesep 'Results' filesep 'TimeFused.Corrected' filesep 'Mmu_E1_CAGTAG1.TM';
 % allTimepoints = 0:450;
 % timeSelection = 0:450;
 % channels      = 0;
 
-% shiftsName    = 'Shift Data\shifts_140813.mat';
-% inputString1  = 'X:\SV1\KM_14-08-13\Mmu_E1_CAGTAG1_TrackingTest_0_20140813_104820.corrected\Results\TimeFused.Corrected\Mmu_E1_CAGTAG1.TM';
+% shiftsName    = 'Shift Data' filesep 'shifts_140813.mat';
+% inputString1  = 'X:' filesep 'SV1' filesep 'KM_14-08-13' filesep 'Mmu_E1_CAGTAG1_TrackingTest_0_20140813_104820.corrected' filesep 'Results' filesep 'TimeFused.Corrected' filesep 'Mmu_E1_CAGTAG1.TM';
 % allTimepoints = 0:285;
 % timeSelection = 0:285;
 % channels      = 0;
 
-% shiftsName    = 'Shift Data\shifts_151104.mat';
-% inputString1  = 'R:\SV1\KM_15-11-04\Mmu_E1_mKate2_20151104_165657.corrected\Results\TimeFused.Corrected\Mmu_E1_mKate2.TM';
+% shiftsName    = 'Shift Data' filesep 'shifts_151104.mat';
+% inputString1  = 'R:' filesep 'SV1' filesep 'KM_15-11-04' filesep 'Mmu_E1_mKate2_20151104_165657.corrected' filesep 'Results' filesep 'TimeFused.Corrected' filesep 'Mmu_E1_mKate2.TM';
 % allTimepoints = 0:350;
 % timeSelection = 0:350;
 % channels      = 0;
 
-shiftsName    = 'Shift Data\shifts_160616.mat';
-inputString1  = 'R:\SV1\KM_16-06-16\Mmu_E1_TmCherryxH2BeGFP_20160616_155129.corrected\Results\TimeFused.Corrected\Mmu_E1_TmCherryxH2BeGFP.TM';
+shiftsName    = 'Shift Data' filesep 'shifts_160616.mat';
+inputString1  = 'R:' filesep 'SV1' filesep 'KM_16-06-16' filesep 'Mmu_E1_TmCherryxH2BeGFP_20160616_155129.corrected' filesep 'Results' filesep 'TimeFused.Corrected' filesep 'Mmu_E1_TmCherryxH2BeGFP.TM';
 allTimepoints = 0:300;
 timeSelection = 0:300;
 channels      = 0:1;
-copyLocation  = 'E:\Mouse Development\Time-Lapse Registration\16-06-16 Temporal Registration Assessment\TimeFused.Corrected.Master.Shifted.Projections';
+copyLocation  = 'E:' filesep 'Mouse Development' filesep 'Time-Lapse Registration' filesep '16-06-16 Temporal Registration Assessment' filesep 'TimeFused.Corrected.Master.Shifted.Projections';
 
 %% general parameters
 
-inputString2  = '_timeFused_blending\SPM00_TM';
+inputString2  = '_timeFused_blending' filesep 'SPM00_TM';
 inputString3  = '_CM00_CM01_CHN';
 inputString4  = '.fusedStack.corrected.klb';              % assumption in code below: stack name ends on 'corrected.klb'
 projString1   = '.fusedStack_xyProjection.corrected.klb'; % assumption in code below: projection name ends on 'corrected.klb'

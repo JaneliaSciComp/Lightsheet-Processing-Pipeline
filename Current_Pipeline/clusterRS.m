@@ -5,7 +5,7 @@ references   = 4490:4510;
 dffSampling  = 5;      % time interval in which new dF/F reference stacks are computed
 kernelSize   = 3;      % kernel size of median filter used in dF/F reference stack computation
 
-inputString  = 'X:\SiMView2\14-01-04\Dme_L1_57C10-GCaMP641_0_20140104_114246.corrected\Results\TimeFused';
+inputString  = 'X:' filesep 'SiMView2' filesep '14-01-04' filesep 'Dme_L1_57C10-GCaMP641_0_20140104_114246.corrected' filesep 'Results' filesep 'TimeFused';
 header       = 'Dme_L1_57C10-GCaMP641'; % only required for dataType == 1
 footer       = '_timeFused_blending';   % only required for dataType == 1
 dataType     = 1;                       % 0: unfused processed data (output of clusterPT), 1: fused processed data (output of clusterMF or clusterTF)
@@ -74,12 +74,12 @@ existingResultsDetected = 0;
 
 for currentTP = length(timepoints):-1:1
     if dataType == 0
-        outputPath = [inputString '.registered\SPM' num2str(specimen, '%.2d') '\TM' num2str(timepoints(currentTP), '%.6d')];
+        outputPath = [inputString '.registered' filesep 'SPM' num2str(specimen, '%.2d') filesep 'TM' num2str(timepoints(currentTP), '%.6d')];
     else
-        outputPath = [inputString '.registered\' header '.TM' num2str(timepoints(currentTP), '%.6d') footer];
+        outputPath = [inputString '.registered' filesep header '.TM' num2str(timepoints(currentTP), '%.6d') footer];
     end;
     fileName = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(currentTP), '%.6d') configurationString '.shifts.mat'];
-    fullFilePath = [outputPath '\' fileName];
+    fullFilePath = [outputPath filesep '' fileName];
     
     if exist(fullFilePath, 'file') == 2
         timepoints(currentTP) = [];
@@ -108,13 +108,13 @@ if ~isempty(timepoints)
             disp(['Reading data for time point ' num2str(t)]);
             
             if dataType == 0
-                inputPath = [inputString '\SPM' num2str(specimen, '%.2d') '\TM' num2str(t, '%.6d')];
+                inputPath = [inputString filesep 'SPM' num2str(specimen, '%.2d') filesep 'TM' num2str(t, '%.6d')];
                 fileName = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(t, '%.6d') configurationString inputExtension];
             else
-                inputPath = [inputString '\' header '.TM' num2str(t, '%.6d') footer];
+                inputPath = [inputString filesep '' header '.TM' num2str(t, '%.6d') footer];
                 fileName = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(t, '%.6d') configurationString '.fusedStack' inputExtension];
             end;
-            fullFilePath = [inputPath '\' fileName];
+            fullFilePath = [inputPath filesep '' fileName];
             
             currentStack = single(readImage(fullFilePath));
             
@@ -133,7 +133,7 @@ if ~isempty(timepoints)
         
         disp('Saving average reference stack to disk.');
         
-        referencePath = [outputPath '\Reference'];
+        referencePath = [outputPath filesep 'Reference'];
         if exist(referencePath, 'dir') ~= 7
             mkdir(referencePath);
         end;
@@ -142,10 +142,10 @@ if ~isempty(timepoints)
         xyProjectionName = ['SPM' num2str(specimen, '%.2d') configurationString '.reference_xyProjection' outputExtension];
         xzProjectionName = ['SPM' num2str(specimen, '%.2d') configurationString '.reference_xzProjection' outputExtension];
         yzProjectionName = ['SPM' num2str(specimen, '%.2d') configurationString '.reference_yzProjection' outputExtension];
-        fullStackPath = [referencePath '\' stackName];
-        fullXYProjectionPath = [referencePath '\' xyProjectionName];
-        fullXZProjectionPath = [referencePath '\' xzProjectionName];
-        fullYZProjectionPath = [referencePath '\' yzProjectionName];
+        fullStackPath = [referencePath filesep '' stackName];
+        fullXYProjectionPath = [referencePath filesep '' xyProjectionName];
+        fullXZProjectionPath = [referencePath filesep '' xzProjectionName];
+        fullYZProjectionPath = [referencePath filesep '' yzProjectionName];
         
         referenceStack = uint16(referenceStack / nReferences);
         referenceProjectionXY = uint16(referenceProjectionXY / nReferences);
@@ -163,13 +163,13 @@ if ~isempty(timepoints)
     
     if jobMemory(1) == 1 && localRun(1) ~= 1
         if dataType == 0
-            inputPath = [inputString '\SPM' num2str(specimen, '%.2d') '\TM' num2str(timepoints(1), '%.6d')];
+            inputPath = [inputString filesep 'SPM' num2str(specimen, '%.2d') filesep 'TM' num2str(timepoints(1), '%.6d')];
             fileName = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(1), '%.6d') configurationString inputExtension];
         else
-            inputPath = [inputString '\' header '.TM' num2str(timepoints(1), '%.6d') footer];
+            inputPath = [inputString filesep '' header '.TM' num2str(timepoints(1), '%.6d') footer];
             fileName = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(1), '%.6d') configurationString '.fusedStack' inputExtension];
         end;
-        fullFilePath = [inputPath '\' fileName];
+        fullFilePath = [inputPath filesep '' fileName];
         
         try
             switch inputType
@@ -201,7 +201,7 @@ if ~isempty(timepoints)
     timeString = [...
         num2str(currentTime(1)) num2str(currentTime(2), '%.2d') num2str(currentTime(3), '%.2d') ...
         '_' num2str(currentTime(4), '%.2d') num2str(currentTime(5), '%.2d') num2str(round(currentTime(6) * 1000), '%.5d')];
-    parameterDatabase = [pwd '\jobParameters.registerStacks.' timeString '.mat'];
+    parameterDatabase = [pwd filesep 'jobParameters.registerStacks.' timeString '.mat'];
     
     save(parameterDatabase,...
         'timepoints', 'references', 'medianFlags', 'dffSampling', 'kernelSize', ...

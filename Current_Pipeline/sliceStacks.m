@@ -2,7 +2,7 @@
 
 timepoints   = 0:500;
 
-rootFolder   = 'U:\SiMView2.Processing\12-06-12\Dme_E1_His2ARFP_01_20120612_175853.corrected\Results\TimeFused.Interpolated';
+rootFolder   = 'U:' filesep 'SiMView2.Processing' filesep '12-06-12' filesep 'Dme_E1_His2ARFP_01_20120612_175853.corrected' filesep 'Results' filesep 'TimeFused.Interpolated';
 inputHeader1 = 'Dme_E1_His2ARFP.TM';
 inputHeader2 = '_timeFused_blending';
 inputHeader3 = 'SPC0_TM';
@@ -48,7 +48,7 @@ disp(' ');
 disp('Computing slicing geometry');
 disp(' ');
 
-inputName = [rootFolder '\' inputHeader1 num2str(timepoints(1), timeStamp) inputHeader2 '\' inputHeader3 num2str(timepoints(1), timeStamp) inputFooter inputExtension];
+inputName = [rootFolder filesep '' inputHeader1 num2str(timepoints(1), timeStamp) inputHeader2 filesep '' inputHeader3 num2str(timepoints(1), timeStamp) inputFooter inputExtension];
 
 stack = readImage(inputName);
 xSize = size(stack, 1);
@@ -101,8 +101,8 @@ for currentTP = 1:numel(timepoints)
     disp(['Slicing time point ' num2str(timepoints(currentTP))]);
     
     fileName = [...
-        rootFolder '\' ...
-        inputHeader1 num2str(timepoints(currentTP), timeStamp) inputHeader2 '\' ...
+        rootFolder filesep '' ...
+        inputHeader1 num2str(timepoints(currentTP), timeStamp) inputHeader2 filesep '' ...
         inputHeader3 num2str(timepoints(currentTP), timeStamp) inputFooter inputExtension];
     
     stack = readImage(fileName);
@@ -114,8 +114,8 @@ for currentTP = 1:numel(timepoints)
         rotatedSlice(:, :, z) = rot90(squeeze(slice(:, z, :)));
     end;
     
-    outputSliceName = [outputFolder '\' inputHeader3 num2str(timepoints(currentTP), timeStamp) inputFooter '_sliced' inputExtension];
-    outputProjectionName = [outputFolder '\' inputHeader3 num2str(timepoints(currentTP), timeStamp) inputFooter '_sliced.projection' inputExtension];
+    outputSliceName = [outputFolder filesep '' inputHeader3 num2str(timepoints(currentTP), timeStamp) inputFooter '_sliced' inputExtension];
+    outputProjectionName = [outputFolder filesep '' inputHeader3 num2str(timepoints(currentTP), timeStamp) inputFooter '_sliced.projection' inputExtension];
     
     if saveStacks
         writeImage(rotatedSlice, outputSliceName);

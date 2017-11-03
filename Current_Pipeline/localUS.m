@@ -4,7 +4,7 @@ executionMode  = 1;              % 1: unmask all KLB files detected in current f
                                  % 2: unmask all KLB files in experiment directory structure specified by the following formatting parameters
 
 % formatting parameters for executionMode == 2
-rootFolder     = 'S:\SiMView1\15-04-17\Mmu_E1_mKate2_20150417_153156.corrected';
+rootFolder     = 'S:' filesep 'SiMView1' filesep '15-04-17' filesep 'Mmu_E1_mKate2_20150417_153156.corrected';
 specimens      = [0 1];
 timepoints     = 0:1192;
 cameras        = [0 1];
@@ -40,7 +40,7 @@ end;
 if executionMode == 1
     stackNames = dir('*.klb');
     inputFolder = pwd;
-    outputFolder = [inputFolder '\Unmasked'];
+    outputFolder = [inputFolder filesep 'Unmasked'];
     
     if ~isempty(stackNames)
         disp(' ');
@@ -102,11 +102,11 @@ else
             for s = specimens
                 for c = cameras
                     for h = channels
-                        inputFolder = [rootFolder '\SPM' num2str(s, '%.2d') '\TM' num2str(t, '%.6d')];
-                        outputFolder = [rootFolder '\SPM' num2str(s, '%.2d') '\TM' num2str(t, '%.6d')];
+                        inputFolder = [rootFolder filesep 'SPM' num2str(s, '%.2d') filesep 'TM' num2str(t, '%.6d')];
+                        outputFolder = [rootFolder filesep 'SPM' num2str(s, '%.2d') filesep 'TM' num2str(t, '%.6d')];
                         maskedStackName = ['SPM' num2str(s, '%.2d') '_TM' num2str(t, '%.6d') '_CM' num2str(c, '%.2d') '_CHN' num2str(h, '%.2d') '.klb'];
                         
-                        if exist([inputFolder '\' maskedStackName], 'file') == 2
+                        if exist([inputFolder filesep '' maskedStackName], 'file') == 2
                             unmaskStack(...
                                 inputFolder, maskedStackName,...
                                 correctionType, correctionSlot,...
@@ -136,11 +136,11 @@ else
             for s = specimens
                 for c = cameras
                     for h = channels
-                        inputFolder = [rootFolder '\SPM' num2str(s, '%.2d') '\TM' num2str(t, '%.6d')];
-                        outputFolder = [rootFolder '\SPM' num2str(s, '%.2d') '\TM' num2str(t, '%.6d')];
+                        inputFolder = [rootFolder filesep 'SPM' num2str(s, '%.2d') filesep 'TM' num2str(t, '%.6d')];
+                        outputFolder = [rootFolder filesep 'SPM' num2str(s, '%.2d') filesep 'TM' num2str(t, '%.6d')];
                         maskedStackName = ['SPM' num2str(s, '%.2d') '_TM' num2str(t, '%.6d') '_CM' num2str(c, '%.2d') '_CHN' num2str(h, '%.2d') '.klb'];
                         
-                        if exist([inputFolder '\' maskedStackName], 'file') == 2
+                        if exist([inputFolder filesep '' maskedStackName], 'file') == 2
                             configurationTable = cat(1, configurationTable, [t, s, c, h]);
                         else
                             missingData = cat(1, missingData, [t, s, c, h]);
@@ -164,8 +164,8 @@ else
                 s = configurationTable(n, 2);
                 c = configurationTable(n, 3);
                 h = configurationTable(n, 4);
-                inputFolder = [rootFolder '\SPM' num2str(s, '%.2d') '\TM' num2str(t, '%.6d')];
-                outputFolder = [rootFolder '\SPM' num2str(s, '%.2d') '\TM' num2str(t, '%.6d')];
+                inputFolder = [rootFolder filesep 'SPM' num2str(s, '%.2d') filesep 'TM' num2str(t, '%.6d')];
+                outputFolder = [rootFolder filesep 'SPM' num2str(s, '%.2d') filesep 'TM' num2str(t, '%.6d')];
                 maskedStackName = ['SPM' num2str(s, '%.2d') '_TM' num2str(t, '%.6d') '_CM' num2str(c, '%.2d') '_CHN' num2str(h, '%.2d') '.klb'];
                 
                 unmaskStack(...
@@ -190,7 +190,7 @@ else
         currentTime = clock;
         timeString = [num2str(currentTime(1)) num2str(currentTime(2), '%.2d') num2str(currentTime(3), '%.2d') ...
             '_' num2str(currentTime(4), '%.2d') num2str(currentTime(5), '%.2d') num2str(round(currentTime(6) * 1000), '%.5d')];
-        missingDataName = [pwd '\missingData.unmaskStack.' timeString '.mat'];
+        missingDataName = [pwd filesep 'missingData.unmaskStack.' timeString '.mat'];
         save(missingDataName, 'missingData');
         disp(' ');
         disp('WARNING: not all files were found!');

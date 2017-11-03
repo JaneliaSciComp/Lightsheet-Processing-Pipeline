@@ -42,7 +42,7 @@ yzProjections  = [];
 
 if ~isempty(folder)
     mkdir(folder);
-    folder = [folder '\'];
+    folder = [folder filesep ''];
 end;
 
 stackInitFlag  = 0;
