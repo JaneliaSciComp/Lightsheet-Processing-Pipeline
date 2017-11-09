@@ -1,10 +1,10 @@
 %% parameters
 
-inputRoot        = 'X:' filesep 'SiMView1' filesep '14-01-21' filesep 'Mmu_E1_CAGTAG1_01_23_20140121_141339.corrected' filesep 'Results' filesep 'MultiFused';
-inputPattern     = 'Mmu_E1_CAGTAG1.TM??????_multiFused_blending' filesep 'SPM00_TM??????_CM00_CM01_CHN00_CHN01.fusedStack';
-configRoot       = 'X:' filesep 'SiMView1' filesep '14-01-21' filesep 'Mmu_E1_CAGTAG1_01_23_20140121_141339.corrected' filesep 'Scripts' filesep 'SPM00_CM00_CM01_CHN00_CHN01_stackCorrection';
+inputRoot        = '/groups/lightsheet/lightsheet/home/ackermand/Lightsheet_Data/Paper/Supplementary_Data_2/Image_Data.MultiFused/';%'X:\SiMView2\13-12-30\Pha_E1_H2BRFP_01_20131230_140802.corrected\Results\MultiFused';
+inputPattern     = 'Dme_E1_H2ARFP.TM??????_multiFused_blending/SPM00_TM??????_CM00_CM01_CHN00_CHN01.fusedStack';%'Pha_E1_H2BRFP.TM??????_multiFused_blending\SPM00_TM??????_CM00_CM01_CHN00_CHN01.fusedStack';
+configRoot       = '/groups/lightsheet/lightsheet/home/ackermand/Lightsheet_Data/Paper/Supplementary_Data_2/Scripts/SPM00_CM00_CM01_CHN00_CHN01_stackCorrection';%'X:\SiMView2\13-12-30\Pha_E1_H2BRFP_01_20131230_140802.corrected\Scripts\SPM00_CM00_CM01_CHN00_CHN01_stackCorrection';
 
-timepoints       = 0:570;
+timepoints       = 0:10;%733;
 gamma            = 1;
 percentile       = 1;
 
@@ -21,8 +21,10 @@ useStacks        = [1 10];  % 0: use projections for intensity estimate, 1: use 
 histogramBins    = 0:(2^16 - 1);
 threshold        = 10;      % threshold for histogram computation
 backgroundSlot   = 0;       % 0: no background correction, 1: top right, 2: bottom right, 3: bottom left, 4: top left
-backgroundEdge   = 100;
-backgroundDist   = 0;
+backgroundEdge   = 100;     % edge size of the square used to estimate background levels from the image data
+backgroundDist   = 0;       % vertical/horizontal distance of background square from image reference point defined by backgroundSlot
+                            % note: the background square should be positioned in a part of the image without significant foreground content
+                            %       throughout the time-lapse experiment
 
 % configuration of correlation-based drift correction
 correlationFlag  = 1;       % flag for enabling/disabling correlation-based drift correction
@@ -33,11 +35,11 @@ globalMode       = 1;       % 0: disable global drift correction
                             % 2: manual global correction using vectors provided for reference time points
 
 % parameters required when globalMode == 1
-maskFactor       = 0.4;
-scaling          = 2.031 / (6.5 / 16);
+maskFactor       = 0.4;     % fraction of (mean - minimum) intensity that is used to create the thresholded image mask
+scaling          = 2.031 / (6.5 / 16); % axial step size <divided by> (pixel pitch <divided by> magnification)
 smoothing        = [1 20];  % smoothing flag ('rloess'), smoothing window size
-kernelSize       = 51;
-kernelSigma      = 20;
+kernelSize       = 51;      % size of kernel used for Gaussian smoothing prior to thresholding
+kernelSigma      = 20;      % sigma of Gaussian smoothing kernel
 maskMinimum      = 1;       % percentile for minimum calculation (0 = true minimum)
 fraction         = 0.01;    % minimal object size in binary mask, set to 0 to disable bwareaopen (default value 10 ^ -5)
 
@@ -48,6 +50,57 @@ referenceDrift   = [...     % each row follows this structure: reference time po
 
 maxStampDigits   = 6;
 poolWorkers      = 0;       % use "0" to enable automated detection of available CPU cores
+%% from keller
+% % % %% parameters
+% % % 
+% % % inputRoot        = 'X:' filesep 'SiMView1' filesep '14-01-21' filesep 'Mmu_E1_CAGTAG1_01_23_20140121_141339.corrected' filesep 'Results' filesep 'MultiFused';
+% % % inputPattern     = 'Mmu_E1_CAGTAG1.TM??????_multiFused_blending' filesep 'SPM00_TM??????_CM00_CM01_CHN00_CHN01.fusedStack';
+% % % configRoot       = 'X:' filesep 'SiMView1' filesep '14-01-21' filesep 'Mmu_E1_CAGTAG1_01_23_20140121_141339.corrected' filesep 'Scripts' filesep 'SPM00_CM00_CM01_CHN00_CHN01_stackCorrection';
+% % % 
+% % % timepoints       = 0:570;
+% % % gamma            = 1;
+% % % percentile       = 1;
+% % % 
+% % % inputType        = 0;       % 0: input data in KLB format
+% % %                             % 1: input data in JP2 format
+% % %                             % 2: input data in TIF format
+% % % outputType       = 0;       % 0: output data saved in KLB format
+% % %                             % 1: output data saved in JP2 format
+% % %                             % 2: output data saved in TIF format
+% % % 
+% % % % configuration of intensity normalization
+% % % intensityFlag    = 1;       % flag for enabling/disabling intensity normalization
+% % % useStacks        = [1 10];  % 0: use projections for intensity estimate, 1: use stacks for intensity estimate (second parameter provides sub-sampling rate
+% % % histogramBins    = 0:(2^16 - 1);
+% % % threshold        = 10;      % threshold for histogram computation
+% % % backgroundSlot   = 0;       % 0: no background correction, 1: top right, 2: bottom right, 3: bottom left, 4: top left
+% % % backgroundEdge   = 100;
+% % % backgroundDist   = 0;
+% % % 
+% % % % configuration of correlation-based drift correction
+% % % correlationFlag  = 1;       % flag for enabling/disabling correlation-based drift correction
+% % % 
+% % % % configuration of global drift correction
+% % % globalMode       = 1;       % 0: disable global drift correction
+% % %                             % 1: automatic global drift correction based on geometrical center computation
+% % %                             % 2: manual global correction using vectors provided for reference time points
+% % % 
+% % % % parameters required when globalMode == 1
+% % % maskFactor       = 0.4;
+% % % scaling          = 2.031 / (6.5 / 16);
+% % % smoothing        = [1 20];  % smoothing flag ('rloess'), smoothing window size
+% % % kernelSize       = 51;
+% % % kernelSigma      = 20;
+% % % maskMinimum      = 1;       % percentile for minimum calculation (0 = true minimum)
+% % % fraction         = 0.01;    % minimal object size in binary mask, set to 0 to disable bwareaopen (default value 10 ^ -5)
+% % % 
+% % % % parameters required when globalMode == 2
+% % % referenceDrift   = [...     % each row follows this structure: reference time point (slot 1), x-/y-/z-drift vector (slots 2-4), follows Matlab convention
+% % %       0,  0,  0,  0; ...    % Note: at least two rows are required to enable manual global drift correction
+% % %     100, 10, 20, 30];
+% % % 
+% % % maxStampDigits   = 6;
+% % % poolWorkers      = 0;       % use "0" to enable automated detection of available CPU cores
 
 %% main loop
 
@@ -131,10 +184,10 @@ parfor n = 1:nTimepoints
 end;
 
 dimensions = cat(2, timepoints', dimensions);
-save([configRoot '\dimensions.mat'], 'dimensions');
+save([configRoot filesep 'dimensions.mat'], 'dimensions');
 
 dimensionsMax = max(dimensions(:, 2:4), [], 1);
-save([configRoot '\dimensionsMax.mat'], 'dimensionsMax');
+save([configRoot filesep 'dimensionsMax.mat'], 'dimensionsMax');
 
 if correlationFlag == 1 || globalMode ~= 0
     dimensionsDeltas = zeros(numel(timepoints), 4);
@@ -146,7 +199,7 @@ if correlationFlag == 1 || globalMode ~= 0
         dimensionsDeltas(n, 4) = floor((dimensionsMax(3) - dimensions(n, 4)) / 2);
     end;
     
-    save([configRoot '\dimensionsDeltas.mat'], 'dimensionsDeltas');
+    save([configRoot filesep 'dimensionsDeltas.mat'], 'dimensionsDeltas');
 end;
 
 if intensityFlag
@@ -455,9 +508,9 @@ if correlationFlag == 1 || globalMode ~= 0
     driftTable = zeros(nTimepoints, 4);
     driftTable(:, 1) = timepoints;
     driftTable(:, 2:4) = finalDriftOffsets;
-    save([configRoot '\driftTable.mat'], 'driftTable');
+    save([configRoot filesep 'driftTable.mat'], 'driftTable');
     
-    save([configRoot '\driftDatabase.mat'], 'finalDriftOffsets');
+    save([configRoot filesep 'driftDatabase.mat'], 'finalDriftOffsets');
     
     if correlationFlag == 1
         figure;
@@ -467,7 +520,7 @@ if correlationFlag == 1 || globalMode ~= 0
         xlabel('Time point');
         ylabel('Offset (pixel)');
         h = gca;
-        currentFile = [configRoot '\driftStep1_pairwiseOffsets.png'];
+        currentFile = [configRoot filesep 'driftStep1_pairwiseOffsets.png'];
         saveas(h, currentFile);
         currentFrame = imread(currentFile);
         imwrite(currentFrame, currentFile, 'png');
@@ -479,12 +532,12 @@ if correlationFlag == 1 || globalMode ~= 0
         xlabel('Time point');
         ylabel('Offset (pixel)');
         h = gca;
-        currentFile = [configRoot '\driftStep2_pairwiseOffsetsCumulative.png'];
+        currentFile = [configRoot filesep 'driftStep2_pairwiseOffsetsCumulative.png'];
         saveas(h, currentFile);
         currentFrame = imread(currentFile);
         imwrite(currentFrame, currentFile, 'png');
         
-        save([configRoot '\driftDatabase.mat'], 'driftOffsets', 'cumulativeDriftOffsets', '-append');
+        save([configRoot filesep 'driftDatabase.mat'], 'driftOffsets', 'cumulativeDriftOffsets', '-append');
     end;
     
     if globalMode == 1
@@ -495,12 +548,12 @@ if correlationFlag == 1 || globalMode ~= 0
         xlabel('Time point');
         ylabel('Center (pixel)');
         h = gca;
-        currentFile = [configRoot '\driftStep3_specimenCenters.png'];
+        currentFile = [configRoot filesep 'driftStep3_specimenCenters.png'];
         saveas(h, currentFile);
         currentFrame = imread(currentFile);
         imwrite(currentFrame, currentFile, 'png');
         
-        save([configRoot '\driftDatabase.mat'], 'driftCenters', '-append');
+        save([configRoot filesep 'driftDatabase.mat'], 'driftCenters', '-append');
         
         if correlationFlag == 1
             figure;
@@ -510,7 +563,7 @@ if correlationFlag == 1 || globalMode ~= 0
             xlabel('Time point');
             ylabel('Drift (pixel)');
             h = gca;
-            currentFile = [configRoot '\driftStep4_driftFluctuations.png'];
+            currentFile = [configRoot filesep 'driftStep4_driftFluctuations.png'];
             saveas(h, currentFile);
             currentFrame = imread(currentFile);
             imwrite(currentFrame, currentFile, 'png');
@@ -522,12 +575,12 @@ if correlationFlag == 1 || globalMode ~= 0
             xlabel('Time point');
             ylabel('Drift (pixel)');
             h = gca;
-            currentFile = [configRoot '\driftStep5_driftFluctuationsFiltered.png'];
+            currentFile = [configRoot filesep 'driftStep5_driftFluctuationsFiltered.png'];
             saveas(h, currentFile);
             currentFrame = imread(currentFile);
             imwrite(currentFrame, currentFile, 'png');
             
-            save([configRoot '\driftDatabase.mat'], 'driftFluctuations', 'smoothedDriftError', '-append');
+            save([configRoot filesep 'driftDatabase.mat'], 'driftFluctuations', 'smoothedDriftError', '-append');
         end;
     elseif globalMode == 2
         figure;
@@ -541,12 +594,12 @@ if correlationFlag == 1 || globalMode ~= 0
         xlabel('Time point');
         ylabel('Drift (pixel)');
         h = gca;
-        currentFile = [configRoot '\driftStep3_manualCorrections.png'];
+        currentFile = [configRoot filesep 'driftStep3_manualCorrections.png'];
         saveas(h, currentFile);
         currentFrame = imread(currentFile);
         imwrite(currentFrame, currentFile, 'png');
         
-        save([configRoot '\driftDatabase.mat'], 'smoothedDriftError', '-append');
+        save([configRoot filesep 'driftDatabase.mat'], 'smoothedDriftError', '-append');
     end
     
     figure;
@@ -556,7 +609,7 @@ if correlationFlag == 1 || globalMode ~= 0
     xlabel('Time point');
     ylabel('Offset (pixel)');
     h = gca;
-    currentFile = [configRoot '\driftStep6_finalOffsets.png'];
+    currentFile = [configRoot filesep 'driftStep6_finalOffsets.png'];
     saveas(h, currentFile);
     currentFrame = imread(currentFile);
     imwrite(currentFrame, currentFile, 'png');

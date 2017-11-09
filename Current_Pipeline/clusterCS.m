@@ -1,12 +1,12 @@
 %% parameters
 
-inputRoot        = 'X:' filesep 'SiMView1' filesep '14-01-21' filesep 'Mmu_E1_CAGTAG1_01_23_20140121_141339.corrected' filesep 'Results' filesep 'MultiFused';
-outputRoot       = 'X:' filesep 'SiMView1' filesep '14-01-21' filesep 'Mmu_E1_CAGTAG1_01_23_20140121_141339.corrected' filesep 'Results' filesep 'MultiFused.Corrected';
-headerPattern    = 'Mmu_E1_CAGTAG1.TM??????_multiFused_blending' filesep;
-filePattern      = 'SPM00_TM??????_CM00_CM01_CHN00_CHN01.fusedStack';
-configRoot       = 'X:' filesep 'SiMView1' filesep '14-01-21' filesep 'Mmu_E1_CAGTAG1_01_23_20140121_141339.corrected' filesep 'Scripts' filesep 'SPM00_CM00_CM01_CHN00_CHN01_stackCorrection';
+inputRoot        = '/groups/lightsheet/lightsheet/home/ackermand/Lightsheet_Data/Paper/Supplementary_Data_2/Image_Data.MultiFused/';%'X:\SiMView2\13-12-30\Pha_E1_H2BRFP_01_20131230_140802.corrected\Results\MultiFused';
+outputRoot       = '/groups/lightsheet/lightsheet/home/ackermand/Lightsheet_Data/Paper/Supplementary_Data_2/Image_Data.MultiFused.Corrected/';%'X:\SiMView2\13-12-30\Pha_E1_H2BRFP_01_20131230_140802.corrected\Results\MultiFused.Corrected';
+headerPattern    = 'Dme_E1_H2ARFP.TM??????_multiFused_blending/'; %'Pha_E1_H2BRFP.TM??????_multiFused_blending\';
+filePattern      = 'SPM00_TM??????_CM00_CM01_CHN00_CHN01.fusedStack'; % 'SPM00_TM??????_CM00_CM01_CHN00_CHN01.fusedStack';
+configRoot       = '/groups/lightsheet/lightsheet/home/ackermand/Lightsheet_Data/Paper/Supplementary_Data_2/Scripts/SPM00_CM00_CM01_CHN00_CHN01_stackCorrection';%'X:\SiMView2\13-12-30\Pha_E1_H2BRFP_01_20131230_140802.corrected\Scripts\SPM00_CM00_CM01_CHN00_CHN01_stackCorrection';
 
-timepoints       = 0:570;
+timepoints       = 0:10;
 dataType         = 1;      % 0: process projections only, 1: process stacks and projections
 percentile       = [1 10]; % [percentileFlag, subsampling], percentileFlag - 0: calculate true minimum, otherwise: use as percentile for minimum calculation
 
@@ -19,7 +19,7 @@ outputType       = 0;      % 0: output data saved in KLB format
 
 % configuration of drift correction
 correctDrift     = 1;
-referenceTime    = 305;
+referenceTime    = 5;
 referenceROI     = [];     % [xStart xStop; yStart yStop; zStart zStop], provide empty vector to enforce use of maximum dimensions
 
 % configuration of intensity normalization
@@ -27,7 +27,8 @@ correctIntensity = 1;
 
 maxStampDigits   = 6;
 
-localRun         = [0 0];  % slot 1: flag for local vs. cluster execution (0: cluster submission, 1: local workstation)
+localRun         = [1 0];  % slot 1: flag for local vs. cluster execution (0: cluster submission, 1: local workstation)
+                           %         note: cluster submission requires a Windows cluster with HPC 2008 support (see "job submit" commands below)
                            % slot 2: number of parallel workers for execution on local workstation (only needed if slot 1 is set to 1)
                            %         note: use "0" to enable automated detection of available CPU cores
 
@@ -37,6 +38,47 @@ jobMemory        = [1 0];  % slot 1: flag for automated memory management (0: di
                            %         note 2: "0" indicates memory consumption below "coreMemory" threshold and enables parametric submission mode
 
 coreMemory       = floor(((96 - 8) * 1024) / (12 * 1024)); % memory boundary for switching from parametric to memory-managed submission (in GB)
+                                                           % note: parameter is only required for cluster submission
+
+%% keller parameters
+% % % 
+% % % inputRoot        = 'X:' filesep 'SiMView1' filesep '14-01-21' filesep 'Mmu_E1_CAGTAG1_01_23_20140121_141339.corrected' filesep 'Results' filesep 'MultiFused';
+% % % outputRoot       = 'X:' filesep 'SiMView1' filesep '14-01-21' filesep 'Mmu_E1_CAGTAG1_01_23_20140121_141339.corrected' filesep 'Results' filesep 'MultiFused.Corrected';
+% % % headerPattern    = 'Mmu_E1_CAGTAG1.TM??????_multiFused_blending' filesep;
+% % % filePattern      = 'SPM00_TM??????_CM00_CM01_CHN00_CHN01.fusedStack';
+% % % configRoot       = 'X:' filesep 'SiMView1' filesep '14-01-21' filesep 'Mmu_E1_CAGTAG1_01_23_20140121_141339.corrected' filesep 'Scripts' filesep 'SPM00_CM00_CM01_CHN00_CHN01_stackCorrection';
+% % % 
+% % % timepoints       = 0:570;
+% % % dataType         = 1;      % 0: process projections only, 1: process stacks and projections
+% % % percentile       = [1 10]; % [percentileFlag, subsampling], percentileFlag - 0: calculate true minimum, otherwise: use as percentile for minimum calculation
+% % % 
+% % % inputType        = 0;      % 0: input data in KLB format
+% % %                            % 1: input data in JP2 format
+% % %                            % 2: input data in TIF format
+% % % outputType       = 0;      % 0: output data saved in KLB format
+% % %                            % 1: output data saved in JP2 format
+% % %                            % 2: output data saved in TIF format
+% % % 
+% % % % configuration of drift correction
+% % % correctDrift     = 1;
+% % % referenceTime    = 305;
+% % % referenceROI     = [];     % [xStart xStop; yStart yStop; zStart zStop], provide empty vector to enforce use of maximum dimensions
+% % % 
+% % % % configuration of intensity normalization
+% % % correctIntensity = 1;
+% % % 
+% % % maxStampDigits   = 6;
+% % % 
+% % % localRun         = [0 0];  % slot 1: flag for local vs. cluster execution (0: cluster submission, 1: local workstation)
+% % %                            % slot 2: number of parallel workers for execution on local workstation (only needed if slot 1 is set to 1)
+% % %                            %         note: use "0" to enable automated detection of available CPU cores
+% % % 
+% % % jobMemory        = [1 0];  % slot 1: flag for automated memory management (0: disable, 1: enable)
+% % %                            % slot 2: estimated upper boundary for memory consumption per submitted time point (in GB)
+% % %                            %         note 1: slot 2 is only evaluated if automated memory management is disabled
+% % %                            %         note 2: "0" indicates memory consumption below "coreMemory" threshold and enables parametric submission mode
+% % % 
+% % % coreMemory       = floor(((96 - 8) * 1024) / (12 * 1024)); % memory boundary for switching from parametric to memory-managed submission (in GB)
 
 %% initialization
 
