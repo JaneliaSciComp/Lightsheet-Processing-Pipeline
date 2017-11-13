@@ -1,8 +1,8 @@
 %% parameters
 
-inputRoot       = 'X:' filesep 'SiMView1' filesep '14-01-21' filesep 'Mmu_E1_CAGTAG1_01_23_20140121_141339.corrected' filesep 'Results' filesep 'MultiFused';
-outputRoot      = 'X:' filesep 'SiMView1' filesep '14-01-21' filesep 'Mmu_E1_CAGTAG1_01_23_20140121_141339.corrected' filesep 'Results' filesep 'MultiFused.NormalizedSize';
-headerPattern   = 'Mmu_E1_CAGTAG1.TM??????_multiFused_blending' filesep;
+inputRoot       = ['X:' filesep 'SiMView1' filesep '14-01-21' filesep 'Mmu_E1_CAGTAG1_01_23_20140121_141339.corrected' filesep 'Results' filesep 'MultiFused'];
+outputRoot      = ['X:' filesep 'SiMView1' filesep '14-01-21' filesep 'Mmu_E1_CAGTAG1_01_23_20140121_141339.corrected' filesep 'Results' filesep 'MultiFused.NormalizedSize'];
+headerPattern   = ['Mmu_E1_CAGTAG1.TM??????_multiFused_blending' filesep];
 filePattern     = 'SPM00_TM??????_CM00_CM01_CHN00_CHN01.fusedStack';
 
 timepoints      = 0:305;

@@ -5,7 +5,7 @@ dffSampling  = 5;      % time interval in which new dF/F reference stacks are co
 dffRadius    = 20;
 percentile   = 30;
 
-inputString  = 'X:' filesep 'SiMView2' filesep '14-01-04' filesep 'Dme_L1_57C10-GCaMP641_0_20140104_114246.corrected' filesep 'Results' filesep 'TimeFused';
+inputString  = ['X:' filesep 'SiMView2' filesep '14-01-04' filesep 'Dme_L1_57C10-GCaMP641_0_20140104_114246.corrected' filesep 'Results' filesep 'TimeFused'];
 header       = 'Dme_L1_57C10-GCaMP641'; % only required for dataType == 1
 footer       = '_timeFused_blending';   % only required for dataType == 1
 dataType     = 1;                       % 0: unfused processed data (output of clusterPT), 1: fused processed data (output of clusterMF or clusterTF)

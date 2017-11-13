@@ -2,11 +2,11 @@
 
 timepoints = [100 120 180 240 250 300 360 400 420 480]; % [60 100 120 180 240 250 300 360 400 420 480];
 
-imageFileNameSegment1 = 'X:' filesep 'SV1' filesep '14-05-21' filesep 'Mmu_E1_CAGTAG1.corrected' filesep 'Results' filesep 'TimeFused.Corrected' filesep 'Mmu_E1_CAGTAG1.TM';
-imageFileNameSegment2 = '_timeFused_blending' filesep 'SPM00_TM';
+imageFileNameSegment1 = ['X:' filesep 'SV1' filesep '14-05-21' filesep 'Mmu_E1_CAGTAG1.corrected' filesep 'Results' filesep 'TimeFused.Corrected' filesep 'Mmu_E1_CAGTAG1.TM'];
+imageFileNameSegment2 = ['_timeFused_blending' filesep 'SPM00_TM'];
 imageFileNameSegment3 = '_CM00_CM01_CHN00.fusedStack.corrected.shifted.klb';
 
-predictionFileNameSegment1  = 'X:' filesep 'SV1' filesep '14-05-21' filesep 'DivisionDetection' filesep 'Kristin' filesep 'MK5 Sparse' filesep;
+predictionFileNameSegment1  = ['X:' filesep 'SV1' filesep '14-05-21' filesep 'DivisionDetection' filesep 'Kristin' filesep 'MK5 Sparse' filesep];
 predictionFileNameSegment2  = '.h5';
 predictionsDataName         = '/coo';
 writePredictionsSingleFlag  = 0;
@@ -17,7 +17,7 @@ annotationFileName    = 'annotations.mat';
 annotationLateralSize = 10;
 annotationAxialSize   = 5;
 
-outputFolder = 'X:' filesep 'SV1' filesep '14-05-21' filesep 'DivisionDetection' filesep 'Kristin' filesep 'MK5 Visualization';
+outputFolder = ['X:' filesep 'SV1' filesep '14-05-21' filesep 'DivisionDetection' filesep 'Kristin' filesep 'MK5 Visualization'];
 
 for t = 1:numel(timepoints)
     timepoint = timepoints(t);

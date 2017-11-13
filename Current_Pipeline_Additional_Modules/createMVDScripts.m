@@ -12,14 +12,14 @@ checkForResults   = 1;
 
 scriptName = 'runMVD.ps1';
 
-binaryFile = 'U:' filesep 'Philipp' filesep 'Exchange' filesep 'MVD 2015-08-10' filesep 'Binaries' filesep 'main_multiviewDeconvLR_multiGPU_blocksZ.exe';
-xmlFolder  = 'V:' filesep 'SV1' filesep 'KM_15-08-10' filesep 'Mmu_E1_mKate2_20150810_160708.corrected.registered' filesep 'XMLs';
+binaryFile = ['U:' filesep 'Philipp' filesep 'Exchange' filesep 'MVD 2015-08-10' filesep 'Binaries' filesep 'main_multiviewDeconvLR_multiGPU_blocksZ.exe'];
+xmlFolder  = ['V:' filesep 'SV1' filesep 'KM_15-08-10' filesep 'Mmu_E1_mKate2_20150810_160708.corrected.registered' filesep 'XMLs'];
 
 %% Configuration of XML file generation
 
 timePoints = 0:278;
 
-stackFolder  = 'V:' filesep 'SV1' filesep 'KM_15-08-10' filesep 'Mmu_E1_mKate2_20150810_160708.corrected.registered';
+stackFolder  = ['V:' filesep 'SV1' filesep 'KM_15-08-10' filesep 'Mmu_E1_mKate2_20150810_160708.corrected.registered'];
 stackHeaders = {...
     'SPM00_TM';...
     'SPM00_TM';...

@@ -1,4 +1,4 @@
-dataRoot   = 'W:' filesep 'SiMView1' filesep '13-12-16' filesep 'Mmu_E1_CAGTAG1_01_20131216_164117.corrected' filesep 'SPM00';
+dataRoot   = ['W:' filesep 'SiMView1' filesep '13-12-16' filesep 'Mmu_E1_CAGTAG1_01_20131216_164117.corrected' filesep 'SPM00'];
 identifier = 'Mmu_E1_CAGTAG1_01_20131216_164117';
 specimen   = 0;
 timePoints = 0:254;

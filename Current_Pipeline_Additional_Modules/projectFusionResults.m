@@ -32,7 +32,7 @@ for i = 1:numel(timepoints)
     intensity(i, 2:6, 2) = [min(frames{i, 1}(:)), prctile(frames{i, 1}(:), 10), median(frames{i, 1}(:)), prctile(frames{i, 1}(:), 99.9), max(frames{i, 1}(:))];
 end;
 
-save('ProjectionsFusion' filesep 'IntensityStatistics.mat', 'intensity');
+save(['ProjectionsFusion' filesep 'IntensityStatistics.mat'], 'intensity');
 
 disp('writing projection overlay stacks');
 
@@ -51,17 +51,17 @@ for c = 1:6
     
     switch c
         case 1
-            outputName = 'ProjectionsFusion' filesep 'Fusion_SmallPSF_iter20.overlay_xy';
+            outputName = ['ProjectionsFusion' filesep 'Fusion_SmallPSF_iter20.overlay_xy'];
         case 2
-            outputName = 'ProjectionsFusion' filesep 'Fusion_SmallPSF_iter20.overlay_xz';
+            outputName = ['ProjectionsFusion' filesep 'Fusion_SmallPSF_iter20.overlay_xz'];
         case 3
-            outputName = 'ProjectionsFusion' filesep 'Fusion_SmallPSF_iter20.overlay_yz';
+            outputName = ['ProjectionsFusion' filesep 'Fusion_SmallPSF_iter20.overlay_yz'];
         case 4
-            outputName = 'ProjectionsFusion' filesep 'Fusion_LargePSF_iter50.overlay_xy';
+            outputName = ['ProjectionsFusion' filesep 'Fusion_LargePSF_iter50.overlay_xy'];
         case 5
-            outputName = 'ProjectionsFusion' filesep 'Fusion_LargePSF_iter50.overlay_xz';
+            outputName = ['ProjectionsFusion' filesep 'Fusion_LargePSF_iter50.overlay_xz'];
         case 6
-            outputName = 'ProjectionsFusion' filesep 'Fusion_LargePSF_iter50.overlay_yz';
+            outputName = ['ProjectionsFusion' filesep 'Fusion_LargePSF_iter50.overlay_yz'];
     end;
     
     writeImage(projections, [outputName '.klb']);

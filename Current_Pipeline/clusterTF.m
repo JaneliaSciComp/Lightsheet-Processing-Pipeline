@@ -5,7 +5,7 @@ references   = 0:10;
 
 inputString  = '/groups/lightsheet/lightsheet/home/ackermand/Lightsheet_Data/Paper/Supplementary_Data_2/Image_Data';
 sourceString = '/groups/lightsheet/lightsheet/home/ackermand/Lightsheet_Data/Paper/Supplementary_Data_2/Image_Data.MultiFused/Dme_E1_H2ARFP';
-outputString = '/groups/lightsheet/lightsheet/home/ackermand/Lightsheet_Data/Paper/Supplementary_Data_2/ForTimelapseMovie/Image_Data.TimeFused/Dme_E1_H2ARFP';
+outputString = '/groups/lightsheet/lightsheet/home/ackermand/Lightsheet_Data/Paper/Supplementary_Data_2/Image_Data.TimeFused/Dme_E1_H2ARFP';
 inputID      = '_blending';
 outputID     = '_blending';
 lookUpTable  = 'SPM00_CM00_CM01_CHN00_CHN01_analyzeParameters/lookUpTable.mat';

@@ -4,7 +4,7 @@ executionMode  = 1;              % 1: unmask all KLB files detected in current f
                                  % 2: unmask all KLB files in experiment directory structure specified by the following formatting parameters
 
 % formatting parameters for executionMode == 2
-rootFolder     = 'S:' filesep 'SiMView1' filesep '15-04-17' filesep 'Mmu_E1_mKate2_20150417_153156.corrected';
+rootFolder     = ['S:' filesep 'SiMView1' filesep '15-04-17' filesep 'Mmu_E1_mKate2_20150417_153156.corrected'];
 specimens      = [0 1];
 timepoints     = 0:1192;
 cameras        = [0 1];

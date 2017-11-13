@@ -4,8 +4,8 @@ if exist('ProjectionsSVD', 'dir') ~= 7
     mkdir('ProjectionsSVD');
 end;
 
-if exist('ProjectionsSVD' filesep 'Frames', 'dir') ~= 7
-    mkdir('ProjectionsSVD' filesep 'Frames');
+if exist(['ProjectionsSVD' filesep 'Frames'], 'dir') ~= 7
+    mkdir(['ProjectionsSVD' filesep 'Frames']);
 end;
 
 for s = 1:4

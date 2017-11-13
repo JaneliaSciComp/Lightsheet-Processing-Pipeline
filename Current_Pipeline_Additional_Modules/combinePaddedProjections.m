@@ -1,6 +1,6 @@
 %% configuration
 
-dataFolder = 'R:' filesep 'SV1' filesep 'KM_16-07-26' filesep 'Mmu_E1_GaleGFPxmKate2nls_01_20160726_162110.corrected' filesep 'Results' filesep 'TimeFused.Corrected';
+dataFolder = ['R:' filesep 'SV1' filesep 'KM_16-07-26' filesep 'Mmu_E1_GaleGFPxmKate2nls_01_20160726_162110.corrected' filesep 'Results' filesep 'TimeFused.Corrected'];
 dirHeader  = 'Mmu_E1_GaleGFPxmKate2nls.TM';
 dirFooter  = '_timeFused_blending';
 fileHeader = 'SPM00_TM';
@@ -9,7 +9,7 @@ fileFooter = '.corrected.klb';
 
 timepoints = 0:257;
 
-outputDir  = 'E:' filesep 'Mouse Development' filesep 'Temp' filesep 'CHN01';
+outputDir  = ['E:' filesep 'Mouse Development' filesep 'Temp' filesep 'CHN01'];
 dataTypes  = [1 0 1];
 background = [0 100];
 fullSearch = 1;

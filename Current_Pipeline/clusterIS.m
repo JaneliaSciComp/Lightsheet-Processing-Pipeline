@@ -2,7 +2,7 @@
 
 timepoints   = 0:500;
 
-rootFolder   = 'U:' filesep 'SiMView2.Processing' filesep '12-06-12' filesep 'Dme_E1_His2ARFP_01_20120612_175853.corrected' filesep 'Results' filesep 'TimeFused';
+rootFolder   = ['U:' filesep 'SiMView2.Processing' filesep '12-06-12' filesep 'Dme_E1_His2ARFP_01_20120612_175853.corrected' filesep 'Results' filesep 'TimeFused'];
 inputHeader1 = 'Dme_E1_His2ARFP.TM';
 inputHeader2 = '_timeFused_blending';
 inputHeader3 = 'SPC0_TM';

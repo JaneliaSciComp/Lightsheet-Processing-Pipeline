@@ -1,13 +1,13 @@
-inputFolder      = 'X:' filesep 'SV1' filesep '14-05-21' filesep 'Mmu_E1_CAGTAG1.corrected' filesep 'Results' filesep 'TimeFused.Corrected';
+inputFolder      = ['X:' filesep 'SV1' filesep '14-05-21' filesep 'Mmu_E1_CAGTAG1.corrected' filesep 'Results' filesep 'TimeFused.Corrected'];
 inputHeader      = 'Mmu_E1_CAGTAG1.TM';
 inputFooter      = '_timeFused_blending';
 inputFileHeader  = 'SPM00_TM';
 inputFileMiddle  = '_CM00_CM01_CHN';
 inputFileFooter  = '.fusedStack.corrected.shifted.klb';
 
-isotropicFolder  = 'X:' filesep 'SV1' filesep '14-05-21' filesep 'Mmu_E1_CAGTAG1.corrected' filesep 'Results' filesep 'TimeFused.Corrected.Interpolated';
-masksFolder      = 'X:' filesep 'SV1' filesep '14-05-21' filesep 'Mmu_E1_CAGTAG1.corrected' filesep 'Results' filesep 'Peeling' filesep 'Masks.T9.ThetaAP';
-shellsFolder     = 'X:' filesep 'SV1' filesep '14-05-21' filesep 'Mmu_E1_CAGTAG1.corrected' filesep 'Results' filesep 'Peeling' filesep 'Shells.T9.ThetaAP';
+isotropicFolder  = ['X:' filesep 'SV1' filesep '14-05-21' filesep 'Mmu_E1_CAGTAG1.corrected' filesep 'Results' filesep 'TimeFused.Corrected.Interpolated'];
+masksFolder      = ['X:' filesep 'SV1' filesep '14-05-21' filesep 'Mmu_E1_CAGTAG1.corrected' filesep 'Results' filesep 'Peeling' filesep 'Masks.T9.ThetaAP'];
+shellsFolder     = ['X:' filesep 'SV1' filesep '14-05-21' filesep 'Mmu_E1_CAGTAG1.corrected' filesep 'Results' filesep 'Peeling' filesep 'Shells.T9.ThetaAP'];
 
 timePoints       = 0:531;
 masterChannels   = 1;

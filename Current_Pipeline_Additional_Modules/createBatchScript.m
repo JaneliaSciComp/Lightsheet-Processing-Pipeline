@@ -1,6 +1,6 @@
 scriptName         = 'createSegmentationStacks.bat';
-executableFullPath = 'E:' filesep 'Mouse Development' filesep 'Segmentation' filesep 'Tracking_GMM_project-0.2.3-win64' filesep 'bin' filesep 'ProcessStack.exe';
-dataPath           = 'E:' filesep 'Mouse Development' filesep 'Segmentation' filesep 'Stacks';
+executableFullPath = ['E:' filesep 'Mouse Development' filesep 'Segmentation' filesep 'Tracking_GMM_project-0.2.3-win64' filesep 'bin' filesep 'ProcessStack.exe'];
+dataPath           = ['E:' filesep 'Mouse Development' filesep 'Segmentation' filesep 'Stacks'];
 timePoints         = [1 125 250];
 dataTypes          = {...
     'CBFLarge.b300';...

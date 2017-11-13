@@ -1,5 +1,5 @@
-projectionFolderFusion = 'V:' filesep 'SV1' filesep 'KM_15-08-10' filesep 'Mmu_E1_mKate2_20150810_160708.corrected.registered' filesep 'ProjectionsFusion' filesep 'Frames';
-projectionFolderMVD = 'V:' filesep 'SV1' filesep 'KM_15-08-10' filesep 'Mmu_E1_mKate2_20150810_160708.corrected.registered' filesep 'ProjectionsMVD' filesep 'Frames';
+projectionFolderFusion = ['V:' filesep 'SV1' filesep 'KM_15-08-10' filesep 'Mmu_E1_mKate2_20150810_160708.corrected.registered' filesep 'ProjectionsFusion' filesep 'Frames'];
+projectionFolderMVD = ['V:' filesep 'SV1' filesep 'KM_15-08-10' filesep 'Mmu_E1_mKate2_20150810_160708.corrected.registered' filesep 'ProjectionsMVD' filesep 'Frames'];
 
 projectionTypesFusion = {...
     'Fusion_LargePSF_iter50.fusionSigma_20_8.TM';...
@@ -9,7 +9,7 @@ projectionTypesMVD = {...
     'MVD_LargePSF_iter50.TM';...
     'MVD_SmallPSF_iter20.TM'};
 
-roiFolder = 'V:' filesep 'SV1' filesep 'KM_15-08-10' filesep 'Mmu_E1_mKate2_20150810_160708.corrected.registered.projections' filesep 'TM';
+roiFolder = ['V:' filesep 'SV1' filesep 'KM_15-08-10' filesep 'Mmu_E1_mKate2_20150810_160708.corrected.registered.projections' filesep 'TM'];
 
 timepoints        = 0:278;
 sigma             = 5;
@@ -22,16 +22,16 @@ if exist('ROIs', 'dir') ~= 7
     mkdir('ROIs');
 end;
 
-if exist('ROIs' filesep 'OverlayFrames', 'dir') ~= 7
-    mkdir('ROIs' filesep 'OverlayFrames');
+if exist(['ROIs' filesep 'OverlayFrames'], 'dir') ~= 7
+    mkdir(['ROIs' filesep 'OverlayFrames']);
 end;
 
-if exist('ROIs' filesep 'IndividualFrames', 'dir') ~= 7
-    mkdir('ROIs' filesep 'IndividualFrames');
+if exist(['ROIs' filesep 'IndividualFrames'], 'dir') ~= 7
+    mkdir(['ROIs' filesep 'IndividualFrames']);
 end;
 
-if exist('ROIs' filesep 'Vectors', 'dir') ~= 7
-    mkdir('ROIs' filesep 'Vectors');
+if exist(['ROIs' filesep 'Vectors'], 'dir') ~= 7
+    mkdir(['ROIs' filesep 'Vectors']);
 end;
 
 for t = timepoints    

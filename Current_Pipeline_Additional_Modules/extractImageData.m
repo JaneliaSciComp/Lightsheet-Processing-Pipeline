@@ -1,11 +1,11 @@
-imageSourceFolder  = 'E:' filesep 'Mouse Development' filesep 'Divisions' filesep 'Time-Lapse Image Stacks';
-divisionSourceFile = 'E:' filesep 'Mouse Development' filesep 'Divisions' filesep 'Division Annotations\divisionAnnotations.mat';
+imageSourceFolder  = ['E:' filesep 'Mouse Development' filesep 'Divisions' filesep 'Time-Lapse Image Stacks'];
+divisionSourceFile = ['E:' filesep 'Mouse Development' filesep 'Divisions' filesep 'Division Annotations\divisionAnnotations.mat'];
 
-divisionStacksTimeSeriesOutputFolder      = 'E:' filesep 'Mouse Development' filesep 'Divisions' filesep 'Division Stacks Time Series';
-divisionStacksSnapshotsOutputFolder       = 'E:' filesep 'Mouse Development' filesep 'Divisions' filesep 'Division Stacks Snapshots';
-divisionProjectionsTimeSeriesOutputFolder = 'E:' filesep 'Mouse Development' filesep 'Divisions' filesep 'Division Projections Time Series';
-divisionProjectionsSnapshotsOutputFolder  = 'E:' filesep 'Mouse Development' filesep 'Divisions' filesep 'Division Projections Snapshots';
-divisionOverviewOutputFolder              = 'E:' filesep 'Mouse Development' filesep 'Divisions' filesep 'Division Annotations Visualization';
+divisionStacksTimeSeriesOutputFolder      = ['E:' filesep 'Mouse Development' filesep 'Divisions' filesep 'Division Stacks Time Series'];
+divisionStacksSnapshotsOutputFolder       = ['E:' filesep 'Mouse Development' filesep 'Divisions' filesep 'Division Stacks Snapshots'];
+divisionProjectionsTimeSeriesOutputFolder = ['E:' filesep 'Mouse Development' filesep 'Divisions' filesep 'Division Projections Time Series'];
+divisionProjectionsSnapshotsOutputFolder  = ['E:' filesep 'Mouse Development' filesep 'Divisions' filesep 'Division Projections Snapshots'];
+divisionOverviewOutputFolder              = ['E:' filesep 'Mouse Development' filesep 'Divisions' filesep 'Division Annotations Visualization'];
 
 specimen   = 0;
 timepoints = 0:531;

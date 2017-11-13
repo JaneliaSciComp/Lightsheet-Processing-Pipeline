@@ -2,8 +2,8 @@
 
 timepoints   = 0:350;
 
-inputDir     = 'R:' filesep 'SV1' filesep 'KM_15-12-05' filesep 'Mmu_E1_mKate2' filesep 'Results' filesep 'TimeFused.Corrected' filesep;
-outputDir    = 'R:' filesep 'SV1' filesep 'KM_15-12-05' filesep 'Mmu_E1_mKate2' filesep 'Results' filesep 'TimeFused.Corrected.Masks' filesep;
+inputDir     = ['R:' filesep 'SV1' filesep 'KM_15-12-05' filesep 'Mmu_E1_mKate2' filesep 'Results' filesep 'TimeFused.Corrected' filesep];
+outputDir    = ['R:' filesep 'SV1' filesep 'KM_15-12-05' filesep 'Mmu_E1_mKate2' filesep 'Results' filesep 'TimeFused.Corrected.Masks' filesep];
 header       = 'Mmu_E1_mKate2';
 footer       = '_timeFused_blending';
 stackLabel   = '.corrected.shifted';

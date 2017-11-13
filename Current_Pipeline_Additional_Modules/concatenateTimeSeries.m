@@ -1,5 +1,5 @@
-inputRoot1 = 'R:' filesep 'SV1' filesep 'KM_15-10-26' filesep 'Mmu_E1_mKate2_20151026_180901.corrected' filesep 'Results' filesep 'TimeFused.Corrected';
-inputRoot2 = 'R:' filesep 'SV1' filesep 'KM_15-10-26' filesep 'Mmu_E1_mKate2_20151027_121216.corrected' filesep 'Results' filesep 'TimeFused.Corrected';
+inputRoot1 = ['R:' filesep 'SV1' filesep 'KM_15-10-26' filesep 'Mmu_E1_mKate2_20151026_180901.corrected' filesep 'Results' filesep 'TimeFused.Corrected'];
+inputRoot2 = ['R:' filesep 'SV1' filesep 'KM_15-10-26' filesep 'Mmu_E1_mKate2_20151027_121216.corrected' filesep 'Results' filesep 'TimeFused.Corrected'];
 
 inputTimepoints1 = 0:270;
 inputTimepoints2 = 0:378;
@@ -16,7 +16,7 @@ projFooterYZ = '_CM00_CM01_CHN00.fusedStack_yzProjection.corrected.klb';
 zLowExpansion  = 198;
 zHighExpansion = 111;
 
-outputRoot = 'R:' filesep 'SV1' filesep 'KM_15-10-26' filesep 'Mmu_E1_mKate2_Combined.corrected' filesep 'Results' filesep 'TimeFused.Corrected';
+outputRoot = ['R:' filesep 'SV1' filesep 'KM_15-10-26' filesep 'Mmu_E1_mKate2_Combined.corrected' filesep 'Results' filesep 'TimeFused.Corrected'];
 
 poolWorkers = 12;
 

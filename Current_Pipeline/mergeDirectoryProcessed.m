@@ -1,9 +1,9 @@
 %% parameters
 
-sourceDirectory  = 'D:' filesep 'Temp' filesep 'Dme_L2_57C10-GCaMP641-0_20140104_143744.corrected' filesep 'SPM00' filesep 'TM??????';
+sourceDirectory  = ['D:' filesep 'Temp' filesep 'Dme_L2_57C10-GCaMP641-0_20140104_143744.corrected' filesep 'SPM00' filesep 'TM??????'];
 sourceTimepoints = 0:10;
 
-targetDirectory  = 'D:' filesep 'Temp' filesep 'Dme_L1_57C10-GCaMP641_0_20140104_114246.corrected' filesep 'SPM00' filesep 'TM??????';
+targetDirectory  = ['D:' filesep 'Temp' filesep 'Dme_L1_57C10-GCaMP641_0_20140104_114246.corrected' filesep 'SPM00' filesep 'TM??????'];
 targetTimepoints = 11:21;
 
 stampDigits      = 6;

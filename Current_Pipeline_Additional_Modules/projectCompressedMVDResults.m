@@ -4,8 +4,8 @@ if exist('ProjectionsMVD', 'dir') ~= 7
     mkdir('ProjectionsMVD');
 end;
 
-if exist('ProjectionsMVD' filesep 'Frames', 'dir') ~= 7
-    mkdir('ProjectionsMVD' filesep 'Frames');
+if exist(['ProjectionsMVD' filesep 'Frames'], 'dir') ~= 7
+    mkdir(['ProjectionsMVD' filesep 'Frames']);
 end;
 
 frames = cell(numel(timepoints), 6);
@@ -84,7 +84,7 @@ for i = 1:numel(timepoints)
     intensity(i, 2:6, 2) = [min(frames{i, 1}(:)), prctile(frames{i, 1}(:), 10), median(frames{i, 1}(:)), prctile(frames{i, 1}(:), 99.9), max(frames{i, 1}(:))];
 end;
 
-save('ProjectionsMVD' filesep 'IntensityStatistics.mat', 'intensity');
+save(['ProjectionsMVD' filesep 'IntensityStatistics.mat'], 'intensity');
 
 disp('writing projection overlay stacks');
 
@@ -103,17 +103,17 @@ for c = 1:6
     
     switch c
         case 1
-            outputName = 'ProjectionsMVD' filesep 'MVD_SmallPSF_iter20.overlay_xy';
+            outputName = ['ProjectionsMVD' filesep 'MVD_SmallPSF_iter20.overlay_xy'];
         case 2
-            outputName = 'ProjectionsMVD' filesep 'MVD_SmallPSF_iter20.overlay_xz';
+            outputName = ['ProjectionsMVD' filesep 'MVD_SmallPSF_iter20.overlay_xz'];
         case 3
-            outputName = 'ProjectionsMVD' filesep 'MVD_SmallPSF_iter20.overlay_yz';
+            outputName = ['ProjectionsMVD' filesep 'MVD_SmallPSF_iter20.overlay_yz'];
         case 4
-            outputName = 'ProjectionsMVD' filesep 'MVD_LargePSF_iter50.overlay_xy';
+            outputName = ['ProjectionsMVD' filesep 'MVD_LargePSF_iter50.overlay_xy'];
         case 5
-            outputName = 'ProjectionsMVD' filesep 'MVD_LargePSF_iter50.overlay_xz';
+            outputName = ['ProjectionsMVD' filesep 'MVD_LargePSF_iter50.overlay_xz'];
         case 6
-            outputName = 'ProjectionsMVD' filesep 'MVD_LargePSF_iter50.overlay_yz';
+            outputName = ['ProjectionsMVD' filesep 'MVD_LargePSF_iter50.overlay_yz'];
     end;
     
     writeImage(projections, [outputName '.klb']);

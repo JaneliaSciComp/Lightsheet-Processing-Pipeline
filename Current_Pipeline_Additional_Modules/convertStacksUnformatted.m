@@ -1,7 +1,7 @@
-inputString1  = 'V:' filesep 'SV1' filesep 'KM_15-08-10\ngc' filesep 'WeightedXRestrictedRawCentroidTiltedZones' filesep 'SPM00_TM';
+inputString1  = ['V:' filesep 'SV1' filesep 'KM_15-08-10\ngc' filesep 'WeightedXRestrictedRawCentroidTiltedZones' filesep 'SPM00_TM'];
 inputString3  = '_CM00_CHN';
 inputString4  = '.weighted_xRestrictedRawCentroidsTiltedZones.klb_dec_LR_multiGPU_FWHMpsfZ_05_iter20_lambdaTV000000.klb';
-outputFolder  = 'V:' filesep 'SV1' filesep 'KM_15-08-10\ngc' filesep 'Downsampled';
+outputFolder  = ['V:' filesep 'SV1' filesep 'KM_15-08-10\ngc' filesep 'Downsampled'];
 timepoints    = 0:278;
 channels      = 0;
 resolution    = [6.5/16 6.5/16 6.5/16];

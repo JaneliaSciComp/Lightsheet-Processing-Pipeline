@@ -13,13 +13,13 @@ FNSearchThreshold  = 0.1;
 processAnnotations = 1;
 processPredictions = 1;
 
-dataFolder        = 'E:' filesep 'Mouse Development' filesep 'Division Detection' filesep 'MK5 Sparse';
+dataFolder        = ['E:' filesep 'Mouse Development' filesep 'Division Detection' filesep 'MK5 Sparse'];
 
-imagePathSegment1 = 'X:' filesep 'SV1' filesep '14-05-21' filesep 'Mmu_E1_CAGTAG1.corrected' filesep 'Results' filesep 'TimeFused.Corrected' filesep 'Mmu_E1_CAGTAG1.TM';
-imagePathSegment2 = '_timeFused_blending' filesep 'SPM00_TM';
+imagePathSegment1 = ['X:' filesep 'SV1' filesep '14-05-21' filesep 'Mmu_E1_CAGTAG1.corrected' filesep 'Results' filesep 'TimeFused.Corrected' filesep 'Mmu_E1_CAGTAG1.TM'];
+imagePathSegment2 = ['_timeFused_blending' filesep 'SPM00_TM'];
 imagePathSegment3 = '_CM00_CM01_CHN00.fusedStack.corrected.shifted.klb';
 
-outputFolder      = 'E:' filesep 'Mouse Development' filesep 'Division Detection' filesep 'MK5 Inspection';
+outputFolder      = ['E:' filesep 'Mouse Development' filesep 'Division Detection' filesep 'MK5 Inspection'];
 
 saveVolumes       = 0;
 saveProjections   = 1;

@@ -1,7 +1,7 @@
 timepoints = 0:278;
 forceOverwrite = 0;
 
-roiRootFolder = 'V:' filesep 'SV1' filesep 'KM_15-08-10' filesep 'Mmu_E1_mKate2_20150810_160708.corrected.registered' filesep 'ROIs' filesep 'Vectors';
+roiRootFolder = ['V:' filesep 'SV1' filesep 'KM_15-08-10' filesep 'Mmu_E1_mKate2_20150810_160708.corrected.registered' filesep 'ROIs' filesep 'Vectors'];
 
 headers = {...
     'SPM00_TM';...

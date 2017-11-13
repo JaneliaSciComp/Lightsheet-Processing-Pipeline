@@ -1,6 +1,6 @@
 timepoints = 0:278;
 
-rootFolder = 'V:' filesep 'SV1' filesep 'KM_15-08-10' filesep 'Mmu_E1_mKate2_20150810_160708.corrected.registered';
+rootFolder = ['V:' filesep 'SV1' filesep 'KM_15-08-10' filesep 'Mmu_E1_mKate2_20150810_160708.corrected.registered'];
 
 headers = {...
     'SPM00_TM';...

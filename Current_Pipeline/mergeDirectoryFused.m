@@ -1,9 +1,9 @@
 %% parameters
 
-sourceDirectory  = 'D:' filesep 'Temp' filesep 'Mmu_E1_CAGTAG1_01_23_20140122_154407.corrected' filesep 'Results' filesep 'MultiFused' filesep 'Mmu_E1_CAGTAG1.TM??????_multiFused_blending';
+sourceDirectory  = ['D:' filesep 'Temp' filesep 'Mmu_E1_CAGTAG1_01_23_20140122_154407.corrected' filesep 'Results' filesep 'MultiFused' filesep 'Mmu_E1_CAGTAG1.TM??????_multiFused_blending'];
 sourceTimepoints = 0:8;
 
-targetDirectory  = 'D:' filesep 'Temp' filesep 'Mmu_E1_CAGTAG1_01_23_20140121_141339.corrected' filesep 'Results' filesep 'MultiFused' filesep 'Mmu_E1_CAGTAG1.TM??????_multiFused_blending';
+targetDirectory  = ['D:' filesep 'Temp' filesep 'Mmu_E1_CAGTAG1_01_23_20140121_141339.corrected' filesep 'Results' filesep 'MultiFused' filesep 'Mmu_E1_CAGTAG1.TM??????_multiFused_blending'];
 targetTimepoints = (6 + 0):(6 + 8);
 
 stampDigits      = 6;

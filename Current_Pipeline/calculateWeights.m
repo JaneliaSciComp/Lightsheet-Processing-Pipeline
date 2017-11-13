@@ -26,15 +26,15 @@
 % 6) Add artificial drift vectors back to smoothed version of baseline-corrected
 %    centroid trajectories (i.e. smoothed data is converted back to image space)
 
-% 7) Compute masks with “fading zones” (smooth transition from 1 to 0, possibly
+% 7) Compute masks with ï¿½fading zonesï¿½ (smooth transition from 1 to 0, possibly
 %    testing linear/sigmoidal/exponential transitions) positioned relative to centroids
 %    determined in step (6), thus producing masks that allow us to prevent the contribution
 %    of blurry regions in each view to MVD results
 
 %% Configuration
 
-dataFolder       = 'S:' filesep 'SiMView1' filesep '15-08-10' filesep 'Mmu_E1_mKate2_20150810_160708.corrected'; % image data input folder
-metaFolder       = 'S:' filesep 'SiMView1' filesep '15-08-10' filesep 'SpecimenTrackingFiles' filesep 'Tracking_160708';   % meta data input folder (SiMView specimen tracking)
+dataFolder       = ['S:' filesep 'SiMView1' filesep '15-08-10' filesep 'Mmu_E1_mKate2_20150810_160708.corrected']; % image data input folder
+metaFolder       = ['S:' filesep 'SiMView1' filesep '15-08-10' filesep 'SpecimenTrackingFiles' filesep 'Tracking_160708'];   % meta data input folder (SiMView specimen tracking)
                                                                                    % set to '' if specimen tracking and z-range exansion logs are not available
 inputIdentifier  = 'unmasked_r5_d3_e2';                                            % identification string used in file names for input data
 outputIdentifier = 'unmasked_r5_d3_e2.threshold_0.2';                              % identification string used in file names for output data
@@ -113,7 +113,7 @@ if ~isempty(metaFolder)
             if ~ischar(s)
                 break;
             end;
-            m = regexp(s, filesep 't', 'split');
+            m = regexp(s, '\t', 'split');
             if numel(m) == 15 && ~strcmp(m{1}, 'Time') && strcmp(m{3}, '0') && strcmp(m{4}, 'X/Z')
                 currentTime = str2double(m{1});
                 currentSpecimen = str2double(m{2});

@@ -42,7 +42,7 @@ for i = 1:numel(candidates)
         i) = frames{i, 1};
 end;
 
-writeImage(xyOverlays, 'Overlays' filesep 'xyCroppedOverlays.klb');
+writeImage(xyOverlays, ['Overlays' filesep 'xyCroppedOverlays.klb']);
 
 yMax = max(sizeArray(:, 3));
 zMax = max(sizeArray(:, 4));
@@ -56,4 +56,4 @@ for i = 1:numel(candidates)
         i) = frames{i, 2};
 end;
 
-writeImage(yzOverlays, 'Overlays' filesep 'yzCroppedOverlays.klb');
+writeImage(yzOverlays, ['Overlays' filesep 'yzCroppedOverlays.klb']);

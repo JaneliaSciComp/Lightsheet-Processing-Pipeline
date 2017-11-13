@@ -9,8 +9,8 @@ if exist('ProjectionsFusion', 'dir') ~= 7
     mkdir('ProjectionsFusion');
 end;
 
-if exist('ProjectionsFusion' filesep 'Frames', 'dir') ~= 7
-    mkdir('ProjectionsFusion' filesep 'Frames');
+if exist(['ProjectionsFusion' filesep 'Frames'], 'dir') ~= 7
+    mkdir(['ProjectionsFusion' filesep 'Frames']);
 end;
 
 for t = 1:numel(timepoints)

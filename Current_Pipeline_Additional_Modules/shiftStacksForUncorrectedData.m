@@ -40,13 +40,13 @@
 % channels      = 0:1;
 % copyLocation  = 'E:' filesep 'Mouse Development' filesep 'Time-Lapse Registration' filesep '16-12-15 Temporal Registration Assessment' filesep 'TimeFused.Geometric.Shifted.Projections';
 
-shiftsName    = 'Shift Data' filesep 'shifts_161215.mat';
-inputString1  = 'R:' filesep 'SV1' filesep 'KM_16-12-15' filesep 'Mmu_E1_Fucci2_01_20161215_185256.corrected' filesep 'Results' filesep 'TimeFused.Wavelet' filesep 'Mmu_E1_Fucci2.TM';
-inputString2  = '_timeFused_wavelet' filesep 'SPM00_TM';
+shiftsName    = ['Shift Data' filesep 'shifts_161215.mat'];
+inputString1  = ['R:' filesep 'SV1' filesep 'KM_16-12-15' filesep 'Mmu_E1_Fucci2_01_20161215_185256.corrected' filesep 'Results' filesep 'TimeFused.Wavelet' filesep 'Mmu_E1_Fucci2.TM'];
+inputString2  = ['_timeFused_wavelet' filesep 'SPM00_TM'];
 allTimepoints = 0:192;
 timeSelection = 0:192;
 channels      = 0:1;
-copyLocation  = 'E:' filesep 'Mouse Development' filesep 'Time-Lapse Registration' filesep '16-12-15 Temporal Registration Assessment' filesep 'TimeFused.Wavelet.Shifted.Projections';
+copyLocation  = ['E:' filesep 'Mouse Development' filesep 'Time-Lapse Registration' filesep '16-12-15 Temporal Registration Assessment' filesep 'TimeFused.Wavelet.Shifted.Projections'];
 
 inputString3  = '_CM00_CM01_CHN';
 inputString4  = '.fusedStack.klb';              % assumption in code below: stack name ends on 'corrected.klb'

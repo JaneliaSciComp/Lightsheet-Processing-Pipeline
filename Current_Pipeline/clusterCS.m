@@ -1,7 +1,7 @@
 %% parameters
 
 inputRoot        = '/groups/lightsheet/lightsheet/home/ackermand/Lightsheet_Data/Paper/Supplementary_Data_2/Image_Data.MultiFused/';%'X:\SiMView2\13-12-30\Pha_E1_H2BRFP_01_20131230_140802.corrected\Results\MultiFused';
-outputRoot       = '/groups/lightsheet/lightsheet/home/ackermand/Lightsheet_Data/Paper/Supplementary_Data_2/Image_Data.MultiFused.Corrected/';%'X:\SiMView2\13-12-30\Pha_E1_H2BRFP_01_20131230_140802.corrected\Results\MultiFused.Corrected';
+outputRoot       = '/groups/lightsheet/lightsheet/home/ackermand/Lightsheet_Data/Paper/Supplementary_Data_2/ForTimeLapseMovie/Image_Data.MultiFused.Corrected/';%'X:\SiMView2\13-12-30\Pha_E1_H2BRFP_01_20131230_140802.corrected\Results\MultiFused.Corrected';
 headerPattern    = 'Dme_E1_H2ARFP.TM??????_multiFused_blending/'; %'Pha_E1_H2BRFP.TM??????_multiFused_blending\';
 filePattern      = 'SPM00_TM??????_CM00_CM01_CHN00_CHN01.fusedStack'; % 'SPM00_TM??????_CM00_CM01_CHN00_CHN01.fusedStack';
 configRoot       = '/groups/lightsheet/lightsheet/home/ackermand/Lightsheet_Data/Paper/Supplementary_Data_2/Scripts/SPM00_CM00_CM01_CHN00_CHN01_stackCorrection';%'X:\SiMView2\13-12-30\Pha_E1_H2BRFP_01_20131230_140802.corrected\Scripts\SPM00_CM00_CM01_CHN00_CHN01_stackCorrection';
@@ -13,7 +13,7 @@ percentile       = [1 10]; % [percentileFlag, subsampling], percentileFlag - 0: 
 inputType        = 0;      % 0: input data in KLB format
                            % 1: input data in JP2 format
                            % 2: input data in TIF format
-outputType       = 0;      % 0: output data saved in KLB format
+outputType       = 2;      % 0: output data saved in KLB format
                            % 1: output data saved in JP2 format
                            % 2: output data saved in TIF format
 

@@ -119,16 +119,16 @@
 % timeSelection = 0:350;
 % channels      = 0;
 
-shiftsName    = 'Shift Data' filesep 'shifts_160616.mat';
-inputString1  = 'R:' filesep 'SV1' filesep 'KM_16-06-16' filesep 'Mmu_E1_TmCherryxH2BeGFP_20160616_155129.corrected' filesep 'Results' filesep 'TimeFused.Corrected' filesep 'Mmu_E1_TmCherryxH2BeGFP.TM';
+shiftsName    = ['Shift Data' filesep 'shifts_160616.mat'];
+inputString1  = ['R:' filesep 'SV1' filesep 'KM_16-06-16' filesep 'Mmu_E1_TmCherryxH2BeGFP_20160616_155129.corrected' filesep 'Results' filesep 'TimeFused.Corrected' filesep 'Mmu_E1_TmCherryxH2BeGFP.TM';]
 allTimepoints = 0:300;
 timeSelection = 0:300;
 channels      = 0:1;
-copyLocation  = 'E:' filesep 'Mouse Development' filesep 'Time-Lapse Registration' filesep '16-06-16 Temporal Registration Assessment' filesep 'TimeFused.Corrected.Master.Shifted.Projections';
+copyLocation  = ['E:' filesep 'Mouse Development' filesep 'Time-Lapse Registration' filesep '16-06-16 Temporal Registration Assessment' filesep 'TimeFused.Corrected.Master.Shifted.Projections'];
 
 %% general parameters
 
-inputString2  = '_timeFused_blending' filesep 'SPM00_TM';
+inputString2  = ['_timeFused_blending' filesep 'SPM00_TM'];
 inputString3  = '_CM00_CM01_CHN';
 inputString4  = '.fusedStack.corrected.klb';              % assumption in code below: stack name ends on 'corrected.klb'
 projString1   = '.fusedStack_xyProjection.corrected.klb'; % assumption in code below: projection name ends on 'corrected.klb'

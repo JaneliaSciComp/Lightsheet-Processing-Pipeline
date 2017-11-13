@@ -1,12 +1,12 @@
-inputFolder      = 'R:' filesep 'SV1' filesep 'KM_16-07-23' filesep 'Mmu_E1_GFPLifeactxmKate2nls_20160723_142607.corrected' filesep 'Results' filesep 'TimeFused.Corrected';
+inputFolder      = ['R:' filesep 'SV1' filesep 'KM_16-07-23' filesep 'Mmu_E1_GFPLifeactxmKate2nls_20160723_142607.corrected' filesep 'Results' filesep 'TimeFused.Corrected'];
 inputHeader      = 'Mmu_E1_GFPLifeactxmKate2nls.TM';
 inputFooter      = '_timeFused_blending';
 inputFileHeader  = 'SPM00_TM';
 inputFileMiddle  = '_CM00_CM01_CHN';
 inputFileFooter  = '.fusedStack.corrected.shifted.iso.klb';
 
-masksFolder      = 'R:' filesep 'SV1' filesep 'KM_16-07-23' filesep 'Mmu_E1_GFPLifeactxmKate2nls_20160723_142607.corrected' filesep 'Results' filesep 'Peeling' filesep 'Masks.T9';
-shellsFolder     = 'R:' filesep 'SV1' filesep 'KM_16-07-23' filesep 'Mmu_E1_GFPLifeactxmKate2nls_20160723_142607.corrected' filesep 'Results' filesep 'Peeling' filesep 'Shells.T9.ThetaAP';
+masksFolder      = ['R:' filesep 'SV1' filesep 'KM_16-07-23' filesep 'Mmu_E1_GFPLifeactxmKate2nls_20160723_142607.corrected' filesep 'Results' filesep 'Peeling' filesep 'Masks.T9'];
+shellsFolder     = ['R:' filesep 'SV1' filesep 'KM_16-07-23' filesep 'Mmu_E1_GFPLifeactxmKate2nls_20160723_142607.corrected' filesep 'Results' filesep 'Peeling' filesep 'Shells.T9.ThetaAP'];
 
 timePoints       = 0:265;
 masterChannels   = 0;

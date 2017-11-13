@@ -1,8 +1,8 @@
-inputString1  = 'R:' filesep 'SV1' filesep 'KM_16-06-16' filesep 'Mmu_E1_TmCherryxH2BeGFP_20160616_155129.corrected' filesep 'Results' filesep 'TimeFused.Corrected' filesep 'Mmu_E1_TmCherryxH2BeGFP.TM';
-inputString2  = '_timeFused_blending' filesep 'SPM00_TM';
+inputString1  = ['R:' filesep 'SV1' filesep 'KM_16-06-16' filesep 'Mmu_E1_TmCherryxH2BeGFP_20160616_155129.corrected' filesep 'Results' filesep 'TimeFused.Corrected' filesep 'Mmu_E1_TmCherryxH2BeGFP.TM'];
+inputString2  = ['_timeFused_blending' filesep 'SPM00_TM'];
 inputString3  = '_CM00_CM01_CHN';
 inputString4  = '.fusedStack.corrected.shifted.klb';
-outputFolder  = 'R:' filesep 'SV1' filesep 'KM_16-06-16' filesep 'Mmu_E1_TmCherryxH2BeGFP_20160616_155129.corrected' filesep 'Results' filesep 'Downsampled';
+outputFolder  = ['R:' filesep 'SV1' filesep 'KM_16-06-16' filesep 'Mmu_E1_TmCherryxH2BeGFP_20160616_155129.corrected' filesep 'Results' filesep 'Downsampled'];
 timepoints    = 0:300;
 channels      = 0:1;
 resolution    = [6.5/16 6.5/16 6.5/16*5];

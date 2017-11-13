@@ -1,9 +1,9 @@
 %% configuration
 
-logFilename  = 'T:' filesep 'SiMView1' filesep '15-04-21' filesep 'Scripts' filesep 'createMasks.processingLogs_SPM0.mat';
+logFilename  = ['T:' filesep 'SiMView1' filesep '15-04-21' filesep 'Scripts' filesep 'createMasks.processingLogs_SPM0.mat'];
               %'T:' filesep 'SiMView1' filesep '15-04-21' filesep 'Scripts' filesep 'createMasks.processingLogs_SPM1.mat';
 
-dataFolder   = 'S:' filesep 'SiMView1' filesep '15-04-21' filesep 'Mmu_E1_mKate2_20150421_143006.corrected';
+dataFolder   = ['S:' filesep 'SiMView1' filesep '15-04-21' filesep 'Mmu_E1_mKate2_20150421_143006.corrected'];
 specimen     = 0;
               %1;
 
@@ -13,7 +13,7 @@ cameras      = 0:1;
 
 identifier   = 'unmasked_r5_d3_e2.threshold_0.2'; % identification string used in file names for calculateWeights output data
 
-outputFolder = 'T:' filesep 'SiMView1' filesep '15-04-21' filesep 'Scripts' filesep 'WeightedStackProjections.SPM0';
+outputFolder = ['T:' filesep 'SiMView1' filesep '15-04-21' filesep 'Scripts' filesep 'WeightedStackProjections.SPM0'];
               %'T:' filesep 'SiMView1' filesep '15-04-21' filesep 'Scripts' filesep 'WeightedStackProjections.SPM1';
 
 background   = [1 100];

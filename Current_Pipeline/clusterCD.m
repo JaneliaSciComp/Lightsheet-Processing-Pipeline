@@ -11,7 +11,7 @@ forceZero    = [1 20];   % if first value is 1, overwrites signal stack voxels w
 medianFlag   = 0;        % flag for generating and saving median-filtered dF/F stacks and their projections
 kernelSize   = 3;        % kernel size of median filter, only required if medianFlag == 1
 
-inputString  = 'X:' filesep 'SiMView2' filesep '14-01-04' filesep 'Dme_L1_57C10-GCaMP641_0_20140104_114246.corrected' filesep 'Results' filesep 'TimeFused';
+inputString  = ['X:' filesep 'SiMView2' filesep '14-01-04' filesep 'Dme_L1_57C10-GCaMP641_0_20140104_114246.corrected' filesep 'Results' filesep 'TimeFused'];
 header       = 'Dme_L1_57C10-GCaMP641'; % only required for dataType == 1
 footer       = '_timeFused_blending';   % only required for dataType == 1
 dataType     = 1;                       % 0: unfused processed data (output of clusterPT), 1: fused processed data (output of clusterMF or clusterTF)
