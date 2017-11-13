@@ -30,6 +30,7 @@ inputType    = 0;                   % 0: input data in TIF format
 outputType   = 0;                   % 0: output data saved in KLB format
                                     % 1: output data saved in JP2 format
                                     % 2: output data saved in TIF format
+correctTIFF  = 0;                   % 0: never transpose output data, 1: transpose output data if TIFF parity is odd
 
 rotationFlag = 0;                   % 0: do not rotate image stacks, 1: rotate image stacks by 90 degrees clockwise, -1: rotate image stacks by 90 degrees counter-clockwise
 medianRange  = [3 3];               % kernel x/y-size for median filter for dead pixel detection and removal
@@ -38,6 +39,8 @@ percentile   = [1 5 100];           % slot 1: background percentile for mask cal
                                     % slot 3: volume sub-sampling for background estimation
 
 segmentFlag  = 1;                   % 0: do not remove background in output stacks, 1: remove background in output stacks (default)
+flipHFlag    = 0;                   % indicates whether the stack recorded with the second camera should be flipped horizontally
+flipVFlag    = 0;                   % indicates whether the stack recorded with the second camera should be flipped vertically
 splitting    = 10;                  % level of stack splitting when performing Gauss convolution
 kernelSize   = 5;                   % Gauss kernel size
 kernelSigma  = 2;                   % Gauss kernel sigma

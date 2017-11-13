@@ -45,6 +45,7 @@ inputType    = input_parameters.inputType;   % 0: input data in TIF format
 outputType   = input_parameters.outputType;  % 0: output data saved in KLB format
                                              % 1: output data saved in JP2 format
                                              % 2: output data saved in TIF format
+correctTIFF  = input_parameters.correctTIFF; % 0: never transpose output data, 1: transpose output data if TIFF parity is odd
 
 rotationFlag = input_parameters.rotationFlag;% 0: do not rotate image stacks, 1: rotate image stacks by 90 degrees clockwise, -1: rotate image stacks by 90 degrees counter-clockwise
 medianRange  = input_parameters.medianRange; % kernel x/y-size for median filter for dead pixel detection and removal
@@ -53,6 +54,8 @@ percentile   = input_parameters.percentile;  % slot 1: background percentile for
                                              % slot 3: volume sub-sampling for background estimation
 
 segmentFlag  = input_parameters.segmentFlag; % 0: do not remove background in output stacks, 1: remove background in output stacks (default)
+flipHFlag    = input_parameters.flipHFlag;   % indicates whether the stack recorded with the second camera should be flipped horizontally
+flipVFlag    = input_parameters.flipVFlag;   % indicates whether the stack recorded with the second camera should be flipped vertically
 splitting    = input_parameters.splitting;   % level of stack splitting when performing Gauss convolution
 kernelSize   = input_parameters.kernelSize;  % Gauss kernel size
 kernelSigma  = input_parameters.kernelSigma; % Gauss kernel sigma
