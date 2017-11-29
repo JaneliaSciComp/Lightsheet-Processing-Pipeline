@@ -1,20 +1,19 @@
-function clusterPT_fn(fn)
+function clusterPT_fn(filename, timepoints_per_node, job_number)
 %% parameters
 % read json input
-input_parameters = loadjson(fileread(fn));
-
+%distcomp.feature( 'LocalUseMpiexec', false );
+input_parameters = loadjson(fileread(filename));
 if input_parameters.verbose
-    disp(['Using input file: ' fn]);
-    disp(['First section:' num2str(input_parameters.first_section)]);
-    disp(['Last section:' num2str(input_parameters.last_section)]);
-    disp('Using solver options:');disp(input_parameters.solver_options);
-    disp('Using source collection:');disp(input_parameters.source_collection);
-    disp('Using target collection:');disp(input_parameters.target_collection);
-    for i = 1:numel(input_parameters.source_point_match_collection)
-        disp('Using point-match collection:');disp(input_parameters.source_point_match_collection(i));
-    end
+    disp(['Using input file: ' filename]);
+    disp(input_parameters)
 end
-
+if nargin == 3
+    timepoints_per_node = str2double(timepoints_per_node);
+    job_number = str2double(job_number);
+    start_timepoint_index = timepoints_per_node*(job_number-1) + 1;
+    end_timepoint_index = min(timepoints_per_node*job_number, numel(input_parameters.timepoints));
+    input_parameters.timepoints = input_parameters.timepoints(start_timepoint_index:end_timepoint_index);
+end
 % root folder with raw data
 inputFolder  = input_parameters.inputFolder;
 outputLabel  = input_parameters.outputLabel;
