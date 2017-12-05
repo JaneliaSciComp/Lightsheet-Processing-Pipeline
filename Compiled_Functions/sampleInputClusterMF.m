@@ -71,7 +71,7 @@ input_parameters.jobMemory    = [1 0];     % slot 1: flag for automated memory m
 
 input_parameters.coreMemory   = floor(((96 - 8) * 1024) / (12 * 1024)); % memory boundary for switching from parametric to memory-managed submission (in GB)
 %%
-fn = [pwd '/sampleClusterMFInput.json'];
+fn = [pwd '/sampleInputClusterMF.json'];
 str = savejson('', input_parameters);
 fid = fopen(fn,'w');
 fprintf(fid,str);

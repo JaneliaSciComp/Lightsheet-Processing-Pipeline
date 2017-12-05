@@ -60,7 +60,7 @@ input_parameters.coreMemory   = floor(((96 - 8) * 1024) / (12 * 1024)); % memory
                           % DGA added globalMask                             
 input_parameters.globalMask   = [0 0];     % slot 1 provides flag for use of a global (constant) mask, slot 2 provides reference time point for global mask
 %%
-fn = [pwd '/sampleClusterTFInput.json'];
+fn = [pwd '/sampleInputClusterTF.json'];
 str = savejson('', input_parameters);
 fid = fopen(fn,'w');
 fprintf(fid,str);

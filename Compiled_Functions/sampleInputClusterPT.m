@@ -139,7 +139,7 @@ input_parameters.coreMemory   = floor(((96 - 8) * 1024) / (12 * 1024)); % memory
 % % % input_parameters.coreMemory   = floor(((96 - 8) * 1024) / (12 * 1024)); % memory boundary for switching from parametric to memory-managed submission (in GB)
 % % %                                                        % note: parameter is only required for cluster submission
 %%
-fn = [pwd '/sampleClusterPTInput.json'];
+fn = [pwd '/sampleInputClusterPT.json'];
 str = savejson('', input_parameters);
 fid = fopen(fn,'w');
 fprintf(fid,str);

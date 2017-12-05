@@ -1,106 +1,62 @@
+function localEC_fn(filename)
+
+input_parameters = loadjson(fileread(filename));
+if input_parameters.verbose
+    disp(['Using input file: ' filename]);
+    disp(input_parameters)
+end
+
 %% parameters
+%% from keller
+% % % 
+inputRoot        = input_parameters.inputRoot; %'X:' filesep 'SiMView1' filesep '14-01-21' filesep 'Mmu_E1_CAGTAG1_01_23_20140121_141339.corrected' filesep 'Results' filesep 'MultiFused';
+inputPattern     = input_parameters.inputPattern; %'Mmu_E1_CAGTAG1.TM??????_multiFused_blending' filesep 'SPM00_TM??????_CM00_CM01_CHN00_CHN01.fusedStack';
+configRoot       = input_parameters.configRoot; %'X:' filesep 'SiMView1' filesep '14-01-21' filesep 'Mmu_E1_CAGTAG1_01_23_20140121_141339.corrected' filesep 'Scripts' filesep 'SPM00_CM00_CM01_CHN00_CHN01_stackCorrection';
 
-inputRoot        = '/groups/lightsheet/lightsheet/home/ackermand/Lightsheet_Data/Paper/Supplementary_Data_2/Image_Data.MultiFused/';%'X:\SiMView2\13-12-30\Pha_E1_H2BRFP_01_20131230_140802.corrected\Results\MultiFused';
-inputPattern     = 'Dme_E1_H2ARFP.TM??????_multiFused_blending/SPM00_TM??????_CM00_CM01_CHN00_CHN01.fusedStack';%'Pha_E1_H2BRFP.TM??????_multiFused_blending\SPM00_TM??????_CM00_CM01_CHN00_CHN01.fusedStack';
-configRoot       = asdfadsf;%'X:\SiMView2\13-12-30\Pha_E1_H2BRFP_01_20131230_140802.corrected\Scripts\SPM00_CM00_CM01_CHN00_CHN01_stackCorrection';
+timepoints       = input_parameters.timepoints;%0:570;
+gamma            = input_parameters.gamma; %1;
+percentile       = input_parameters.percentile; %1;
 
-timepoints       = 0:10;%733;
-gamma            = 1;
-percentile       = 1;
-
-inputType        = 0;       % 0: input data in KLB format
-                            % 1: input data in JP2 format
-                            % 2: input data in TIF format
-outputType       = 0;       % 0: output data saved in KLB format
-                            % 1: output data saved in JP2 format
-                            % 2: output data saved in TIF format
+inputType        = input_parameters.inputType; %0;       % 0: input data in KLB format
+                                        % 1: input data in JP2 format
+                                        % 2: input data in TIF format
+outputType       = input_parameters.outputType; %0;       % 0: output data saved in KLB format
+                                        % 1: output data saved in JP2 format
+                                        % 2: output data saved in TIF format
 
 % configuration of intensity normalization
-intensityFlag    = 1;       % flag for enabling/disabling intensity normalization
-useStacks        = [1 10];  % 0: use projections for intensity estimate, 1: use stacks for intensity estimate (second parameter provides sub-sampling rate
-histogramBins    = 0:(2^16 - 1);
-threshold        = 10;      % threshold for histogram computation
-backgroundSlot   = 0;       % 0: no background correction, 1: top right, 2: bottom right, 3: bottom left, 4: top left
-backgroundEdge   = 100;     % edge size of the square used to estimate background levels from the image data
-backgroundDist   = 0;       % vertical/horizontal distance of background square from image reference point defined by backgroundSlot
-                            % note: the background square should be positioned in a part of the image without significant foreground content
-                            %       throughout the time-lapse experiment
+intensityFlag    = input_parameters.intensityFlag; %1;       % flag for enabling/disabling intensity normalization
+useStacks        = input_parameters.useStacks; %[1 10];  % 0: use projections for intensity estimate, 1: use stacks for intensity estimate (second parameter provides sub-sampling rate
+histogramBins    = input_parameters.histogramBins; %0:(2^16 - 1);
+threshold        = input_parameters.threshold; %10;      % threshold for histogram computation
+backgroundSlot   = input_parameters.backgroundSlot; %0;       % 0: no background correction, 1: top right, 2: bottom right, 3: bottom left, 4: top left
+backgroundEdge   = input_parameters.backgroundEdge; %100;
+backgroundDist   = input_parameters.backgroundDist; %0;
 
 % configuration of correlation-based drift correction
-correlationFlag  = 1;       % flag for enabling/disabling correlation-based drift correction
+correlationFlag  = input_parameters.correlationFlag; %1;       % flag for enabling/disabling correlation-based drift correction
 
 % configuration of global drift correction
-globalMode       = 1;       % 0: disable global drift correction
-                            % 1: automatic global drift correction based on geometrical center computation
-                            % 2: manual global correction using vectors provided for reference time points
+globalMode       = input_parameters.globalMode; %1;       % 0: disable global drift correction
+                                         % 1: automatic global drift correction based on geometrical center computation
+                                         % 2: manual global correction using vectors provided for reference time points
 
 % parameters required when globalMode == 1
-maskFactor       = 0.4;     % fraction of (mean - minimum) intensity that is used to create the thresholded image mask
-scaling          = 2.031 / (6.5 / 16); % axial step size <divided by> (pixel pitch <divided by> magnification)
-smoothing        = [1 20];  % smoothing flag ('rloess'), smoothing window size
-kernelSize       = 51;      % size of kernel used for Gaussian smoothing prior to thresholding
-kernelSigma      = 20;      % sigma of Gaussian smoothing kernel
-maskMinimum      = 1;       % percentile for minimum calculation (0 = true minimum)
-fraction         = 0.01;    % minimal object size in binary mask, set to 0 to disable bwareaopen (default value 10 ^ -5)
+maskFactor       = input_parameters.maskFactor; %0.4;
+scaling          = input_parameters.scaling; %2.031 / (6.5 / 16);
+smoothing        = input_parameters.smoothing; %[1 20];  % smoothing flag ('rloess'), smoothing window size
+kernelSize       = input_parameters.kernelSize; %51;
+kernelSigma      = input_parameters.kernelSigma; %20;
+maskMinimum      = input_parameters.maskMinimum; %1;       % percentile for minimum calculation (0 = true minimum)
+fraction         = input_parameters.fraction; %0.01;    % minimal object size in binary mask, set to 0 to disable bwareaopen (default value 10 ^ -5)
 
 % parameters required when globalMode == 2
-referenceDrift   = [...     % each row follows this structure: reference time point (slot 1), x-/y-/z-drift vector (slots 2-4), follows Matlab convention
-      0,  0,  0,  0; ...    % Note: at least two rows are required to enable manual global drift correction
-    100, 10, 20, 30];
+referenceDrift   = input_parameters.referenceDrift; %[...     % each row follows this structure: reference time point (slot 1), x-/y-/z-drift vector (slots 2-4), follows Matlab convention
+                                   % 0,  0,  0,  0; ...    % Note: at least two rows are required to enable manual global drift correction
+                                   % 100, 10, 20, 30];
 
-maxStampDigits   = 6;
-poolWorkers      = 0;       % use "0" to enable automated detection of available CPU cores
-%% from keller
-% % % %% parameters
-% % % 
-% % % inputRoot        = 'X:' filesep 'SiMView1' filesep '14-01-21' filesep 'Mmu_E1_CAGTAG1_01_23_20140121_141339.corrected' filesep 'Results' filesep 'MultiFused';
-% % % inputPattern     = 'Mmu_E1_CAGTAG1.TM??????_multiFused_blending' filesep 'SPM00_TM??????_CM00_CM01_CHN00_CHN01.fusedStack';
-% % % configRoot       = 'X:' filesep 'SiMView1' filesep '14-01-21' filesep 'Mmu_E1_CAGTAG1_01_23_20140121_141339.corrected' filesep 'Scripts' filesep 'SPM00_CM00_CM01_CHN00_CHN01_stackCorrection';
-% % % 
-% % % timepoints       = 0:570;
-% % % gamma            = 1;
-% % % percentile       = 1;
-% % % 
-% % % inputType        = 0;       % 0: input data in KLB format
-% % %                             % 1: input data in JP2 format
-% % %                             % 2: input data in TIF format
-% % % outputType       = 0;       % 0: output data saved in KLB format
-% % %                             % 1: output data saved in JP2 format
-% % %                             % 2: output data saved in TIF format
-% % % 
-% % % % configuration of intensity normalization
-% % % intensityFlag    = 1;       % flag for enabling/disabling intensity normalization
-% % % useStacks        = [1 10];  % 0: use projections for intensity estimate, 1: use stacks for intensity estimate (second parameter provides sub-sampling rate
-% % % histogramBins    = 0:(2^16 - 1);
-% % % threshold        = 10;      % threshold for histogram computation
-% % % backgroundSlot   = 0;       % 0: no background correction, 1: top right, 2: bottom right, 3: bottom left, 4: top left
-% % % backgroundEdge   = 100;
-% % % backgroundDist   = 0;
-% % % 
-% % % % configuration of correlation-based drift correction
-% % % correlationFlag  = 1;       % flag for enabling/disabling correlation-based drift correction
-% % % 
-% % % % configuration of global drift correction
-% % % globalMode       = 1;       % 0: disable global drift correction
-% % %                             % 1: automatic global drift correction based on geometrical center computation
-% % %                             % 2: manual global correction using vectors provided for reference time points
-% % % 
-% % % % parameters required when globalMode == 1
-% % % maskFactor       = 0.4;
-% % % scaling          = 2.031 / (6.5 / 16);
-% % % smoothing        = [1 20];  % smoothing flag ('rloess'), smoothing window size
-% % % kernelSize       = 51;
-% % % kernelSigma      = 20;
-% % % maskMinimum      = 1;       % percentile for minimum calculation (0 = true minimum)
-% % % fraction         = 0.01;    % minimal object size in binary mask, set to 0 to disable bwareaopen (default value 10 ^ -5)
-% % % 
-% % % % parameters required when globalMode == 2
-% % % referenceDrift   = [...     % each row follows this structure: reference time point (slot 1), x-/y-/z-drift vector (slots 2-4), follows Matlab convention
-% % %       0,  0,  0,  0; ...    % Note: at least two rows are required to enable manual global drift correction
-% % %     100, 10, 20, 30];
-% % % 
-% % % maxStampDigits   = 6;
-% % % poolWorkers      = 0;       % use "0" to enable automated detection of available CPU cores
+maxStampDigits   = input_parameters.maxStampDigits; %6;
+poolWorkers      = input_parameters.poolWorkers; %0;       % use "0" to enable automated detection of available CPU cores
 
 %% main loop
 

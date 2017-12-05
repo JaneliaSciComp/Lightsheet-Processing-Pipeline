@@ -18,7 +18,7 @@ input_parameters.averaging    = 0;      % 0 for mean, 1 for median
                        % DGA added
 input_parameters.staticFlag   = 0;      % 0 for time-dependent registration and intensity correction, 1 for static parameter set
 %%
-fn = [pwd '/sampleLocalAPInput.json'];
+fn = [pwd '/sampleInputLocalAP.json'];
 str = savejson('', input_parameters);
 fid = fopen(fn,'w');
 fprintf(fid,str);

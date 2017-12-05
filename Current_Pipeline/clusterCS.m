@@ -125,12 +125,12 @@ for n = 1:nTimepoints
     end;
 end;
 
-load([configRoot '\dimensions.mat']);
-load([configRoot '\dimensionsMax.mat']);
-load([configRoot '\dimensionsDeltas.mat']);
+load([configRoot filesep 'dimensions.mat']);
+load([configRoot filesep 'dimensionsMax.mat']);
+load([configRoot filesep 'dimensionsDeltas.mat']);
 
 if correctDrift
-    load([configRoot '\driftTable.mat']);
+    load([configRoot filesep 'driftTable.mat']);
     
     xOffsets = driftTable(:, 2);
     yOffsets = driftTable(:, 3);
