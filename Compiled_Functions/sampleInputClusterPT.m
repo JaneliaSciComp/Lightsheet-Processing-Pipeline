@@ -1,5 +1,5 @@
-clear all;
 %% keller-provided inputs
+input_parameters = [];
 input_parameters.inputFolder  = '/groups/lightsheet/lightsheet/home/ackermand/Lightsheet_Data/from_kellerp/Example Data/Mmu_E1_H2BeGFPxTmCherry_01_20170928_144039';
 input_parameters.outputLabel  = '';
 input_parameters.specimen     = 0;                   % specimen index to be processed
@@ -139,7 +139,7 @@ input_parameters.coreMemory   = floor(((96 - 8) * 1024) / (12 * 1024)); % memory
 % % % input_parameters.coreMemory   = floor(((96 - 8) * 1024) / (12 * 1024)); % memory boundary for switching from parametric to memory-managed submission (in GB)
 % % %                                                        % note: parameter is only required for cluster submission
 %%
-fn = [pwd '/sampleInputClusterPT.json'];
+fn = [pwd '/sampleInput_clusterPT.json'];
 str = savejson('', input_parameters);
 fid = fopen(fn,'w');
 fprintf(fid,str);

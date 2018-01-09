@@ -1,5 +1,5 @@
 %% parameters
-
+input_parameters = [];
 input_parameters.timepoints   = 0:50;
 input_parameters.references   = 0:50;
 
@@ -8,7 +8,7 @@ input_parameters.sourceString = '/groups/lightsheet/lightsheet/home/ackermand/Li
 input_parameters.outputString = '/groups/lightsheet/lightsheet/home/ackermand/Lightsheet_Data/from_kellerp/Example Data/Mmu_E1_H2BeGFPxTmCherry_01_20170928_144039.corrected.TimeFused/Mmu_E1_H2BeGFPxTmCherry_01_20170928_144039';
 input_parameters.inputID      = '_blending';
 input_parameters.outputID     = '_blending';
-input_parameters.lookUpTable  = 'SPM00_CM00_CM01_CHN00_CHN01_analyzeParameters/lookUpTable.mat';
+input_parameters.lookUpTable  = '/groups/lightsheet/lightsheet/home/ackermand/Lightsheet_Data/from_kellerp/Example Data/Configurations_Mmu/SPM00_CM00_CM01_CHN00_CHN01_analyzeParameters/lookUpTable.mat';
 input_parameters.dataType     = 1;         % 0 for unsegmented clusterPT output stacks, 1 for segmented clusterPT output stacks
 
 input_parameters.specimen     = 0;
@@ -60,7 +60,7 @@ input_parameters.coreMemory   = floor(((96 - 8) * 1024) / (12 * 1024)); % memory
                           % DGA added globalMask                             
 input_parameters.globalMask   = [0 0];     % slot 1 provides flag for use of a global (constant) mask, slot 2 provides reference time point for global mask
 %%
-fn = [pwd '/sampleInputClusterTF.json'];
+fn = [pwd '/sampleInput_clusterTF.json'];
 str = savejson('', input_parameters);
 fid = fopen(fn,'w');
 fprintf(fid,str);

@@ -2,7 +2,7 @@ function analyzeParameters(...
     timepoints, fullInterval,...
     outputString, outputID, dataType,...
     specimen, cameras, channels, readFactors, smoothing,...
-    offsetRange, angleRange, intRange, averaging, staticFlag)
+    offsetRange, angleRange, intRange, averaging, staticFlag, configRoot)
 
 % ----------------------------------------------------------------------
 % | Time-lapse image data fusion parameter analysis for timeFuse.m     |
@@ -42,6 +42,10 @@ function analyzeParameters(...
 % row 5: final correctionFactor
 % row 6: final correctionFlag
 
+if nargin<16
+    configRoot = '';
+end
+
 if length(cameras) == 2 && length(channels) == 2
     processingMode = 0; % 4-view fusion
     transformationEntries = 8;
@@ -73,7 +77,7 @@ end;
 lookUpTable = NaN(length(fullInterval), lookUpTableEntries);
 lookUpTable(:, 1) = fullInterval';
 
-resultsDirectory = ['SPM' num2str(specimen, '%.2d') globalHeader '_analyzeParameters'];
+resultsDirectory = [configRoot filesep 'SPM' num2str(specimen, '%.2d') globalHeader '_analyzeParameters'];
 mkdir(resultsDirectory);
 
 for currentTP = timepoints
@@ -84,14 +88,14 @@ for currentTP = timepoints
         case 0            
             for camera = cameras
                 transformationIndex = 2 + 2 * (find(cameras == camera, 1) - 1);
-                transformationName = [outputFolder '/SPM' num2str(specimen, '%.2d') '_TM' num2str(currentTP, '%.6d') '_CM' num2str(camera, '%.2d') '_CHN' num2str(channels(1), '%.2d') '_CHN' num2str(channels(2), '%.2d') '.transformation.mat'];
+                transformationName = [outputFolder filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(currentTP, '%.6d') '_CM' num2str(camera, '%.2d') '_CHN' num2str(channels(1), '%.2d') '_CHN' num2str(channels(2), '%.2d') '.transformation.mat'];
                 if exist(transformationName, 'file') == 2
                     load(transformationName);
                     transformations(currentIndex, transformationIndex:(transformationIndex + 1)) = transformation(2:3);
                 end;
             end;
             
-            transformationName = [outputFolder '/SPM' num2str(specimen, '%.2d') '_TM' num2str(currentTP, '%.6d') '_CM' num2str(cameras(1), '%.2d') '_CM' num2str(cameras(2), '%.2d') '_CHN' num2str(channels(1), '%.2d') '_CHN' num2str(channels(2), '%.2d') '.transformation.mat'];
+            transformationName = [outputFolder filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(currentTP, '%.6d') '_CM' num2str(cameras(1), '%.2d') '_CM' num2str(cameras(2), '%.2d') '_CHN' num2str(channels(1), '%.2d') '_CHN' num2str(channels(2), '%.2d') '.transformation.mat'];
             if exist(transformationName, 'file') == 2
                 load(transformationName);
                 transformations(currentIndex, 6:8) = transformation;
@@ -100,7 +104,7 @@ for currentTP = timepoints
             if readFactors
                 for camera = cameras
                     intensityCorrectionIndex = 2 + 2 * (find(cameras == camera, 1) - 1);
-                    intensityCorrectionName = [outputFolder '/SPM' num2str(specimen, '%.2d') '_TM' num2str(currentTP, '%.6d') '_CM' num2str(camera, '%.2d') '_CHN' num2str(channels(1), '%.2d') '_CHN' num2str(channels(2), '%.2d') '.intensityCorrection.mat'];
+                    intensityCorrectionName = [outputFolder filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(currentTP, '%.6d') '_CM' num2str(camera, '%.2d') '_CHN' num2str(channels(1), '%.2d') '_CHN' num2str(channels(2), '%.2d') '.intensityCorrection.mat'];
                     if exist(intensityCorrectionName, 'file') == 2
                         load(intensityCorrectionName);
                         if dataType == 0
@@ -111,20 +115,20 @@ for currentTP = timepoints
                     end;
                 end;
                 
-                intensityCorrectionName = [outputFolder '/SPM' num2str(specimen, '%.2d') '_TM' num2str(currentTP, '%.6d') '_CM' num2str(cameras(1), '%.2d') '_CM' num2str(cameras(2), '%.2d') '_CHN' num2str(channels(1), '%.2d') '_CHN' num2str(channels(2), '%.2d') '.intensityCorrection.mat'];
+                intensityCorrectionName = [outputFolder filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(currentTP, '%.6d') '_CM' num2str(cameras(1), '%.2d') '_CM' num2str(cameras(2), '%.2d') '_CHN' num2str(channels(1), '%.2d') '_CHN' num2str(channels(2), '%.2d') '.intensityCorrection.mat'];
                 if exist(intensityCorrectionName, 'file') == 2
                     load(intensityCorrectionName);
                     intensityCorrections(currentIndex, 6:7) = intensityCorrection(4:5);
                 end;
             end;
         case 1
-            transformationName = [outputFolder '/SPM' num2str(specimen, '%.2d') '_TM' num2str(currentTP, '%.6d') globalHeader '.transformation.mat'];
+            transformationName = [outputFolder filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(currentTP, '%.6d') globalHeader '.transformation.mat'];
             if exist(transformationName, 'file') == 2
                 load(transformationName);
                 transformations(currentIndex, 2:3) = transformation(2:3);
             end;
             
-            intensityCorrectionName = [outputFolder '/SPM' num2str(specimen, '%.2d') '_TM' num2str(currentTP, '%.6d') globalHeader '.intensityCorrection.mat'];
+            intensityCorrectionName = [outputFolder filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(currentTP, '%.6d') globalHeader '.intensityCorrection.mat'];
             if exist(intensityCorrectionName, 'file') == 2
                 load(intensityCorrectionName);
                 if dataType == 0
@@ -134,13 +138,13 @@ for currentTP = timepoints
                 end;
             end;
         case 2
-            transformationName = [outputFolder '/SPM' num2str(specimen, '%.2d') '_TM' num2str(currentTP, '%.6d') globalHeader '.transformation.mat'];
+            transformationName = [outputFolder filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(currentTP, '%.6d') globalHeader '.transformation.mat'];
             if exist(transformationName, 'file') == 2
                 load(transformationName);
                 transformations(currentIndex, 2:4) = transformation;
             end;
             
-            intensityCorrectionName = [outputFolder '/SPM' num2str(specimen, '%.2d') '_TM' num2str(currentTP, '%.6d') globalHeader '.intensityCorrection.mat'];
+            intensityCorrectionName = [outputFolder filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(currentTP, '%.6d') globalHeader '.intensityCorrection.mat'];
             if exist(intensityCorrectionName, 'file') == 2
                 load(intensityCorrectionName);
                 if dataType == 0
@@ -152,7 +156,7 @@ for currentTP = timepoints
     end;
 end;
 
-save([resultsDirectory '/transformations.mat'], 'transformations');
+save([resultsDirectory filesep 'transformations.mat'], 'transformations');
 
 if readFactors
     intensityCorrections(intensityCorrections(:, 3) == 1, 2) = 1 ./ intensityCorrections(intensityCorrections(:, 3) == 1, 2);
@@ -166,12 +170,12 @@ if readFactors
         intensityCorrections(intensityCorrections(:, 7) == 1, 7) = 2;
     end;
     
-    save([resultsDirectory '/intensityCorrections.mat'], 'intensityCorrections');
+    save([resultsDirectory filesep 'intensityCorrections.mat'], 'intensityCorrections');
 end;
 
 % visualize parameters, create median-filtered and mean-filtered lookUpTable
 
-figure;
+h=figure('visible','off');
 switch processingMode
     case 0
         plot(transformations(:, 1), transformations(:, 2), 'Color', [1 0.5 0], 'LineWidth', 1.5);
@@ -189,13 +193,13 @@ switch processingMode
         plot(transformations(:, 1), transformations(:, 2), 'Color', [0.5 0 1], 'LineWidth', 1.5);
         plot(transformations(:, 1), transformations(:, 3), 'Color', [0 0.5 1], 'LineWidth', 1.5);
 end;
-h = gca; set(h, 'FontSize', 14, 'LineWidth', 1.5);
+set(h, 'FontSize', 14, 'LineWidth', 1.5);
 xlabel(h, 'time point'); ylabel(h, 'offset (pixels)');
-currentFile = [resultsDirectory '/offsets.png']; saveas(h, currentFile);
+currentFile = [resultsDirectory filesep 'offsets.png']; saveas(h, currentFile);
 currentFrame = imread(currentFile); imwrite(currentFrame, currentFile, 'png');
 close;
 
-figure;
+h=figure('visible','off');
 switch processingMode
     case 0
         plot(transformations(:, 1), transformations(:, 3), 'Color', [1 0.5 0], 'LineWidth', 1.5);
@@ -211,13 +215,13 @@ switch processingMode
     case 2
         plot(transformations(:, 1), transformations(:, 4), 'Color', [0 0 1], 'LineWidth', 1.5);
 end;
-h = gca; set(h, 'FontSize', 14, 'LineWidth', 1.5);
+set(h, 'FontSize', 14, 'LineWidth', 1.5);
 xlabel(h, 'time point'); ylabel(h, 'angle (degrees)');
-currentFile = [resultsDirectory '/angles.png']; saveas(h, currentFile);
+currentFile = [resultsDirectory filesep 'angles.png']; saveas(h, currentFile);
 currentFrame = imread(currentFile); imwrite(currentFrame, currentFile, 'png');
 close;
 
-figure;
+h=figure('visible','off');
 switch processingMode
     case 0
         plot(intensityCorrections(:, 1), intensityCorrections(:, 2), 'Color', [1 0.5 0], 'LineWidth', 1.5);
@@ -233,9 +237,9 @@ switch processingMode
     case 2
         plot(intensityCorrections(:, 1), intensityCorrections(:, 2), 'Color', [0 0 1], 'LineWidth', 1.5);
 end;
-h = gca; set(h, 'FontSize', 14, 'LineWidth', 1.5);
+set(h, 'FontSize', 14, 'LineWidth', 1.5);
 xlabel(h, 'time point'); ylabel(h, 'factor');
-currentFile = [resultsDirectory '/factors.png']; saveas(h, currentFile);
+currentFile = [resultsDirectory filesep 'factors.png']; saveas(h, currentFile);
 currentFrame = imread(currentFile); imwrite(currentFrame, currentFile, 'png');
 close;
 
@@ -414,7 +418,7 @@ switch processingMode
                     oldIndex = 6;
             end;
             
-            figure;
+            h=figure('visible','off');
             if ~isempty(find([2:3 6:7 10:12] == currentIndex, 1))
                 plot(transformations(:, 1), transformations(:, oldIndex), 'Color', [0 0 1], 'LineWidth', 1.5);
             else
@@ -423,9 +427,9 @@ switch processingMode
             hold on;
             plot(medianTable(:, 1), medianTable(:, currentIndex), 'Color', [1 0 0], 'LineWidth', 1.5);
             plot(meanTable(:, 1), meanTable(:, currentIndex), '--', 'Color', [1 0 0], 'LineWidth', 1.5);
-            h = gca; set(h, 'FontSize', 14, 'LineWidth', 1.5);
+            set(h, 'FontSize', 14, 'LineWidth', 1.5);
             xlabel(h, 'time point'); ylabel(h, [label unit]);
-            currentFile = [resultsDirectory '/' header '.png']; saveas(h, currentFile);
+            currentFile = [resultsDirectory filesep '' header '.png']; saveas(h, currentFile);
             currentFrame = imread(currentFile); imwrite(currentFrame, currentFile, 'png');
             % close;
         end;
@@ -455,7 +459,7 @@ switch processingMode
                     oldIndex = 2;
             end;
             
-            figure;
+            h=figure('visible','off');
             if ~isempty(find(2:3 == currentIndex, 1))
                 plot(transformations(:, 1), transformations(:, oldIndex), 'Color', [0 0 1], 'LineWidth', 1.5);
             else
@@ -464,9 +468,9 @@ switch processingMode
             hold on;
             plot(medianTable(:, 1), medianTable(:, currentIndex), 'Color', [1 0 0], 'LineWidth', 1.5);
             plot(meanTable(:, 1), meanTable(:, currentIndex), '--', 'Color', [1 0 0], 'LineWidth', 1.5);
-            h = gca; set(h, 'FontSize', 14, 'LineWidth', 1.5);
+            set(h, 'FontSize', 14, 'LineWidth', 1.5);
             xlabel(h, 'time point'); ylabel(h, [label unit]);
-            currentFile = [resultsDirectory '/' header '.png']; saveas(h, currentFile);
+            currentFile = [resultsDirectory filesep '' header '.png']; saveas(h, currentFile);
             currentFrame = imread(currentFile); imwrite(currentFrame, currentFile, 'png');
             % close;
         end;
@@ -501,7 +505,7 @@ switch processingMode
                     oldIndex = 2;
             end;
             
-            figure;
+            h=figure('visible','off');
             if ~isempty(find(2:4 == currentIndex, 1))
                 plot(transformations(:, 1), transformations(:, oldIndex), 'Color', [0 0 1], 'LineWidth', 1.5);
             else
@@ -510,9 +514,9 @@ switch processingMode
             hold on;
             plot(medianTable(:, 1), medianTable(:, currentIndex), 'Color', [1 0 0], 'LineWidth', 1.5);
             plot(meanTable(:, 1), meanTable(:, currentIndex), '--', 'Color', [1 0 0], 'LineWidth', 1.5);
-            h = gca; set(h, 'FontSize', 14, 'LineWidth', 1.5);
+            set(h, 'FontSize', 14, 'LineWidth', 1.5);
             xlabel(h, 'time point'); ylabel(h, [label unit]);
-            currentFile = [resultsDirectory '/' header '.png']; saveas(h, currentFile);
+            currentFile = [resultsDirectory filesep '' header '.png']; saveas(h, currentFile);
             currentFrame = imread(currentFile); imwrite(currentFrame, currentFile, 'png');
             % close;
         end;
@@ -549,7 +553,7 @@ if readFactors
     end;
 end;
 
-save([resultsDirectory '/lookUpTable.mat'], 'lookUpTable');
+save([resultsDirectory filesep 'lookUpTable.mat'], 'lookUpTable');
 
 % warning, if data is missing
 missingDataFlag = ~isempty(find(isnan(lookUpTable), 1));

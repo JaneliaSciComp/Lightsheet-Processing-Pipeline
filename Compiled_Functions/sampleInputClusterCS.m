@@ -1,10 +1,10 @@
 %% keller parameters
-
-input_parameters.inputRoot        = '/groups/lightsheet/lightsheet/home/ackermand/Lightsheet_Data/from_kellerp/Example\ Data/Mmu_E1_H2BeGFPxTmCherry_01_20170928_144039.corrected.TimeFused/';
-input_parameters.outputRoot       = '/groups/lightsheet/lightsheet/home/ackermand/Lightsheet_Data/from_kellerp/Example\ Data/Mmu_E1_H2BeGFPxTmCherry_01_20170928_144039.corrected.CorrectStack/';
+input_parameters = [];
+input_parameters.inputRoot        = '/groups/lightsheet/lightsheet/home/ackermand/Lightsheet_Data/from_kellerp/Example Data/Mmu_E1_H2BeGFPxTmCherry_01_20170928_144039.corrected.TimeFused/';
+input_parameters.outputRoot       = '/groups/lightsheet/lightsheet/home/ackermand/Lightsheet_Data/from_kellerp/Example Data/Mmu_E1_H2BeGFPxTmCherry_01_20170928_144039.corrected.CorrectStack/';
 input_parameters.headerPattern    = 'Mmu_E1_H2BeGFPxTmCherry_01_20170928_144039.TM??????_timeFused_blending/';
 input_parameters.filePattern      = 'SPM00_TM??????_CM00_CM01_CHN00_CHN01.fusedStack';
-input_parameters.configRoot       = '/groups/lightsheet/lightsheet/home/ackermand/Lightsheet_Data/from_kellerp/Example\ Data/Configurations/SPM00_CM00_CM01_CHN00_CHN01_stackCorrection';
+input_parameters.configRoot       = '/groups/lightsheet/lightsheet/home/ackermand/Lightsheet_Data/from_kellerp/Example Data/Configurations/SPM00_CM00_CM01_CHN00_CHN01_stackCorrection';
 
 input_parameters.timepoints       = 0:50;
 input_parameters.dataType         = 1;      % 0: process projections only, 1: process stacks and projections
@@ -39,7 +39,7 @@ input_parameters.jobMemory        = [1 0];  % slot 1: flag for automated memory 
 input_parameters.coreMemory       = floor(((96 - 8) * 1024) / (12 * 1024)); % memory boundary for switching from parametric to memory-managed submission (in GB)
 input_parameters.verbose      = 0; 
 %%
-fn = [pwd '/sampleInputClusterCS.json'];
+fn = [pwd '/sampleInput_clusterCS.json'];
 str = savejson('', input_parameters);
 fid = fopen(fn,'w');
 fprintf(fid,str);

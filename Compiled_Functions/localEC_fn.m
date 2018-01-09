@@ -375,34 +375,31 @@ if intensityFlag == 1
     save([configRoot filesep 'intensityCenters.mat'], 'intensityCenters');
     save([configRoot filesep 'intensityFactors.mat'], 'intensityFactors');
     
-    figure;
+    h=figure('visible','off');
     plot(timepoints, intensityBackgrounds);
     title('Background intensities');
     xlabel('Time point');
     ylabel('Intensity (grey levels)');
-    h = gca;
     currentFile = [configRoot filesep 'intensityStep1_intensityBackgrounds.png'];
     saveas(h, currentFile);
     currentFrame = imread(currentFile);
     imwrite(currentFrame, currentFile, 'png');
     
-    figure;
+    h=figure('visible','off');
     plot(timepoints, intensityCenters);
     title('Intensity histogram centers');
     xlabel('Time point');
     ylabel('Intensity (grey levels)');
-    h = gca;
     currentFile = [configRoot filesep 'intensityStep2_intensityCenters.png'];
     saveas(h, currentFile);
     currentFrame = imread(currentFile);
     imwrite(currentFrame, currentFile, 'png');
     
-    figure;
+    h=figure('visible','off');
     plot(timepoints, intensityFactors);
     title('Intensity correction factors');
     xlabel('Time point');
     ylabel('Factor');
-    h = gca;
     currentFile = [configRoot filesep 'intensityStep3_intensityFactors.png'];
     saveas(h, currentFile);
     currentFrame = imread(currentFile);
@@ -469,25 +466,23 @@ if correlationFlag == 1 || globalMode ~= 0
     save([configRoot filesep 'driftDatabase.mat'], 'finalDriftOffsets');
     
     if correlationFlag == 1
-        figure;
+        h=figure('visible','off');
         plot(timepoints, driftOffsets);
         title('Correlation-based pairwise offsets');
         legend('xOffset', 'yOffset', 'zOffset');
         xlabel('Time point');
         ylabel('Offset (pixel)');
-        h = gca;
         currentFile = [configRoot filesep 'driftStep1_pairwiseOffsets.png'];
         saveas(h, currentFile);
         currentFrame = imread(currentFile);
         imwrite(currentFrame, currentFile, 'png');
         
-        figure;
+        h=figure('visible','off');
         plot(timepoints, cumulativeDriftOffsets);
         title('Cumulative correlation-based offsets');
         legend('xOffset', 'yOffset', 'zOffset');
         xlabel('Time point');
         ylabel('Offset (pixel)');
-        h = gca;
         currentFile = [configRoot filesep 'driftStep2_pairwiseOffsetsCumulative.png'];
         saveas(h, currentFile);
         currentFrame = imread(currentFile);
@@ -497,13 +492,12 @@ if correlationFlag == 1 || globalMode ~= 0
     end;
     
     if globalMode == 1
-        figure;
+        h=figure('visible','off');
         plot(timepoints, driftCenters);
         title('Relative geometrical specimen centers');
         legend('xCenter', 'yCenter', 'zCenter');
         xlabel('Time point');
         ylabel('Center (pixel)');
-        h = gca;
         currentFile = [configRoot filesep 'driftStep3_specimenCenters.png'];
         saveas(h, currentFile);
         currentFrame = imread(currentFile);
@@ -512,25 +506,23 @@ if correlationFlag == 1 || globalMode ~= 0
         save([configRoot filesep 'driftDatabase.mat'], 'driftCenters', '-append');
         
         if correlationFlag == 1
-            figure;
+            h=figure('visible','off');
             plot(timepoints, driftFluctuations);
             title('Drift fluctuations');
             legend('xDrift', 'yDrift', 'zDrift');
             xlabel('Time point');
             ylabel('Drift (pixel)');
-            h = gca;
             currentFile = [configRoot filesep 'driftStep4_driftFluctuations.png'];
             saveas(h, currentFile);
             currentFrame = imread(currentFile);
             imwrite(currentFrame, currentFile, 'png');
             
-            figure;
+            h=figure('visible','off');
             plot(timepoints, smoothedDriftError);
             title('Smoothed drift fluctuations (offset drift)');
             legend('xDrift', 'yDrift', 'zDrift');
             xlabel('Time point');
             ylabel('Drift (pixel)');
-            h = gca;
             currentFile = [configRoot filesep 'driftStep5_driftFluctuationsFiltered.png'];
             saveas(h, currentFile);
             currentFrame = imread(currentFile);
@@ -539,7 +531,7 @@ if correlationFlag == 1 || globalMode ~= 0
             save([configRoot filesep 'driftDatabase.mat'], 'driftFluctuations', 'smoothedDriftError', '-append');
         end;
     elseif globalMode == 2
-        figure;
+        h=figure('visible','off');
         plot(timepoints, smoothedDriftError);
         if correlationFlag == 0
             title('Relative manual drift correction');
@@ -549,7 +541,6 @@ if correlationFlag == 1 || globalMode ~= 0
         legend('xDrift', 'yDrift', 'zDrift');
         xlabel('Time point');
         ylabel('Drift (pixel)');
-        h = gca;
         currentFile = [configRoot filesep 'driftStep3_manualCorrections.png'];
         saveas(h, currentFile);
         currentFrame = imread(currentFile);
@@ -558,13 +549,12 @@ if correlationFlag == 1 || globalMode ~= 0
         save([configRoot filesep 'driftDatabase.mat'], 'smoothedDriftError', '-append');
     end
     
-    figure;
+    h=figure('visible','off');
     plot(timepoints, finalDriftOffsets);
     title('Final offset correction');
     legend('xOffset', 'yOffset', 'zOffset');
     xlabel('Time point');
     ylabel('Offset (pixel)');
-    h = gca;
     currentFile = [configRoot filesep 'driftStep6_finalOffsets.png'];
     saveas(h, currentFile);
     currentFrame = imread(currentFile);

@@ -1,8 +1,8 @@
 % % % %% parameters
-
-input_parameters.inputRoot        = '/groups/lightsheet/lightsheet/home/ackermand/Lightsheet_Data/from_kellerp/Example\ Data/Mmu_E1_H2BeGFPxTmCherry_01_20170928_144039.corrected.TimeFused/';
+input_parameters = [];
+input_parameters.inputRoot        = '/groups/lightsheet/lightsheet/home/ackermand/Lightsheet_Data/from_kellerp/Example Data/Mmu_E1_H2BeGFPxTmCherry_01_20170928_144039.corrected.TimeFused/';
 input_parameters.inputPattern     = ['Mmu_E1_H2BeGFPxTmCherry_01_20170928_144039.TM??????_timeFused_blending' filesep 'SPM00_TM??????_CM00_CM01_CHN00_CHN01.fusedStack'];
-input_parameters.configRoot       = '/groups/lightsheet/lightsheet/home/ackermand/Lightsheet_Data/from_kellerp/Example Data/Configurations/SPM00_CM00_CM01_CHN00_CHN01_stackCorrection';
+input_parameters.configRoot       = '/groups/lightsheet/lightsheet/home/ackermand/Lightsheet_Data/from_kellerp/Example Data/Configurations_Mmu/SPM00_CM00_CM01_CHN00_CHN01_stackCorrection';
 
 input_parameters.timepoints       = 0:50;
 input_parameters.gamma            = 1;
@@ -49,7 +49,7 @@ input_parameters.referenceDrift   = [...     % each row follows this structure: 
 input_parameters.maxStampDigits   = 6;
 input_parameters.poolWorkers      = 0;       % use "0" to enable automated detection of available CPU cores
 %%
-fn = [pwd '/sampleInputLocalEC.json'];
+fn = [pwd '/sampleInput_localEC.json'];
 str = savejson('', input_parameters);
 fid = fopen(fn,'w');
 fprintf(fid,str);

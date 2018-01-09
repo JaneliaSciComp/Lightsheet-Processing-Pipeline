@@ -12,6 +12,7 @@ if nargin == 3
     end_timepoint_index = min(timepoints_per_node*job_number, numel(input_parameters.timepoints));
     input_parameters.timepoints = input_parameters.timepoints(start_timepoint_index:end_timepoint_index);
 end
+input_parameters.cropping = num2cell(input_parameters.cropping,size(input_parameters.cropping));
 %% parameters
 
 %% keller-provided parameters

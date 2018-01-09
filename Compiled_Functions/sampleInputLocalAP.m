@@ -1,3 +1,4 @@
+input_parameters = [];
 input_parameters.timepoints   = 0:50;
 input_parameters.fullInterval = 0:50;
 
@@ -17,8 +18,10 @@ input_parameters.intRange     = 5;      % averaging range for intensity correcti
 input_parameters.averaging    = 0;      % 0 for mean, 1 for median
                        % DGA added
 input_parameters.staticFlag   = 0;      % 0 for time-dependent registration and intensity correction, 1 for static parameter set
+input_parameters.configRoot       = '/groups/lightsheet/lightsheet/home/ackermand/Lightsheet_Data/from_kellerp/Example Data/Configurations_Mmu/';
+
 %%
-fn = [pwd '/sampleInputLocalAP.json'];
+fn = [pwd '/sampleInput_localAP.json'];
 str = savejson('', input_parameters);
 fid = fopen(fn,'w');
 fprintf(fid,str);
