@@ -6,7 +6,11 @@ input_parameters.headerPattern    = 'Mmu_E1_H2BeGFPxTmCherry_01_20170928_144039.
 input_parameters.filePattern      = 'SPM00_TM??????_CM00_CM01_CHN00_CHN01.fusedStack';
 input_parameters.configRoot       = '/groups/lightsheet/lightsheet/home/ackermand/Lightsheet_Data/from_kellerp/Example Data/Configurations/SPM00_CM00_CM01_CHN00_CHN01_stackCorrection';
 
-input_parameters.timepoints       = 0:50;
+
+input_parameters.timepoints.start = 0;
+input_parameters.timepoints.every = 1;
+input_parameters.timepoints.end = 50;
+
 input_parameters.dataType         = 1;      % 0: process projections only, 1: process stacks and projections
 input_parameters.percentile       = [1 10]; % [percentileFlag, subsampling], percentileFlag - 0: calculate true minimum, otherwise: use as percentile for minimum calculation
 

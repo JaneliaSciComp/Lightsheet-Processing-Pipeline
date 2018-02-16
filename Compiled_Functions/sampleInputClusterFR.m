@@ -1,6 +1,9 @@
 %% keller parameters
 input_parameters = [];
-input_parameters.timepoints   = 0:50;
+
+input_parameters.timepoints.start = 0;
+input_parameters.timepoints.every = 1;
+input_parameters.timepoints.end = 50;
 
 input_parameters.inputDir     = '/groups/lightsheet/lightsheet/home/ackermand/Lightsheet_Data/from_kellerp/Example Data/Mmu_E1_H2BeGFPxTmCherry_01_20170928_144039.corrected.CorrectStack/';
 input_parameters.outputDir    = '/groups/lightsheet/lightsheet/home/ackermand/Lightsheet_Data/from_kellerp/Example Data/Mmu_E1_H2BeGFPxTmCherry_01_20170928_144039.corrected.Filtered/';

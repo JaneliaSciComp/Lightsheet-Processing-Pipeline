@@ -1,5 +1,7 @@
 function localAP_fn(filename)
 input_parameters = loadjson(fileread(filename));
+input_parameters = convert_limits_to_values(input_parameters, {'timepoints','fullInterval'});
+if ~isfield(input_parameters, 'verbose'), input_parameters.verbose = true; end
 if input_parameters.verbose
     disp(['Using input file: ' filename]);
     disp(input_parameters)

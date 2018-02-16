@@ -3,7 +3,11 @@ input_parameters = [];
 input_parameters.inputFolder  = '/groups/lightsheet/lightsheet/home/ackermand/Lightsheet_Data/from_kellerp/Example Data/Mmu_E1_H2BeGFPxTmCherry_01_20170928_144039';
 input_parameters.outputLabel  = '';
 input_parameters.specimen     = 0;                   % specimen index to be processed
-input_parameters.timepoints   = 0:50;               % time points to be processed
+
+input_parameters.timepoints.start = 0;
+input_parameters.timepoints.every = 1;
+input_parameters.timepoints.end = 50;
+
 input_parameters.cameras      = [0 1];               % camera indices to be processed
 input_parameters.channels     = [0 1];               % channel indices to be processed
 

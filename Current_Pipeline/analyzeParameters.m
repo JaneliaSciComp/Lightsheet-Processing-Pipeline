@@ -175,7 +175,8 @@ end;
 
 % visualize parameters, create median-filtered and mean-filtered lookUpTable
 
-h=figure('visible','off');
+fh=figure('visible','off');
+h=axes();
 switch processingMode
     case 0
         plot(transformations(:, 1), transformations(:, 2), 'Color', [1 0.5 0], 'LineWidth', 1.5);
@@ -197,9 +198,10 @@ set(h, 'FontSize', 14, 'LineWidth', 1.5);
 xlabel(h, 'time point'); ylabel(h, 'offset (pixels)');
 currentFile = [resultsDirectory filesep 'offsets.png']; saveas(h, currentFile);
 currentFrame = imread(currentFile); imwrite(currentFrame, currentFile, 'png');
-close;
+close(fh);
 
-h=figure('visible','off');
+fh=figure('visible','off');
+h=axes();
 switch processingMode
     case 0
         plot(transformations(:, 1), transformations(:, 3), 'Color', [1 0.5 0], 'LineWidth', 1.5);
@@ -219,9 +221,10 @@ set(h, 'FontSize', 14, 'LineWidth', 1.5);
 xlabel(h, 'time point'); ylabel(h, 'angle (degrees)');
 currentFile = [resultsDirectory filesep 'angles.png']; saveas(h, currentFile);
 currentFrame = imread(currentFile); imwrite(currentFrame, currentFile, 'png');
-close;
+close(fh);
 
-h=figure('visible','off');
+fh=figure('visible','off');
+h=axes();
 switch processingMode
     case 0
         plot(intensityCorrections(:, 1), intensityCorrections(:, 2), 'Color', [1 0.5 0], 'LineWidth', 1.5);
@@ -241,7 +244,7 @@ set(h, 'FontSize', 14, 'LineWidth', 1.5);
 xlabel(h, 'time point'); ylabel(h, 'factor');
 currentFile = [resultsDirectory filesep 'factors.png']; saveas(h, currentFile);
 currentFrame = imread(currentFile); imwrite(currentFrame, currentFile, 'png');
-close;
+close(fh);
 
 % load transformations; load intensityCorrections;
 
@@ -342,7 +345,6 @@ for currentIndex = 1:length(fullInterval)
     currentIntRange = max(1, currentIndex - intRange):min(length(fullInterval), currentIndex + intRange);
     medianTable(currentIndex, lookUpTableSlots3) = median(lookUpTable(currentIntRange, lookUpTableSlots3), 1);
     meanTable(currentIndex, lookUpTableSlots3)   = mean(lookUpTable(currentIntRange, lookUpTableSlots3), 1);
-    
     medianTable(currentIndex, lookUpTableSlots4) = lookUpTable(currentIndex, lookUpTableSlots4);
     meanTable(currentIndex, lookUpTableSlots4)   = lookUpTable(currentIndex, lookUpTableSlots4);
 end;
@@ -418,7 +420,8 @@ switch processingMode
                     oldIndex = 6;
             end;
             
-            h=figure('visible','off');
+            fh=figure('visible','off');
+            h=axes();
             if ~isempty(find([2:3 6:7 10:12] == currentIndex, 1))
                 plot(transformations(:, 1), transformations(:, oldIndex), 'Color', [0 0 1], 'LineWidth', 1.5);
             else
@@ -431,6 +434,7 @@ switch processingMode
             xlabel(h, 'time point'); ylabel(h, [label unit]);
             currentFile = [resultsDirectory filesep '' header '.png']; saveas(h, currentFile);
             currentFrame = imread(currentFile); imwrite(currentFrame, currentFile, 'png');
+            close(fh);
             % close;
         end;
     case 1
@@ -459,7 +463,8 @@ switch processingMode
                     oldIndex = 2;
             end;
             
-            h=figure('visible','off');
+            fh=figure('visible','off');
+            h=axes();
             if ~isempty(find(2:3 == currentIndex, 1))
                 plot(transformations(:, 1), transformations(:, oldIndex), 'Color', [0 0 1], 'LineWidth', 1.5);
             else
@@ -472,6 +477,7 @@ switch processingMode
             xlabel(h, 'time point'); ylabel(h, [label unit]);
             currentFile = [resultsDirectory filesep '' header '.png']; saveas(h, currentFile);
             currentFrame = imread(currentFile); imwrite(currentFrame, currentFile, 'png');
+            close(fh);
             % close;
         end;
     case 2
@@ -505,7 +511,8 @@ switch processingMode
                     oldIndex = 2;
             end;
             
-            h=figure('visible','off');
+            fh=figure('visible','off');
+            h=axes();
             if ~isempty(find(2:4 == currentIndex, 1))
                 plot(transformations(:, 1), transformations(:, oldIndex), 'Color', [0 0 1], 'LineWidth', 1.5);
             else
@@ -518,6 +525,7 @@ switch processingMode
             xlabel(h, 'time point'); ylabel(h, [label unit]);
             currentFile = [resultsDirectory filesep '' header '.png']; saveas(h, currentFile);
             currentFrame = imread(currentFile); imwrite(currentFrame, currentFile, 'png');
+            close(fh);
             % close;
         end;
 end;

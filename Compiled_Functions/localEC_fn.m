@@ -1,6 +1,7 @@
 function localEC_fn(filename)
-
 input_parameters = loadjson(fileread(filename));
+input_parameters = convert_limits_to_values(input_parameters, {'timepoints','histogramBins'});
+if ~isfield(input_parameters, 'verbose'), input_parameters.verbose = true; end
 if input_parameters.verbose
     disp(['Using input file: ' filename]);
     disp(input_parameters)
@@ -56,10 +57,10 @@ referenceDrift   = input_parameters.referenceDrift; %[...     % each row follows
                                    % 100, 10, 20, 30];
 
 maxStampDigits   = input_parameters.maxStampDigits; %6;
-poolWorkers      = input_parameters.poolWorkers; %0;       % use "0" to enable automated detection of available CPU cores
+% Set to default value of 0
+poolWorkers      = 0;       % use "0" to enable automated detection of available CPU cores
 
 %% main loop
-
 if poolWorkers == 0
     poolWorkers = feature('numcores');
     disp(' ');
@@ -384,6 +385,7 @@ if intensityFlag == 1
     saveas(h, currentFile);
     currentFrame = imread(currentFile);
     imwrite(currentFrame, currentFile, 'png');
+    close(h);
     
     h=figure('visible','off');
     plot(timepoints, intensityCenters);
@@ -394,6 +396,7 @@ if intensityFlag == 1
     saveas(h, currentFile);
     currentFrame = imread(currentFile);
     imwrite(currentFrame, currentFile, 'png');
+    close(h);
     
     h=figure('visible','off');
     plot(timepoints, intensityFactors);
@@ -404,6 +407,7 @@ if intensityFlag == 1
     saveas(h, currentFile);
     currentFrame = imread(currentFile);
     imwrite(currentFrame, currentFile, 'png');
+    close(h);
 end;
 
 if correlationFlag == 1 || globalMode ~= 0
@@ -476,7 +480,8 @@ if correlationFlag == 1 || globalMode ~= 0
         saveas(h, currentFile);
         currentFrame = imread(currentFile);
         imwrite(currentFrame, currentFile, 'png');
-        
+        close(h);
+
         h=figure('visible','off');
         plot(timepoints, cumulativeDriftOffsets);
         title('Cumulative correlation-based offsets');
@@ -487,6 +492,7 @@ if correlationFlag == 1 || globalMode ~= 0
         saveas(h, currentFile);
         currentFrame = imread(currentFile);
         imwrite(currentFrame, currentFile, 'png');
+        close(h);
         
         save([configRoot filesep 'driftDatabase.mat'], 'driftOffsets', 'cumulativeDriftOffsets', '-append');
     end;
@@ -502,6 +508,7 @@ if correlationFlag == 1 || globalMode ~= 0
         saveas(h, currentFile);
         currentFrame = imread(currentFile);
         imwrite(currentFrame, currentFile, 'png');
+        close(h);
         
         save([configRoot filesep 'driftDatabase.mat'], 'driftCenters', '-append');
         
@@ -516,6 +523,7 @@ if correlationFlag == 1 || globalMode ~= 0
             saveas(h, currentFile);
             currentFrame = imread(currentFile);
             imwrite(currentFrame, currentFile, 'png');
+            close(h);
             
             h=figure('visible','off');
             plot(timepoints, smoothedDriftError);
@@ -527,6 +535,7 @@ if correlationFlag == 1 || globalMode ~= 0
             saveas(h, currentFile);
             currentFrame = imread(currentFile);
             imwrite(currentFrame, currentFile, 'png');
+            close(h);
             
             save([configRoot filesep 'driftDatabase.mat'], 'driftFluctuations', 'smoothedDriftError', '-append');
         end;
@@ -545,7 +554,8 @@ if correlationFlag == 1 || globalMode ~= 0
         saveas(h, currentFile);
         currentFrame = imread(currentFile);
         imwrite(currentFrame, currentFile, 'png');
-        
+        close(h);
+                
         save([configRoot filesep 'driftDatabase.mat'], 'smoothedDriftError', '-append');
     end
     
@@ -557,6 +567,8 @@ if correlationFlag == 1 || globalMode ~= 0
     ylabel('Offset (pixel)');
     currentFile = [configRoot filesep 'driftStep6_finalOffsets.png'];
     saveas(h, currentFile);
+    close(h);
+    
     currentFrame = imread(currentFile);
     imwrite(currentFrame, currentFile, 'png');
 end;

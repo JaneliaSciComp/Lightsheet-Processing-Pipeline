@@ -1,10 +1,12 @@
 function clusterFR_fn(filename, timepoints_per_node, job_number)
 
 input_parameters = loadjson(fileread(filename));
+if ~isfield(input_parameters, 'verbose'), input_parameters.verbose = true; end
 if input_parameters.verbose
     disp(['Using input file: ' filename]);
     disp(input_parameters)
 end
+input_parameters = convert_limits_to_values(input_parameters, {'timepoints'});
 if nargin == 3
     timepoints_per_node = str2double(timepoints_per_node);
     job_number = str2double(job_number);
@@ -52,17 +54,21 @@ subProject   = input_parameters.subProject;%1;      % flag indicates whether sep
 saveRawMax   = input_parameters.saveRawMax;%1;      % flag indicates whether projections of raw images are stored as well
 saveStacks   = input_parameters.saveStacks;%0;      % flag indicates whether filtered image stacks are written to disk
 
-localRun     = input_parameters.localRun;%[1 12]; % slot 1: flag for local vs. cluster execution (0: cluster submission, 1: local workstation)
-                       % slot 2: number of parallel workers for execution on local workstation (only needed if slot 1 is set to 1)
-                       %         note: use "0" to enable automated detection of available CPU cores
+% Deprecated, unused values that are just set here to defaults as
+% placeholders until code is changed
+localRun     = [1 0];                        % slot 1: flag for local vs. cluster execution (0: cluster submission, 1: local workstation)
+                                             %         note: cluster submission requires a Windows cluster with HPC 2008 support (see "job submit" commands below)
+                                             % slot 2: number of parallel workers for execution on local workstation (only needed if slot 1 is set to 1)
+                                             %         note: use "0" to enable automated detection of available CPU cores
 
-jobMemory    = input_parameters.jobMemory;%[2 0];  % slot 1: flag for automated memory management (0: disable, 1: enable, 2: enable and time-dependent)
-                       % slot 2: estimated upper boundary for memory consumption per submitted time point (in GB)
-                       %         note 1: slot 2 is only evaluated if automated memory management is disabled
-                       %         note 2: "0" indicates memory consumption below "coreMemory" threshold and enables parametric submission mode
+jobMemory    = [1 0];                        % slot 1: flag for automated memory management (0: disable, 1: enable, 2: enable and time-dependent)
+                                             %         note: setting jobMemory(1) to "2" is incompatible with inputType == 4 or numel(dimensions) ~= 0
+                                             % slot 2: estimated upper boundary for memory consumption per submitted time point (in GB)
+                                             %         note 1: slot 2 is only evaluated if automated memory management is disabled
+                                             %         note 2: "0" indicates memory consumption below "coreMemory" threshold and enables parametric submission mode
 
-coreMemory   = input_parameters.coreMemory;%floor(((96 - 8) * 1024) / (12 * 1024)); % memory boundary for switching from parametric to memory-managed submission (in GB)
-
+coreMemory   = floor(((96 - 8) * 1024) / (12 * 1024)); % memory boundary for switching from parametric to memory-managed submission (in GB)
+                                                       % note: parameter is only required for cluster submission
 %% job submission
 
 if localRun(1) == 1 && localRun(2) == 0
@@ -171,7 +177,7 @@ if ~isempty(timepoints)
         timeString = [...
             num2str(currentTime(1)) num2str(currentTime(2), '%.2d') num2str(currentTime(3), '%.2d') ...
             '_' num2str(currentTime(4), '%.2d') num2str(currentTime(5), '%.2d') num2str(round(currentTime(6) * 1000), '%.5d')];
-        parameterDatabase = [pwd filesep 'jobParameters.filterResults.' timeString '.mat'];
+        parameterDatabase = [pwd filesep 'jobParameters.filterResults.' timeString '_' num2str(input_parameters.timepoints(1))  '.mat'];
         
         save(parameterDatabase,...
             'timepoints', 'inputDir', 'outputDir', 'header', 'footer', 'stackLabel', 'specimen', 'cameras', 'channels', ...

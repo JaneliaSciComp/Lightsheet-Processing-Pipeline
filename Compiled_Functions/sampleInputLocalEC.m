@@ -4,7 +4,10 @@ input_parameters.inputRoot        = '/groups/lightsheet/lightsheet/home/ackerman
 input_parameters.inputPattern     = ['Mmu_E1_H2BeGFPxTmCherry_01_20170928_144039.TM??????_timeFused_blending' filesep 'SPM00_TM??????_CM00_CM01_CHN00_CHN01.fusedStack'];
 input_parameters.configRoot       = '/groups/lightsheet/lightsheet/home/ackermand/Lightsheet_Data/from_kellerp/Example Data/Configurations_Mmu/SPM00_CM00_CM01_CHN00_CHN01_stackCorrection';
 
-input_parameters.timepoints       = 0:50;
+input_parameters.timepoints.start = 0;
+input_parameters.timepoints.every = 1;
+input_parameters.timepoints.end = 50;
+
 input_parameters.gamma            = 1;
 input_parameters.percentile       = 1;
 
@@ -18,7 +21,9 @@ input_parameters.outputType       = 0;       % 0: output data saved in KLB forma
 % configuration of intensity normalization
 input_parameters.intensityFlag    = 1;       % flag for enabling/disabling intensity normalization
 input_parameters.useStacks        = [1 10];  % 0: use projections for intensity estimate, 1: use stacks for intensity estimate (second parameter provides sub-sampling rate
-input_parameters.histogramBins    = 0:(2^16 - 1);
+input_parameters.histogramBins.start    = 0;
+input_parameters.histogramBins.every    = 1;
+input_parameters.histogramBins.end      = (2^16-1);
 input_parameters.threshold        = 10;      % threshold for histogram computation
 input_parameters.backgroundSlot   = 0;       % 0: no background correction, 1: top right, 2: bottom right, 3: bottom left, 4: top left
 input_parameters.backgroundEdge   = 100;

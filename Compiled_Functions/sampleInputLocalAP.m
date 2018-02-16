@@ -1,6 +1,12 @@
 input_parameters = [];
-input_parameters.timepoints   = 0:50;
-input_parameters.fullInterval = 0:50;
+
+input_parameters.timepoints.start = 0;
+input_parameters.timepoints.every = 1;
+input_parameters.timepoints.end = 50;
+
+input_parameters.fullInterval.start = 0;
+input_parameters.fullInterval.every = 1;
+input_parameters.fullInterval.end = 50;
 
 input_parameters.outputString = '/groups/lightsheet/lightsheet/home/ackermand/Lightsheet_Data/from_kellerp/Example Data/Mmu_E1_H2BeGFPxTmCherry_01_20170928_144039.correctedMultiFused/Mmu_E1_H2BeGFPxTmCherry_01_20170928_144039';
 input_parameters.outputID     = '_blending';

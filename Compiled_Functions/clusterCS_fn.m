@@ -1,10 +1,12 @@
 function clusterCS_fn(filename, timepoints_per_node, job_number)
 
 input_parameters = loadjson(fileread(filename));
+if ~isfield(input_parameters, 'verbose'), input_parameters.verbose = true; end
 if input_parameters.verbose
     disp(['Using input file: ' filename]);
     disp(input_parameters)
 end
+input_parameters = convert_limits_to_values(input_parameters, {'timepoints'});
 if nargin == 3
     timepoints_per_node = str2double(timepoints_per_node);
     job_number = str2double(job_number);
@@ -42,17 +44,21 @@ correctIntensity = input_parameters.correctIntensity;%1;
 
 maxStampDigits   = input_parameters.maxStampDigits;%6;
 
-localRun         = input_parameters.localRun;%[0 0];  % slot 1: flag for local vs. cluster execution (0: cluster submission, 1: local workstation)
+% Deprecated, unused values that are just set here to defaults as
+% placeholders until code is changed
+localRun     = [1 0];                        % slot 1: flag for local vs. cluster execution (0: cluster submission, 1: local workstation)
+                                             %         note: cluster submission requires a Windows cluster with HPC 2008 support (see "job submit" commands below)
                                              % slot 2: number of parallel workers for execution on local workstation (only needed if slot 1 is set to 1)
                                              %         note: use "0" to enable automated detection of available CPU cores
 
-jobMemory        = input_parameters.jobMemory;%[1 0];  % slot 1: flag for automated memory management (0: disable, 1: enable)
-                                              % slot 2: estimated upper boundary for memory consumption per submitted time point (in GB)
-                                              %         note 1: slot 2 is only evaluated if automated memory management is disabled
-                                              %         note 2: "0" indicates memory consumption below "coreMemory" threshold and enables parametric submission mode
+jobMemory    = [1 0];                        % slot 1: flag for automated memory management (0: disable, 1: enable, 2: enable and time-dependent)
+                                             %         note: setting jobMemory(1) to "2" is incompatible with inputType == 4 or numel(dimensions) ~= 0
+                                             % slot 2: estimated upper boundary for memory consumption per submitted time point (in GB)
+                                             %         note 1: slot 2 is only evaluated if automated memory management is disabled
+                                             %         note 2: "0" indicates memory consumption below "coreMemory" threshold and enables parametric submission mode
 
-coreMemory       = input_parameters.coreMemory;%floor(((96 - 8) * 1024) / (12 * 1024)); % memory boundary for switching from parametric to memory-managed submission (in GB)
-
+coreMemory   = floor(((96 - 8) * 1024) / (12 * 1024)); % memory boundary for switching from parametric to memory-managed submission (in GB)
+                                                       % note: parameter is only required for cluster submission
 %% initialization
 
 if localRun(1) == 1 && localRun(2) == 0
