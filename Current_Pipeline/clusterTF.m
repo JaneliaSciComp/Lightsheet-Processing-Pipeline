@@ -1,14 +1,14 @@
 %% parameters
 
-timepoints   = 0:10;
-references   = 0:10;
+timepoints   = 0:0;
+references   = 0:0;
 
 inputString  = '/groups/lightsheet/lightsheet/home/ackermand/Lightsheet_Data/Paper/Supplementary_Data_2/Image_Data';
 sourceString = '/groups/lightsheet/lightsheet/home/ackermand/Lightsheet_Data/Paper/Supplementary_Data_2/Image_Data.MultiFused/Dme_E1_H2ARFP';
 outputString = '/groups/lightsheet/lightsheet/home/ackermand/Lightsheet_Data/Paper/Supplementary_Data_2/Image_Data.TimeFused/Dme_E1_H2ARFP';
 inputID      = '_blending';
 outputID     = '_blending';
-lookUpTable  = 'SPM00_CM00_CM01_CHN00_CHN01_analyzeParameters/lookUpTable.mat';
+lookUpTable  = '/groups/lightsheet/lightsheet/home/ackermand/Lightsheet_Data/Paper/Supplementary_Data_2/configRoot/SPM00_CM00_CM01_CHN00_CHN01_analyzeParameters/lookUpTable.mat';
 dataType     = 1;         % 0 for unsegmented clusterPT output stacks, 1 for segmented clusterPT output stacks
 
 specimen     = 0;

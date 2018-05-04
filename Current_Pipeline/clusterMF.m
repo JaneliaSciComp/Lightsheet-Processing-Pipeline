@@ -1,6 +1,6 @@
 %% parameters
 
-timepoints   = 0:10;
+timepoints   = 0:0;
 
 inputString  = '/groups/lightsheet/lightsheet/home/ackermand/Lightsheet_Data/Paper/Supplementary_Data_2/Image_Data';
 outputString = '/groups/lightsheet/lightsheet/home/ackermand/Lightsheet_Data/Paper/Supplementary_Data_2/Image_Data.MultiFused/Dme_E1_H2ARFP';

@@ -57,8 +57,15 @@ input_parameters.leftFlags    = [2 1];     % indicates in which channel the ligh
 input_parameters.flipHFlag    = 1;         % indicates whether the stack recorded with the second camera should be flipped horizontally
 input_parameters.flipVFlag    = 0;         % indicates whether the stack recorded with the second camera should be flipped vertically
 
-input_parameters.xOffsets     = -50:10:50; % x-shift of second data slice with respect to first data slice (in pixels)
-input_parameters.yOffsets     = -50:10:50; % y-shift of second data slice with respect to first data slice (in pixels)
+% x-shift of second data slice with respect to first data slice (in pixels)
+input_parameters.xOffsets.start = -50; 
+input_parameters.xOffsets.every = 10; 
+input_parameters.xOffsets.end = 50; 
+
+% y-shift of second data slice with respect to first data slice (in pixels)
+input_parameters.yOffsets.start = -50; 
+input_parameters.yOffsets.every = 10; 
+input_parameters.yOffsets.end = 50; 
 
 input_parameters.frontFlag    = 1;         % indicates for which camera the high-quality information is in the front, 1 = reference camera, 2 = transformed camera
 

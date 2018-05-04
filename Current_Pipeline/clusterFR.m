@@ -1,6 +1,6 @@
 %% parameters
 
-timepoints   = 0:10;
+timepoints   = 0:0;
 
 inputDir     = '/groups/lightsheet/lightsheet/home/ackermand/Lightsheet_Data/Paper/Supplementary_Data_2/Image_Data.TimeFused/';
 outputDir    = '/groups/lightsheet/lightsheet/home/ackermand/Lightsheet_Data/Paper/Supplementary_Data_2/Image_Data.TimeFused.Filtered/';
@@ -15,7 +15,7 @@ filterMode   = 2;      % 0 = subtract median-filtered image, 1 = subtract mean-f
 rangeArray   = 100;
 scaling      = 2.031 / (6.5 / 16);
 
-inputType    = 0;      % 0: input data in KLB format
+inputType    = 2;      % 0: input data in KLB format
                        % 1: input data in JP2 format
                        % 2: input data in TIF format
 outputType   = 0;      % 0: output data saved in KLB format

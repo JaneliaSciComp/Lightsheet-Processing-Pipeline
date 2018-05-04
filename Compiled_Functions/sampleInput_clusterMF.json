@@ -46,8 +46,16 @@
 	"leftFlags": [2,1],
 	"flipHFlag": 1,
 	"flipVFlag": 0,
-	"xOffsets": [-50,-40,-30,-20,-10,0,10,20,30,40,50],
-	"yOffsets": [-50,-40,-30,-20,-10,0,10,20,30,40,50],
+	"xOffsets": {
+		"start": -50,
+		"every": 10,
+		"end": 50
+	},
+	"yOffsets": {
+		"start": -50,
+		"every": 10,
+		"end": 50
+	},
 	"frontFlag": 1,
 	"localRun": [1,0],
 	"jobMemory": [1,0],

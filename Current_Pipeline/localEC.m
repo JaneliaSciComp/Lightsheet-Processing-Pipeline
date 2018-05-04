@@ -2,9 +2,9 @@
 
 inputRoot        = '/groups/lightsheet/lightsheet/home/ackermand/Lightsheet_Data/Paper/Supplementary_Data_2/Image_Data.MultiFused/';%'X:\SiMView2\13-12-30\Pha_E1_H2BRFP_01_20131230_140802.corrected\Results\MultiFused';
 inputPattern     = 'Dme_E1_H2ARFP.TM??????_multiFused_blending/SPM00_TM??????_CM00_CM01_CHN00_CHN01.fusedStack';%'Pha_E1_H2BRFP.TM??????_multiFused_blending\SPM00_TM??????_CM00_CM01_CHN00_CHN01.fusedStack';
-configRoot       = asdfadsf;%'X:\SiMView2\13-12-30\Pha_E1_H2BRFP_01_20131230_140802.corrected\Scripts\SPM00_CM00_CM01_CHN00_CHN01_stackCorrection';
+configRoot       = '/groups/lightsheet/lightsheet/home/ackermand/Lightsheet_Data/Paper/Supplementary_Data_2/configRoot';%'X:\SiMView2\13-12-30\Pha_E1_H2BRFP_01_20131230_140802.corrected\Scripts\SPM00_CM00_CM01_CHN00_CHN01_stackCorrection';
 
-timepoints       = 0:10;%733;
+timepoints       = 0:0;%733;
 gamma            = 1;
 percentile       = 1;
 

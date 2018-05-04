@@ -1,8 +1,9 @@
-timepoints   = 0:10;
-fullInterval = 0:10;
+timepoints   = 0:0;
+fullInterval = 0:0;
 
 outputString = '/groups/lightsheet/lightsheet/home/ackermand/Lightsheet_Data/Paper/Supplementary_Data_2/Image_Data.MultiFused/Dme_E1_H2ARFP';
 outputID     = '_blending';
+configRoot = '/groups/lightsheet/lightsheet/home/ackermand/Lightsheet_Data/Paper/Supplementary_Data_2/configRoot';
 dataType     = 1;      % 0 for unsegmented clusterPT output stacks, 1 for segmented clusterPT output stacks
 
 specimen     = 0;
@@ -22,7 +23,7 @@ analyzeParameters(...
     timepoints, fullInterval,...
     outputString, outputID, dataType,...
     specimen, cameras, channels, readFactors, smoothing,...
-    offsetRange, angleRange, intRange, averaging, staticFlag)
+    offsetRange, angleRange, intRange, averaging, staticFlag, configRoot)
 %% from keller
 % % % timepoints   = 0:5:733;
 % % % fullInterval = 0:733;

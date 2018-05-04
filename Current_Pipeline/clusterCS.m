@@ -4,9 +4,9 @@ inputRoot        = '/groups/lightsheet/lightsheet/home/ackermand/Lightsheet_Data
 outputRoot       = '/groups/lightsheet/lightsheet/home/ackermand/Lightsheet_Data/Paper/Supplementary_Data_2/ForTimeLapseMovie/Image_Data.MultiFused.Corrected/';%'X:\SiMView2\13-12-30\Pha_E1_H2BRFP_01_20131230_140802.corrected\Results\MultiFused.Corrected';
 headerPattern    = 'Dme_E1_H2ARFP.TM??????_multiFused_blending/'; %'Pha_E1_H2BRFP.TM??????_multiFused_blending\';
 filePattern      = 'SPM00_TM??????_CM00_CM01_CHN00_CHN01.fusedStack'; % 'SPM00_TM??????_CM00_CM01_CHN00_CHN01.fusedStack';
-configRoot       = '/groups/lightsheet/lightsheet/home/ackermand/Lightsheet_Data/Paper/Supplementary_Data_2/Scripts/SPM00_CM00_CM01_CHN00_CHN01_stackCorrection';%'X:\SiMView2\13-12-30\Pha_E1_H2BRFP_01_20131230_140802.corrected\Scripts\SPM00_CM00_CM01_CHN00_CHN01_stackCorrection';
+configRoot       = '/groups/lightsheet/lightsheet/home/ackermand/Lightsheet_Data/Paper/Supplementary_Data_2/configRoot/';%'X:\SiMView2\13-12-30\Pha_E1_H2BRFP_01_20131230_140802.corrected\Scripts\SPM00_CM00_CM01_CHN00_CHN01_stackCorrection';
 
-timepoints       = 0:10;
+timepoints       = 0:0;
 dataType         = 1;      % 0: process projections only, 1: process stacks and projections
 percentile       = [1 10]; % [percentileFlag, subsampling], percentileFlag - 0: calculate true minimum, otherwise: use as percentile for minimum calculation
 
@@ -19,7 +19,7 @@ outputType       = 2;      % 0: output data saved in KLB format
 
 % configuration of drift correction
 correctDrift     = 1;
-referenceTime    = 5;
+referenceTime    = 0;
 referenceROI     = [];     % [xStart xStop; yStart yStop; zStart zStop], provide empty vector to enforce use of maximum dimensions
 
 % configuration of intensity normalization
