@@ -96,12 +96,12 @@ disp(['processing time point ' num2str(timepoint, '%.6d')]);
 distanceArray = abs(references - timepoint);
 currentSource = references(find(distanceArray == min(distanceArray), 1));
 
-inputFolder   = [inputString '/SPM' num2str(specimen, '%.2d') '/TM' num2str(timepoint, '%.6d')];
+inputFolder   = [inputString filesep 'SPM' num2str(specimen, '%.2d') filesep 'TM' num2str(timepoint, '%.6d')];
 inputHeader   = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d')];
 sourceFolder  = [sourceString '.TM' num2str(currentSource, '%.6d') '_multiFused' inputID];
 globalFolder  = [sourceString '.TM' num2str(globalMask(2), '%.6d') '_multiFused' inputID];
 outputFolder  = [outputString '.TM' num2str(timepoint, '%.6d') '_timeFused' outputID];
-outputHeader  = [outputFolder '/SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d')];
+outputHeader  = [outputFolder filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d')];
 
 currentTransformations = lookUpTable(find(lookUpTable(:, 1) == timepoint, 1), 2:end);
 

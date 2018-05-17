@@ -198,7 +198,7 @@ if ~isempty(timepoints)
         timeString = [...
             num2str(currentTime(1)) num2str(currentTime(2), '%.2d') num2str(currentTime(3), '%.2d') ...
             '_' num2str(currentTime(4), '%.2d') num2str(currentTime(5), '%.2d') num2str(round(currentTime(6) * 1000), '%.5d')];
-        parameterDatabase = [pwd filesep 'jobParameters.filterResults.' timeString '.mat'];
+        parameterDatabase = [pwd filesep 'jobParameters.filterResults.' timeString '_' num2str(input_parameters.timepoints(1))  '.mat'];
         
         save(parameterDatabase,...
             'timepoints', 'inputDir', 'outputDir', 'header', 'footer', 'stackLabel', 'specimen', 'cameras', 'channels', ...
@@ -250,7 +250,7 @@ if ~isempty(timepoints)
                 
                 disp(' ');
                 
-                parfor t = 1:nTimepoints
+                for t = 1:nTimepoints
                     filterResults(parameterDatabase, t, jobMemory(2));
                 end;
                 

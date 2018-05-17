@@ -59,14 +59,14 @@ end;
 disp(['processing time point ' num2str(timepoint, '%.6d')]);
 
 fileNameHeader = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') configurationString];
-stackName = [inputDir header '.TM' num2str(timepoint, '%.6d') footer filesep '' fileNameHeader '.fusedStack' stackLabel inputExtension];
+stackName = [inputDir filesep header '.TM' num2str(timepoint, '%.6d') footer filesep '' fileNameHeader '.fusedStack' stackLabel inputExtension];
 
 stack = readImage(stackName);
 xSize = size(stack, 1);
 ySize = size(stack, 2);
 zSize = size(stack, 3);
 
-outputPath = [outputDir header '.TM' num2str(timepoint, '%.6d') footer];
+outputPath = [outputDir filesep header '.TM' num2str(timepoint, '%.6d') footer];
 mkdir(outputPath);
 
 save([outputPath filesep '' fileNameHeader '.configuration.mat'], 'configuration');
