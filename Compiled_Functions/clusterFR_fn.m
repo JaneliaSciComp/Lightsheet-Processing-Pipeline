@@ -250,7 +250,7 @@ if ~isempty(timepoints)
                 
                 disp(' ');
                 
-                for t = 1:nTimepoints
+                parfor t = 1:nTimepoints
                     filterResults(parameterDatabase, t, jobMemory(2));
                 end;
                 
