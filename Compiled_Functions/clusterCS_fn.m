@@ -166,34 +166,34 @@ if ~isempty(timepoints)
         'inputDatabase', 'outputDatabase', 'dataType', 'timepoints', 'dimensions', 'dimensionsMax', 'dimensionsDeltas', ...
         'correctIntensity', 'intensityBackgrounds', 'intensityFactors', 'correctDrift', 'inputType', 'outputType', ...
         'percentile', 'referenceROI', 'xOffsets', 'yOffsets', 'zOffsets', 'jobMemory');
-    
-% % %     if localRun(1) ~= 1
-% % %         disp(' ');
-% % %         disp(['Estimated memory consumption per workstation core is ' num2str(jobMemory(2)) ' GB.']);
-% % %         disp(' ');
-% % %         if jobMemory(2) <= coreMemory && nTimepoints > 1
-% % %             disp(['Submitting parametric cluster job for ' num2str(nTimepoints) ' time point(s).']);
-% % %         else
-% % %             disp(['Submitting individual cluster job(s) for ' num2str(nTimepoints) ' time point(s).']);
-% % %         end;
-% % %         disp(' ');
-% % %         
-% % %         if jobMemory(2) <= coreMemory && nTimepoints > 1
-% % %             cmdFunction = ['correctStack(''' parameterDatabase ''', *, ' num2str(jobMemory(2)) ')'];
-% % %             cmd = ['job submit /scheduler:keller-cluster.janelia.priv /user:simview ' ...
-% % %                 '/parametric:1-' num2str(nTimepoints) ':1 runMatlabJob.cmd """' pwd '""" """' cmdFunction '"""'];
-% % %             [status, systemOutput] = system(cmd);
-% % %             disp(['System response: ' systemOutput]);
-% % %         else
-% % %             for t = 1:nTimepoints
-% % %                 cmdFunction = ['correctStack(''' parameterDatabase ''', ' num2str(t) ', ' num2str(jobMemory(2)) ')'];
-% % %                 cmd = ['job submit /scheduler:keller-cluster.janelia.priv /user:simview ' ...
-% % %                     '/progressmsg:"' num2str(jobMemory(2)) '" runMatlabJob.cmd """' pwd '""" """' cmdFunction '"""'];
-% % %                 [status, systemOutput] = system(cmd);
-% % %                 disp(['Submitting time point ' num2str(timepoints(t), '%.4d') ': ' systemOutput]);
-% % %             end;
-% % %         end;
-% % %     else
+    try
+        % % %     if localRun(1) ~= 1
+        % % %         disp(' ');
+        % % %         disp(['Estimated memory consumption per workstation core is ' num2str(jobMemory(2)) ' GB.']);
+        % % %         disp(' ');
+        % % %         if jobMemory(2) <= coreMemory && nTimepoints > 1
+        % % %             disp(['Submitting parametric cluster job for ' num2str(nTimepoints) ' time point(s).']);
+        % % %         else
+        % % %             disp(['Submitting individual cluster job(s) for ' num2str(nTimepoints) ' time point(s).']);
+        % % %         end;
+        % % %         disp(' ');
+        % % %
+        % % %         if jobMemory(2) <= coreMemory && nTimepoints > 1
+        % % %             cmdFunction = ['correctStack(''' parameterDatabase ''', *, ' num2str(jobMemory(2)) ')'];
+        % % %             cmd = ['job submit /scheduler:keller-cluster.janelia.priv /user:simview ' ...
+        % % %                 '/parametric:1-' num2str(nTimepoints) ':1 runMatlabJob.cmd """' pwd '""" """' cmdFunction '"""'];
+        % % %             [status, systemOutput] = system(cmd);
+        % % %             disp(['System response: ' systemOutput]);
+        % % %         else
+        % % %             for t = 1:nTimepoints
+        % % %                 cmdFunction = ['correctStack(''' parameterDatabase ''', ' num2str(t) ', ' num2str(jobMemory(2)) ')'];
+        % % %                 cmd = ['job submit /scheduler:keller-cluster.janelia.priv /user:simview ' ...
+        % % %                     '/progressmsg:"' num2str(jobMemory(2)) '" runMatlabJob.cmd """' pwd '""" """' cmdFunction '"""'];
+        % % %                 [status, systemOutput] = system(cmd);
+        % % %                 disp(['Submitting time point ' num2str(timepoints(t), '%.4d') ': ' systemOutput]);
+        % % %             end;
+        % % %         end;
+        % % %     else
         disp(' ');
         
         if localRun(2) > 1 && nTimepoints > 1
@@ -223,7 +223,12 @@ if ~isempty(timepoints)
                 disp(' ');
             end;
         end;
-% % %     end;
+        % % %     end;
+        delete(parameterDatabase);
+    catch ME
+        delete(parameterDatabase);
+        rethrow(ME);
+    end
 else
     disp(' ');
     disp('Existing processing results detected for all selected time points. Submission aborted.');

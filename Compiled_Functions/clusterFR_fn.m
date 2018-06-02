@@ -183,16 +183,21 @@ if ~isempty(timepoints)
             'timepoints', 'inputDir', 'outputDir', 'header', 'footer', 'stackLabel', 'specimen', 'cameras', 'channels', ...
             'removeDirt', 'filterMode', 'rangeArray', 'splitting', 'scaling', 'preMedian', 'postMedian', 'inputType', 'outputType', ...
             'subProject', 'saveRawMax', 'saveStacks', 'jobMemory');
-        
-        if jobMemory(2) <= coreMemory && nTimepoints > 1
-             parfor t = 1:nTimepoints
-                filterResults(parameterDatabase, t, jobMemory(2));
-             end
-        else
-            for t = 1:nTimepoints
-                filterResults(parameterDatabase, t, jobMemory(2));
+        try
+            if jobMemory(2) <= coreMemory && nTimepoints > 1
+                parfor t = 1:nTimepoints
+                    filterResults(parameterDatabase, t, jobMemory(2));
+                end
+            else
+                for t = 1:nTimepoints
+                    filterResults(parameterDatabase, t, jobMemory(2));
+                end;
             end;
-        end;
+            delete(parameterDatabase);
+        catch
+            delete(parameterDatabase);
+            rethrow(ME.message);
+        end
     else
         currentTime = clock;
         timeString = [...
@@ -206,69 +211,74 @@ if ~isempty(timepoints)
             'subProject', 'saveRawMax', 'saveStacks', 'jobMemory');
         
         disp(' ');
-        
-        if localRun(1) ~= 1
-            for t = 1:nTimepoints
-                fileNameHeader = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(t), '%.6d') configurationString];
-                fileName = [inputDir header '.TM' num2str(timepoints(t), '%.6d') footer filesep '' fileNameHeader '.fusedStack' stackLabel inputExtension];
-                
-                try
-                    switch inputType
-                        case 0
-                            headerInformation = readKLBheader(fileName);
-                            stackDimensions = headerInformation.xyzct(1:3);
-                        case 1
-                            [stackDimensions, bitDepth] = readJP2header(fileName);
-                        case 2
-                            headerInformation = imfinfo(fileName);
-                            stackDimensions = [headerInformation(1).Height headerInformation(1).Width numel(headerInformation)];
-                    end;
-                    unitX = 2 * stackDimensions(1) * stackDimensions(2) * stackDimensions(3) / (1024 ^ 3);
-                catch errorMessage
-                    switch inputType
-                        case 0
-                            error('Failed to open KLB file.');
-                        case 1
-                            error('Failed to open JP2 file.');
-                        case 2
-                            error('Failed to open TIF file.');
-                    end;
-                end;
-                
-                jobMemory(1, 2) = ceil(1.2 * 4.6 * unitX);
-                
-                filterResults(parameterDatabase, t, jobMemory(2));
-                
-                disp(['Submitting time point ' num2str(timepoints(t), '%.4d') ': ' systemOutput]);
-            end;
-        else
-            if localRun(2) > 1 && nTimepoints > 1
-                if matlabpool('size') > 0
-                    matlabpool('close');
-                end;
-                matlabpool(localRun(2));
-                
-                disp(' ');
-                
-                parfor t = 1:nTimepoints
-                    filterResults(parameterDatabase, t, jobMemory(2));
-                end;
-                
-                disp(' ');
-                
-                if matlabpool('size') > 0
-                    matlabpool('close');
-                end;
-                
-                disp(' ');
-            else
+        try
+            if localRun(1) ~= 1
                 for t = 1:nTimepoints
+                    fileNameHeader = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(t), '%.6d') configurationString];
+                    fileName = [inputDir header '.TM' num2str(timepoints(t), '%.6d') footer filesep '' fileNameHeader '.fusedStack' stackLabel inputExtension];
+                    
+                    try
+                        switch inputType
+                            case 0
+                                headerInformation = readKLBheader(fileName);
+                                stackDimensions = headerInformation.xyzct(1:3);
+                            case 1
+                                [stackDimensions, bitDepth] = readJP2header(fileName);
+                            case 2
+                                headerInformation = imfinfo(fileName);
+                                stackDimensions = [headerInformation(1).Height headerInformation(1).Width numel(headerInformation)];
+                        end;
+                        unitX = 2 * stackDimensions(1) * stackDimensions(2) * stackDimensions(3) / (1024 ^ 3);
+                    catch errorMessage
+                        switch inputType
+                            case 0
+                                error('Failed to open KLB file.');
+                            case 1
+                                error('Failed to open JP2 file.');
+                            case 2
+                                error('Failed to open TIF file.');
+                        end;
+                    end;
+                    
+                    jobMemory(1, 2) = ceil(1.2 * 4.6 * unitX);
+                    
                     filterResults(parameterDatabase, t, jobMemory(2));
+                    
+                    disp(['Submitting time point ' num2str(timepoints(t), '%.4d') ': ' systemOutput]);
                 end;
-                
-                disp(' ');
+            else
+                if localRun(2) > 1 && nTimepoints > 1
+                    if matlabpool('size') > 0
+                        matlabpool('close');
+                    end;
+                    matlabpool(localRun(2));
+                    
+                    disp(' ');
+                    
+                    parfor t = 1:nTimepoints
+                        filterResults(parameterDatabase, t, jobMemory(2));
+                    end;
+                    
+                    disp(' ');
+                    
+                    if matlabpool('size') > 0
+                        matlabpool('close');
+                    end;
+                    
+                    disp(' ');
+                else
+                    for t = 1:nTimepoints
+                        filterResults(parameterDatabase, t, jobMemory(2));
+                    end;
+                    
+                    disp(' ');
+                end;
             end;
-        end;
+            delete(parameterDatabase);
+        catch ME
+            delete(parameterDatabase);
+            rethrow(ME);
+        end
     end;
 else
     disp(' ');

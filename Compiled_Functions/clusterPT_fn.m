@@ -417,22 +417,27 @@ if ~isempty(timepoints)
             'startsLeft', 'startsTop', 'widths', 'heights', 'startsFront', 'depths', 'inputType', 'outputType', 'correctTIFF', 'rotationFlag', ...
             'medianRange', 'percentile', 'segmentFlag', 'flipHFlag', 'flipVFlag', 'splitting', 'kernelSize', 'kernelSigma', 'scaling', ...
             'references', 'dependents', 'thresholds', 'loggingFlag', 'verbose', 'backgroundValues', 'jobMemory');
-        
-        if jobMemory(2) <= coreMemory && nTimepoints > 1
-            cmdFunction = ['processTimepoint(''' parameterDatabase ''', *, ' num2str(jobMemory(2)) ')'];
-            cmd = ['job submit /scheduler:keller-cluster.janelia.priv /user:simview ' ...
-                '/parametric:1-' num2str(nTimepoints) ':1 runMatlabJob.cmd """' pwd '""" """' cmdFunction '"""'];
-            [status, systemOutput] = system(cmd);
-            disp(['System response: ' systemOutput]);
-        else
-            for t = 1:nTimepoints
-                cmdFunction = ['processTimepoint(''' parameterDatabase ''', ' num2str(t) ', ' num2str(jobMemory(2)) ')'];
+        try
+            if jobMemory(2) <= coreMemory && nTimepoints > 1
+                cmdFunction = ['processTimepoint(''' parameterDatabase ''', *, ' num2str(jobMemory(2)) ')'];
                 cmd = ['job submit /scheduler:keller-cluster.janelia.priv /user:simview ' ...
-                    '/progressmsg:"' num2str(jobMemory(2)) '" runMatlabJob.cmd """' pwd '""" """' cmdFunction '"""'];
+                    '/parametric:1-' num2str(nTimepoints) ':1 runMatlabJob.cmd """' pwd '""" """' cmdFunction '"""'];
                 [status, systemOutput] = system(cmd);
-                disp(['Submitting time point ' num2str(timepoints(t), '%.4d') ': ' systemOutput]);
+                disp(['System response: ' systemOutput]);
+            else
+                for t = 1:nTimepoints
+                    cmdFunction = ['processTimepoint(''' parameterDatabase ''', ' num2str(t) ', ' num2str(jobMemory(2)) ')'];
+                    cmd = ['job submit /scheduler:keller-cluster.janelia.priv /user:simview ' ...
+                        '/progressmsg:"' num2str(jobMemory(2)) '" runMatlabJob.cmd """' pwd '""" """' cmdFunction '"""'];
+                    [status, systemOutput] = system(cmd);
+                    disp(['Submitting time point ' num2str(timepoints(t), '%.4d') ': ' systemOutput]);
+                end;
             end;
-        end;
+            delete(parameterDatabase);
+        catch ME
+            delete(parameterDatabase);
+            error(ME.message);
+        end
     else
         if localRun(1) ~= 1
             if inputType == 4
@@ -465,91 +470,96 @@ if ~isempty(timepoints)
             'references', 'dependents', 'thresholds', 'loggingFlag', 'verbose', 'backgroundValues', 'jobMemory');
         
         disp(' ');
-        
-        if localRun(1) ~= 1
-            for t = 1:nTimepoints
-                xmlName = [inputFolder filesep 'TM' num2str(timepoints(t), '%.5d') filesep 'ch' num2str(channels(1)) '.xml'];
-                
-                try
-                    stackDimensions = [];
-                    
-                    fid = fopen(xmlName, 'r');
-                    if fid < 1
-                        error('Could not open file %s for reading.', xmlName);
-                    end;
-                    while true
-                        s = fgetl(fid);
-                        if ~ischar(s)
-                            break;
-                        end;
-                        m = regexp(s, '<info dimensions="([^#]*)"', 'tokens', 'once');
-                        if ~isempty(m)
-                            stackDimensions = m{1};
-                            break;
-                        end;
-                    end;
-                    fclose(fid);
-                    
-                    if isempty(stackDimensions)
-                        error('Unable to retrieve stack dimensions from file %s.', xmlName);
-                    end
-                    stackDimensions = str2double(regexp(stackDimensions, '[^\d]+', 'split'));
-                    stackDimensions = reshape(stackDimensions, [3, numel(stackDimensions) / 3])';
-                    if any(isnan(stackDimensions))
-                        error('Unable to correctly parse stack dimensions retrieved from file %s.', xmlName);
-                    end;
-                    
-                    unitX = 2 * stackDimensions(1, 1) * stackDimensions(1, 2) * stackDimensions(1, 3) / (1024 ^ 3);
-                catch errorMessage
-                    error('Failed to open XML file.');
-                end;
-                
-                % inputMode ~= 3, the estimated memory consumption is (2*n + 2) * unitX (n = max. number of channels used in parallel, +10% safety)
-                if rotationFlag == 0
-                    jobMemory(1, 2) = ceil(1.2 * (2 * nReferences + 2) * unitX);
-                elseif rotationFlag == -1
-                    jobMemory(1, 2) = ceil(1.2 * (2 * nReferences + 3) * unitX);
-                elseif rotationFlag == 1
-                    jobMemory(1, 2) = ceil(1.2 * (2 * nReferences + 4) * unitX);
-                end;
-                
-                disp(['Estimated memory consumption per workstation core at time point ' num2str(timepoints(t), '%.4d') ' is ' num2str(jobMemory(2)) ' GB.']);
-                
-                cmdFunction = ['processTimepoint(''' parameterDatabase ''', ' num2str(t) ', ' num2str(jobMemory(2)) ')'];
-                cmd = ['job submit /scheduler:keller-cluster.janelia.priv /user:simview ' ...
-                    '/progressmsg:"' num2str(jobMemory(2)) '" runMatlabJob.cmd """' pwd '""" """' cmdFunction '"""'];
-                [status, systemOutput] = system(cmd);
-                disp(['Submitting time point ' num2str(timepoints(t), '%.4d') ': ' systemOutput]);
-            end;
-        else
-            if localRun(2) > 1 && nTimepoints > 1
-                if matlabpool('size') > 0
-                    matlabpool('close');
-                end;
-                matlabpool(localRun(2));
-                
-                disp(' ');
-                
-                parfor t = 1:nTimepoints
-                    disp(['Submitting time point ' num2str(timepoints(t), '%.4d') ' to a local worker.']);
-                    processTimepoint(parameterDatabase, t, jobMemory(2));
-                end;
-                
-                disp(' ');
-                
-                if matlabpool('size') > 0
-                    matlabpool('close');
-                end;
-                
-                disp(' ');
-            else
+        try
+            if localRun(1) ~= 1
                 for t = 1:nTimepoints
-                    disp(['Processing time point ' num2str(timepoints(t), '%.4d')]);
-                    processTimepoint(parameterDatabase, t, jobMemory(2));
+                    xmlName = [inputFolder filesep 'TM' num2str(timepoints(t), '%.5d') filesep 'ch' num2str(channels(1)) '.xml'];
+                    
+                    try
+                        stackDimensions = [];
+                        
+                        fid = fopen(xmlName, 'r');
+                        if fid < 1
+                            error('Could not open file %s for reading.', xmlName);
+                        end;
+                        while true
+                            s = fgetl(fid);
+                            if ~ischar(s)
+                                break;
+                            end;
+                            m = regexp(s, '<info dimensions="([^#]*)"', 'tokens', 'once');
+                            if ~isempty(m)
+                                stackDimensions = m{1};
+                                break;
+                            end;
+                        end;
+                        fclose(fid);
+                        
+                        if isempty(stackDimensions)
+                            error('Unable to retrieve stack dimensions from file %s.', xmlName);
+                        end
+                        stackDimensions = str2double(regexp(stackDimensions, '[^\d]+', 'split'));
+                        stackDimensions = reshape(stackDimensions, [3, numel(stackDimensions) / 3])';
+                        if any(isnan(stackDimensions))
+                            error('Unable to correctly parse stack dimensions retrieved from file %s.', xmlName);
+                        end;
+                        
+                        unitX = 2 * stackDimensions(1, 1) * stackDimensions(1, 2) * stackDimensions(1, 3) / (1024 ^ 3);
+                    catch errorMessage
+                        error('Failed to open XML file.');
+                    end;
+                    
+                    % inputMode ~= 3, the estimated memory consumption is (2*n + 2) * unitX (n = max. number of channels used in parallel, +10% safety)
+                    if rotationFlag == 0
+                        jobMemory(1, 2) = ceil(1.2 * (2 * nReferences + 2) * unitX);
+                    elseif rotationFlag == -1
+                        jobMemory(1, 2) = ceil(1.2 * (2 * nReferences + 3) * unitX);
+                    elseif rotationFlag == 1
+                        jobMemory(1, 2) = ceil(1.2 * (2 * nReferences + 4) * unitX);
+                    end;
+                    
+                    disp(['Estimated memory consumption per workstation core at time point ' num2str(timepoints(t), '%.4d') ' is ' num2str(jobMemory(2)) ' GB.']);
+                    
+                    cmdFunction = ['processTimepoint(''' parameterDatabase ''', ' num2str(t) ', ' num2str(jobMemory(2)) ')'];
+                    cmd = ['job submit /scheduler:keller-cluster.janelia.priv /user:simview ' ...
+                        '/progressmsg:"' num2str(jobMemory(2)) '" runMatlabJob.cmd """' pwd '""" """' cmdFunction '"""'];
+                    [status, systemOutput] = system(cmd);
+                    disp(['Submitting time point ' num2str(timepoints(t), '%.4d') ': ' systemOutput]);
+                end;
+            else
+                if localRun(2) > 1 && nTimepoints > 1
+                    if matlabpool('size') > 0
+                        matlabpool('close');
+                    end;
+                    matlabpool(localRun(2));
+                    
                     disp(' ');
+                    
+                    parfor t = 1:nTimepoints
+                        disp(['Submitting time point ' num2str(timepoints(t), '%.4d') ' to a local worker.']);
+                        processTimepoint(parameterDatabase, t, jobMemory(2));
+                    end;
+                    
+                    disp(' ');
+                    
+                    if matlabpool('size') > 0
+                        matlabpool('close');
+                    end;
+                    
+                    disp(' ');
+                else
+                    for t = 1:nTimepoints
+                        disp(['Processing time point ' num2str(timepoints(t), '%.4d')]);
+                        processTimepoint(parameterDatabase, t, jobMemory(2));
+                        disp(' ');
+                    end;
                 end;
             end;
-        end;
+            delete(parameterDatabase);
+        catch ME
+            delete(parameterDatabase);
+            rethrow(ME);
+        end
     end;
 elseif segmentFlag == 2
     disp(' ');
