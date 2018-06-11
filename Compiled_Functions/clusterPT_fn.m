@@ -18,6 +18,8 @@ if nargin == 3
 end
 % root folder with raw data
 inputFolder  = input_parameters.inputFolder;
+userDefinedOutputFolder='';
+if isfield(input_parameters,'outputFolder'), userDefinedOutputFolder = input_parameters.outputFolder; end%DGA added this so that the output folder can be different from the input
 outputLabel  = input_parameters.outputLabel;
 specimen     = input_parameters.specimen;    % specimen index to be processed
 timepoints   = input_parameters.timepoints;  % time points to be processed
@@ -190,29 +192,37 @@ else
     warning('Incomplete cropping information provided by user. Meta data from XML files will be used to determine maximum ROI size.');
 end;
 
+%DGA: Added the following so the user can define the output folder
+if ~isempty(userDefinedOutputFolder)
+    templateOutputFolder = userDefinedOutputFolder;
+else
+    templateOutputFolder = inputFolder;
+end
+
 % create task-specific input and output folders
 if ~isempty(outputLabel)
-    projectionFolder = [inputFolder '.corrected.' outputLabel '.projections'];
+    projectionFolder = [templateOutputFolder '.corrected.' outputLabel '.projections'];
 else
-    projectionFolder = [inputFolder '.corrected.projections'];
+    projectionFolder = [templateOutputFolder '.corrected.projections'];
 end;
+
 if inputType == 4
     if ~isempty(outputLabel)
-        outputFolder = [inputFolder '.corrected.' outputLabel];
+        outputFolder = [templateOutputFolder '.corrected.' outputLabel];
     else
-        outputFolder = [inputFolder '.corrected'];
+        outputFolder = [templateOutputFolder '.corrected'];
     end;
 else
     if ~isempty(outputLabel)
-        outputFolder = [inputFolder '.corrected.' outputLabel filesep 'SPM' num2str(specimen, '%.2d')];
+        outputFolder = [templateOutputFolder '.corrected.' outputLabel filesep 'SPM' num2str(specimen, '%.2d')];
     else
-        outputFolder = [inputFolder '.corrected' filesep 'SPM' num2str(specimen, '%.2d')];
+        outputFolder = [templateOutputFolder '.corrected' filesep 'SPM' num2str(specimen, '%.2d')];
     end;
 end;
 if ~isempty(outputLabel)
-    globalMaskFolder = [inputFolder '.globalMask.' outputLabel];
+    globalMaskFolder = [templateOutputFolder '.globalMask.' outputLabel];
 else
-    globalMaskFolder = [inputFolder '.globalMask'];
+    globalMaskFolder = [templateOutputFolder '.globalMask'];
 end;
 if inputType ~= 3 && inputType ~= 4
     inputFolder = [inputFolder filesep 'SPM' num2str(specimen, '%.2d')];
