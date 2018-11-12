@@ -77,7 +77,9 @@ if localRun(1) == 1 && localRun(2) == 0
     disp([num2str(localRun(2)) ' CPU cores were detected and will be allocated for parallel processing.']);
 end;
 
-if length(cameras) == 2 && length(channels) == 2
+if fusionFlag ==0
+    configurationString = ['_CM' num2str(cameras(1), '%.2d') '_CHN' num2str(channels(1), '%.2d')]; % single channel
+elseif length(cameras) == 2 && length(channels) == 2
     configurationString = ['_CM' num2str(cameras(1), '%.2d') '_CM' num2str(cameras(2), '%.2d') '_CHN' num2str(channels(1), '%.2d') '_CHN' num2str(channels(2), '%.2d')]; % 4-view fusion
 elseif length(cameras) == 1 && length(channels) == 2
     configurationString = ['_CM' num2str(cameras(1), '%.2d') '_CHN' num2str(channels(1), '%.2d') '_CHN' num2str(channels(2), '%.2d')]; % 2-view channel fusion
@@ -106,19 +108,25 @@ switch outputType
 end;
 
 for currentTP = length(timepoints):-1:1
-    outputPath = [outputDir header '.TM' num2str(timepoints(currentTP), '%.6d') footer];
+    if fusionFlag == 0
+        outputPath = [outputDir 'SPM' num2str(specimen, '%.2d') filesep 'TM' num2str(timepoints(currentTP), '%.6d')];
+        intermediateString = '.';
+    else
+        outputPath = [outputDir header '.TM' num2str(timepoints(currentTP), '%.6d') footer];
+        intermediateString = '.fusedStack_';
+    end;
     fileNameHeader = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(currentTP), '%.6d') configurationString];
     if isempty(filterMode) && removeDirt(1)
         if preMedian(1) == 0
-            outputName = [outputPath filesep '' fileNameHeader '.fusedStack_yzProjection.cleaned' outputExtension];
+            outputName = [outputPath filesep fileNameHeader intermediateString 'yzProjection.cleaned' outputExtension];
         else
-            outputName = [outputPath filesep '' fileNameHeader '.fusedStack_yzProjection.cleaned_median' outputExtension];
+            outputName = [outputPath filesep fileNameHeader intermediateString 'yzProjection.cleaned_median' outputExtension];
         end;
     elseif ~isempty(filterMode)
         if postMedian(1) == 0
-            outputName = [outputPath filesep '' fileNameHeader '.fusedStack_yzProjection.filtered_' num2str(rangeArray(end)) outputExtension];
+            outputName = [outputPath filesep fileNameHeader intermediateString 'yzProjection.filtered_' num2str(rangeArray(end)) outputExtension];
         else
-            outputName = [outputPath filesep '' fileNameHeader '.fusedStack_yzProjection.filtered_' num2str(rangeArray(end)) '_median' outputExtension];
+            outputName = [outputPath filesep fileNameHeader intermediateString 'yzProjection.filtered_' num2str(rangeArray(end)) '_median' outputExtension];
         end;
     else
         error('Bad script configuration: both filtering and dirt removal are deactivated.');
@@ -134,8 +142,11 @@ if ~isempty(timepoints)
     
     if jobMemory(1) == 1 && localRun(1) ~= 1
         fileNameHeader = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(1), '%.6d') configurationString];
-        fileName = [inputDir header '.TM' num2str(timepoints(1), '%.6d') footer filesep '' fileNameHeader '.fusedStack' stackLabel inputExtension];
-        
+        if fusionFlag == 0
+            fileName = [inputDir filesep 'SPM' num2str(specimen, '%.2d') filesep 'TM' num2str(timepoints(1), '%.6d') filesep fileNameHeader inputExtension];
+        else
+            fileName = [inputDir header '.TM' num2str(timepoints(1), '%.6d') footer filesep fileNameHeader '.fusedStack' stackLabel inputExtension];
+        end;        
         try
             switch inputType
                 case 0
@@ -180,7 +191,7 @@ if ~isempty(timepoints)
         parameterDatabase = [pwd filesep 'jobParameters.filterResults.' timeString '_' num2str(input_parameters.timepoints(1))  '.mat'];
         
         save(parameterDatabase,...
-            'timepoints', 'inputDir', 'outputDir', 'header', 'footer', 'stackLabel', 'specimen', 'cameras', 'channels', ...
+            'timepoints', 'inputDir', 'outputDir', 'header', 'footer', 'stackLabel', 'fusionFlag', 'specimen', 'cameras', 'channels', ...
             'removeDirt', 'filterMode', 'rangeArray', 'splitting', 'scaling', 'preMedian', 'postMedian', 'inputType', 'outputType', ...
             'subProject', 'saveRawMax', 'saveStacks', 'jobMemory');
         try
@@ -206,7 +217,7 @@ if ~isempty(timepoints)
         parameterDatabase = [pwd filesep 'jobParameters.filterResults.' timeString '_' num2str(input_parameters.timepoints(1))  '.mat'];
         
         save(parameterDatabase,...
-            'timepoints', 'inputDir', 'outputDir', 'header', 'footer', 'stackLabel', 'specimen', 'cameras', 'channels', ...
+            'timepoints', 'inputDir', 'outputDir', 'header', 'footer', 'stackLabel', 'fusionFlag', 'specimen', 'cameras', 'channels', ...
             'removeDirt', 'filterMode', 'rangeArray', 'splitting', 'scaling', 'preMedian', 'postMedian', 'inputType', 'outputType', ...
             'subProject', 'saveRawMax', 'saveStacks', 'jobMemory');
         
@@ -215,8 +226,11 @@ if ~isempty(timepoints)
             if localRun(1) ~= 1
                 for t = 1:nTimepoints
                     fileNameHeader = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(t), '%.6d') configurationString];
-                    fileName = [inputDir header '.TM' num2str(timepoints(t), '%.6d') footer filesep '' fileNameHeader '.fusedStack' stackLabel inputExtension];
-                    
+                    if fusionFlag == 0
+                        fileName = [inputDir filesep 'SPM' num2str(specimen, '%.2d') filesep 'TM' num2str(timepoints(t), '%.6d') filesep fileNameHeader inputExtension];
+                    else
+                        fileName = [inputDir header '.TM' num2str(timepoints(t), '%.6d') footer filesep fileNameHeader '.fusedStack' stackLabel inputExtension];
+                    end;
                     try
                         switch inputType
                             case 0

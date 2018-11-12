@@ -735,22 +735,23 @@ else % inputType ~= 4
                     end;
                     
                     % save 2D projections of referenceStacks
-                    
-                    xyProjectionName = [projectionFolder filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') ...
-                        '_CM' num2str(currentCamera, '%.2d') '_CHN' num2str(currentReferences(n), '%.2d') '.xyProjection' outputExtension];
-                    xzProjectionName = [projectionFolder filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') ...
-                        '_CM' num2str(currentCamera, '%.2d') '_CHN' num2str(currentReferences(n), '%.2d') '.xzProjection' outputExtension];
-                    yzProjectionName = [projectionFolder filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') ...
-                        '_CM' num2str(currentCamera, '%.2d') '_CHN' num2str(currentReferences(n), '%.2d') '.yzProjection' outputExtension];
-                    if correctTIFF == 1 && ((inputType == 0 && outputType ~= 2) || (inputType ~= 0 && outputType == 2))
-                        writeImage(squeeze(max(referenceStacks{n}, [], 3)), xyProjectionName, 'transpose', 1);
-                        writeImage(squeeze(max(referenceStacks{n}, [], 2)), xzProjectionName, 'transpose', 1);
-                        writeImage(squeeze(max(referenceStacks{n}, [], 1)), yzProjectionName, 'transpose', 1);
-                    else
-                        writeImage(squeeze(max(referenceStacks{n}, [], 3)), xyProjectionName);
-                        writeImage(squeeze(max(referenceStacks{n}, [], 2)), xzProjectionName);
-                        writeImage(squeeze(max(referenceStacks{n}, [], 1)), yzProjectionName);
-                    end;
+                    for currentFolder = {projectionFolder, [outputFolder filesep 'TM' num2str(timepoint, '%.6d')]}
+                        xyProjectionName = [currentFolder{:} filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') ...
+                            '_CM' num2str(currentCamera, '%.2d') '_CHN' num2str(currentReferences(n), '%.2d') '_xyProjection' outputExtension];
+                        xzProjectionName = [currentFolder{:} filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') ...
+                            '_CM' num2str(currentCamera, '%.2d') '_CHN' num2str(currentReferences(n), '%.2d') '_xzProjection' outputExtension];
+                        yzProjectionName = [currentFolder{:} filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') ...
+                            '_CM' num2str(currentCamera, '%.2d') '_CHN' num2str(currentReferences(n), '%.2d') '_yzProjection' outputExtension];
+                        if correctTIFF == 1 && ((inputType == 0 && outputType ~= 2) || (inputType ~= 0 && outputType == 2))
+                            writeImage(squeeze(max(referenceStacks{n}, [], 3)), xyProjectionName, 'transpose', 1);
+                            writeImage(squeeze(max(referenceStacks{n}, [], 2)), xzProjectionName, 'transpose', 1);
+                            writeImage(squeeze(max(referenceStacks{n}, [], 1)), yzProjectionName, 'transpose', 1);
+                        else
+                            writeImage(squeeze(max(referenceStacks{n}, [], 3)), xyProjectionName);
+                            writeImage(squeeze(max(referenceStacks{n}, [], 2)), xzProjectionName);
+                            writeImage(squeeze(max(referenceStacks{n}, [], 1)), yzProjectionName);
+                        end;
+                    end
                 end;
                 
                 % clear referenceStacks
@@ -896,23 +897,23 @@ else % inputType ~= 4
                         end;
                         
                         % save 2D projections of dependentStack
-                        
-                        xyProjectionName = [projectionFolder filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') ...
-                            '_CM' num2str(currentCamera, '%.2d') '_CHN' num2str(currentDependents(n), '%.2d') '.xyProjection' outputExtension];
-                        xzProjectionName = [projectionFolder filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') ...
-                            '_CM' num2str(currentCamera, '%.2d') '_CHN' num2str(currentDependents(n), '%.2d') '.xzProjection' outputExtension];
-                        yzProjectionName = [projectionFolder filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') ...
-                            '_CM' num2str(currentCamera, '%.2d') '_CHN' num2str(currentDependents(n), '%.2d') '.yzProjection' outputExtension];
-                        if correctTIFF == 1 && ((inputType == 0 && outputType ~= 2) || (inputType ~= 0 && outputType == 2))
-                            writeImage(squeeze(max(dependentStack, [], 3)), xyProjectionName, 'transpose', 1);
-                            writeImage(squeeze(max(dependentStack, [], 2)), xzProjectionName, 'transpose', 1);
-                            writeImage(squeeze(max(dependentStack, [], 1)), yzProjectionName, 'transpose', 1);
-                        else
-                            writeImage(squeeze(max(dependentStack, [], 3)), xyProjectionName);
-                            writeImage(squeeze(max(dependentStack, [], 2)), xzProjectionName);
-                            writeImage(squeeze(max(dependentStack, [], 1)), yzProjectionName);
+                        for currentFolder = {projectionFolder, [outputFolder filesep 'TM' num2str(timepoint, '%.6d')]}
+                            xyProjectionName = [currentFolder{:} filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') ...
+                                '_CM' num2str(currentCamera, '%.2d') '_CHN' num2str(currentDependents(n), '%.2d') '_xyProjection' outputExtension];
+                            xzProjectionName = [currentFolder{:} filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') ...
+                                '_CM' num2str(currentCamera, '%.2d') '_CHN' num2str(currentDependents(n), '%.2d') '_xzProjection' outputExtension];
+                            yzProjectionName = [currentFolder{:} filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') ...
+                                '_CM' num2str(currentCamera, '%.2d') '_CHN' num2str(currentDependents(n), '%.2d') '_yzProjection' outputExtension];
+                            if correctTIFF == 1 && ((inputType == 0 && outputType ~= 2) || (inputType ~= 0 && outputType == 2))
+                                writeImage(squeeze(max(dependentStack, [], 3)), xyProjectionName, 'transpose', 1);
+                                writeImage(squeeze(max(dependentStack, [], 2)), xzProjectionName, 'transpose', 1);
+                                writeImage(squeeze(max(dependentStack, [], 1)), yzProjectionName, 'transpose', 1);
+                            else
+                                writeImage(squeeze(max(dependentStack, [], 3)), xyProjectionName);
+                                writeImage(squeeze(max(dependentStack, [], 2)), xzProjectionName);
+                                writeImage(squeeze(max(dependentStack, [], 1)), yzProjectionName);
+                            end;
                         end;
-                        
                         % clear dependentStack
                         
                         clear dependentStack;
