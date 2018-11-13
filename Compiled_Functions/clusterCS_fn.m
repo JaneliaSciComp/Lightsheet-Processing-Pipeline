@@ -103,7 +103,7 @@ for n = 1:nTimepoints
         end;
     end;
 end;
-
+dimensions = []; dimensionsMax = []; dimensionsDeltas = []; %DGA: Add this so parfor knows they are variables
 load([configRoot filesep 'dimensions.mat']);
 load([configRoot filesep 'dimensionsMax.mat']);
 load([configRoot filesep 'dimensionsDeltas.mat']);
@@ -193,7 +193,6 @@ if ~isempty(timepoints)
             matlabpool(localRun(2));
             
             disp(' ');
-            
             parfor t = 1:nTimepoints
                 disp(['Submitting time point ' num2str(timepoints(t), '%.4d') ' to a local worker.']);
                 correctStack(inputDatabase, outputDatabase, dataType, timepoints, dimensions, dimensionsMax, dimensionsDeltas, ...

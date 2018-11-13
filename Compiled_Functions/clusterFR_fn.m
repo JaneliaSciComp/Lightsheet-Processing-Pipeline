@@ -24,12 +24,13 @@ outputDir    = input_parameters.outputDir;%['X:' filesep 'SV1' filesep '14-05-21
 header       = input_parameters.header;%'Mmu_E1_CAGTAG1';
 footer       = input_parameters.footer;%'_timeFused_blending';
 stackLabel   = input_parameters.stackLabel;%'.corrected.shifted';
+fusionFlag   = input_parameters.fusionFlag;      % 0: clusterPT output, 1: cluterMF/clusterTF output
 
 specimen     = input_parameters.specimen;%0;
 cameras      = input_parameters.cameras;%0:1;
 channels     = input_parameters.channels;%0;
 
-subOffset    = 0;      % background subtraction as initial processing step (useful for unfused raw image stacks)
+subOffset    = input_parameters.fusionFlag;      % background subtraction as initial processing step (useful for unfused raw image stacks)
 
 removeDirt   = input_parameters.removeDirt;%[0 10]; % slot 1: flag for removing all but the largest connected component determined by thresholding
                        % slot 2: threshold for binarizing volume
@@ -256,8 +257,8 @@ if ~isempty(timepoints)
                     
                     parfor t = 1:nTimepoints
                         filterResults(timepoints, inputDir, outputDir, header, footer, stackLabel, fusionFlag, specimen, cameras, channels,subOffset, ...
-                        removeDirt, filterMode, rangeArray, splitting, scaling, preMedian, postMedian, inputType, outputType, ...
-                        subProject, saveRawMax, saveStacks, jobMemory, t, jobMemory(2));
+                            removeDirt, filterMode, rangeArray, splitting, scaling, preMedian, postMedian, inputType, outputType, ...
+                            subProject, saveRawMax, saveStacks, jobMemory, t, jobMemory(2));
                     end;
                     
                     disp(' ');

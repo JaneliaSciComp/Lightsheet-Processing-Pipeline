@@ -85,8 +85,8 @@ if fusionFlag == 0
     intermediateStackString = '';
 else
     outputPath = [outputDir filesep header '.TM' num2str(timepoint, '%.6d') footer];
-    intermediateString = intermediateString '';
-    intermediateStackString = intermediateStackString '';
+    intermediateString = '.fusedStack_';
+    intermediateStackString = '.fusedStack';
 end
 mkdir(outputPath);
 
