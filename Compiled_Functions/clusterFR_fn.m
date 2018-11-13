@@ -29,6 +29,8 @@ specimen     = input_parameters.specimen;%0;
 cameras      = input_parameters.cameras;%0:1;
 channels     = input_parameters.channels;%0;
 
+subOffset    = 0;      % background subtraction as initial processing step (useful for unfused raw image stacks)
+
 removeDirt   = input_parameters.removeDirt;%[0 10]; % slot 1: flag for removing all but the largest connected component determined by thresholding
                        % slot 2: threshold for binarizing volume
 
@@ -184,43 +186,24 @@ if ~isempty(timepoints)
         end;
         disp(' ');
         
-        currentTime = clock;
-        timeString = [...
-            num2str(currentTime(1)) num2str(currentTime(2), '%.2d') num2str(currentTime(3), '%.2d') ...
-            '_' num2str(currentTime(4), '%.2d') num2str(currentTime(5), '%.2d') num2str(round(currentTime(6) * 1000), '%.5d')];
-        parameterDatabase = [pwd filesep 'jobParameters.filterResults.' timeString '_' num2str(input_parameters.timepoints(1))  '.mat'];
-        
-        save(parameterDatabase,...
-            'timepoints', 'inputDir', 'outputDir', 'header', 'footer', 'stackLabel', 'fusionFlag', 'specimen', 'cameras', 'channels', ...
-            'removeDirt', 'filterMode', 'rangeArray', 'splitting', 'scaling', 'preMedian', 'postMedian', 'inputType', 'outputType', ...
-            'subProject', 'saveRawMax', 'saveStacks', 'jobMemory');
         try
             if jobMemory(2) <= coreMemory && nTimepoints > 1
                 parfor t = 1:nTimepoints
-                    filterResults(parameterDatabase, t, jobMemory(2));
+                    filterResults(timepoints, inputDir, outputDir, header, footer, stackLabel, fusionFlag, specimen, cameras, channels,subOffset, ...
+                        removeDirt, filterMode, rangeArray, splitting, scaling, preMedian, postMedian, inputType, outputType, ...
+                        subProject, saveRawMax, saveStacks, jobMemory, t, jobMemory(2));
                 end
             else
                 for t = 1:nTimepoints
-                    filterResults(parameterDatabase, t, jobMemory(2));
+                    filterResults(timepoints, inputDir, outputDir, header, footer, stackLabel, fusionFlag, specimen, cameras, channels,subOffset, ...
+                        removeDirt, filterMode, rangeArray, splitting, scaling, preMedian, postMedian, inputType, outputType, ...
+                        subProject, saveRawMax, saveStacks, jobMemory, t, jobMemory(2));
                 end;
             end;
-            delete(parameterDatabase);
         catch
-            delete(parameterDatabase);
             rethrow(ME.message);
         end
-    else
-        currentTime = clock;
-        timeString = [...
-            num2str(currentTime(1)) num2str(currentTime(2), '%.2d') num2str(currentTime(3), '%.2d') ...
-            '_' num2str(currentTime(4), '%.2d') num2str(currentTime(5), '%.2d') num2str(round(currentTime(6) * 1000), '%.5d')];
-        parameterDatabase = [pwd filesep 'jobParameters.filterResults.' timeString '_' num2str(input_parameters.timepoints(1))  '.mat'];
-        
-        save(parameterDatabase,...
-            'timepoints', 'inputDir', 'outputDir', 'header', 'footer', 'stackLabel', 'fusionFlag', 'specimen', 'cameras', 'channels', ...
-            'removeDirt', 'filterMode', 'rangeArray', 'splitting', 'scaling', 'preMedian', 'postMedian', 'inputType', 'outputType', ...
-            'subProject', 'saveRawMax', 'saveStacks', 'jobMemory');
-        
+    else       
         disp(' ');
         try
             if localRun(1) ~= 1
@@ -256,7 +239,9 @@ if ~isempty(timepoints)
                     
                     jobMemory(1, 2) = ceil(1.2 * 4.6 * unitX);
                     
-                    filterResults(parameterDatabase, t, jobMemory(2));
+                    filterResults(timepoints, inputDir, outputDir, header, footer, stackLabel, fusionFlag, specimen, cameras, channels,subOffset, ...
+                        removeDirt, filterMode, rangeArray, splitting, scaling, preMedian, postMedian, inputType, outputType, ...
+                        subProject, saveRawMax, saveStacks, jobMemory, t, jobMemory(2));
                     
                     disp(['Submitting time point ' num2str(timepoints(t), '%.4d') ': ' systemOutput]);
                 end;
@@ -270,7 +255,9 @@ if ~isempty(timepoints)
                     disp(' ');
                     
                     parfor t = 1:nTimepoints
-                        filterResults(parameterDatabase, t, jobMemory(2));
+                        filterResults(timepoints, inputDir, outputDir, header, footer, stackLabel, fusionFlag, specimen, cameras, channels,subOffset, ...
+                        removeDirt, filterMode, rangeArray, splitting, scaling, preMedian, postMedian, inputType, outputType, ...
+                        subProject, saveRawMax, saveStacks, jobMemory, t, jobMemory(2));
                     end;
                     
                     disp(' ');
@@ -282,15 +269,15 @@ if ~isempty(timepoints)
                     disp(' ');
                 else
                     for t = 1:nTimepoints
-                        filterResults(parameterDatabase, t, jobMemory(2));
+                        filterResults(timepoints, inputDir, outputDir, header, footer, stackLabel, fusionFlag, specimen, cameras, channels,subOffset, ...
+                        removeDirt, filterMode, rangeArray, splitting, scaling, preMedian, postMedian, inputType, outputType, ...
+                        subProject, saveRawMax, saveStacks, jobMemory, t, jobMemory(2));
                     end;
                     
                     disp(' ');
                 end;
             end;
-            delete(parameterDatabase);
         catch ME
-            delete(parameterDatabase);
             rethrow(ME);
         end
     end;

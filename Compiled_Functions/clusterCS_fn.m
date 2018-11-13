@@ -156,16 +156,6 @@ if ~isempty(timepoints)
         jobMemory(1, 2) = ceil(1.2 * 3 * unitX);
     end;
     
-    currentTime = clock;
-    timeString = [...
-        num2str(currentTime(1)) num2str(currentTime(2), '%.2d') num2str(currentTime(3), '%.2d') ...
-        '_' num2str(currentTime(4), '%.2d') num2str(currentTime(5), '%.2d') num2str(round(currentTime(6) * 1000), '%.5d')];
-    parameterDatabase = [pwd filesep 'jobParameters.correctStack.' timeString '_' num2str(input_parameters.timepoints(1))  '.mat'];
-    
-    save(parameterDatabase, ...
-        'inputDatabase', 'outputDatabase', 'dataType', 'timepoints', 'dimensions', 'dimensionsMax', 'dimensionsDeltas', ...
-        'correctIntensity', 'intensityBackgrounds', 'intensityFactors', 'correctDrift', 'inputType', 'outputType', ...
-        'percentile', 'referenceROI', 'xOffsets', 'yOffsets', 'zOffsets', 'jobMemory');
     try
         % % %     if localRun(1) ~= 1
         % % %         disp(' ');
@@ -206,7 +196,9 @@ if ~isempty(timepoints)
             
             parfor t = 1:nTimepoints
                 disp(['Submitting time point ' num2str(timepoints(t), '%.4d') ' to a local worker.']);
-                correctStack(parameterDatabase, t, jobMemory(2));
+                correctStack(inputDatabase, outputDatabase, dataType, timepoints, dimensions, dimensionsMax, dimensionsDeltas, ...
+                    correctIntensity, intensityBackgrounds, intensityFactors, correctDrift, inputType, outputType, ...
+                    percentile, referenceROI, xOffsets, yOffsets, zOffsets, jobMemory, t, jobMemory(2));
             end;
             
             disp(' ');
@@ -219,14 +211,14 @@ if ~isempty(timepoints)
         else
             for t = 1:nTimepoints
                 disp(['Processing time point ' num2str(timepoints(t), '%.4d')]);
-                correctStack(parameterDatabase, t, jobMemory(2));
+                correctStack(inputDatabase, outputDatabase, dataType, timepoints, dimensions, dimensionsMax, dimensionsDeltas, ...
+                    correctIntensity, intensityBackgrounds, intensityFactors, correctDrift, inputType, outputType, ...
+                    percentile, referenceROI, xOffsets, yOffsets, zOffsets, jobMemory, t, jobMemory(2));
                 disp(' ');
             end;
         end;
         % % %     end;
-        delete(parameterDatabase);
     catch ME
-        delete(parameterDatabase);
         rethrow(ME);
     end
 else

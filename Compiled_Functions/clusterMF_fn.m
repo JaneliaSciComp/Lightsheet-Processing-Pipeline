@@ -198,135 +198,127 @@ if ~isempty(timepoints)
     end;
     
     if jobMemory(1) ~= 2 && localRun(1) ~= 1
-        disp(' ');
-        disp(['Estimated memory consumption per workstation core is ' num2str(jobMemory(2)) ' GB.']);
-        disp(' ');
-        if jobMemory(2) <= coreMemory && nTimepoints > 1
-            disp(['Submitting parametric cluster job for ' num2str(nTimepoints) ' time point(s).']);
-        else
-            disp(['Submitting individual cluster job(s) for ' num2str(nTimepoints) ' time point(s).']);
-        end;
-        disp(' ');
-        
-        currentTime = clock;
-        timeString = [...
-            num2str(currentTime(1)) num2str(currentTime(2), '%.2d') num2str(currentTime(3), '%.2d') ...
-            '_' num2str(currentTime(4), '%.2d') num2str(currentTime(5), '%.2d') num2str(round(currentTime(6) * 1000), '%.5d')];
-        parameterDatabase = [pwd filesep 'jobParameters.multiFuse.' timeString '_' num2str(input_parameters.timepoints(1))  '.mat'];
-        
-        save(parameterDatabase, ...
-            'timepoints', 'inputString', 'outputString', 'outputID', 'dataType', 'specimen', 'cameras', 'channels', 'reducedIO', 'inputType', 'outputType', ...
-            'splitting', 'kernelSize', 'kernelSigma', 'fraction', 'maskMinimum', 'maskFactor', 'maskFusion', 'padding', ...
-            'slabSizes', 'intSizes', 'percentile', 'subSampling', 'medianFilter', 'preciseGauss', 'gaussFilter', ...
-            'optimizer', 'correction', 'fusionType', 'transitions', 'blending', 'enforceFlag', 'verbose', ...
-            'cropping', 'scaling', 'leftFlags', 'flipHFlag', 'flipVFlag', 'xOffsets', 'yOffsets', 'frontFlag', 'jobMemory');
-        try
-            if jobMemory(2) <= coreMemory && nTimepoints > 1
-                cmdFunction = ['multiFuse(''' parameterDatabase ''', *, ' num2str(jobMemory(2)) ')'];
-                cmd = ['job submit /scheduler:keller-cluster.janelia.priv /user:simview ' ...
-                    '/parametric:1-' num2str(nTimepoints) ':1 runMatlabJob.cmd """' pwd '""" """' cmdFunction '"""'];
-                [status, systemOutput] = system(cmd);
-                disp(['System response: ' systemOutput]);
-            else
-                for t = 1:nTimepoints
-                    cmdFunction = ['multiFuse(''' parameterDatabase ''', ' num2str(t) ', ' num2str(jobMemory(2)) ')'];
-                    cmd = ['job submit /scheduler:keller-cluster.janelia.priv /user:simview ' ...
-                        '/progressmsg:"' num2str(jobMemory(2)) '" runMatlabJob.cmd """' pwd '""" """' cmdFunction '"""'];
-                    [status, systemOutput] = system(cmd);
-                    disp(['Submitting time point ' num2str(timepoints(t), '%.4d') ': ' systemOutput]);
-                end;
-            end;
-            delete(parameterDatabase);
-        catch ME
-            delete(parameterDatabase);
-            rethrow(ME);
-        end
+% % %         disp(' ');
+% % %         disp(['Estimated memory consumption per workstation core is ' num2str(jobMemory(2)) ' GB.']);
+% % %         disp(' ');
+% % %         if jobMemory(2) <= coreMemory && nTimepoints > 1
+% % %             disp(['Submitting parametric cluster job for ' num2str(nTimepoints) ' time point(s).']);
+% % %         else
+% % %             disp(['Submitting individual cluster job(s) for ' num2str(nTimepoints) ' time point(s).']);
+% % %         end;
+% % %         disp(' ');
+% % %          uid = [char(java.net.InetAddress.getLocalHost.getHostName) '_' num2str(feature('getpid'))];
+% % %         parameterDatabase = [pwd filesep 'jobParameters.multiFuse.' uid '_' num2str(input_parameters.timepoints(1))  '.mat'];
+% % %         
+% % %         save(parameterDatabase, ...
+% % %             'timepoints', 'inputString', 'outputString', 'outputID', 'dataType', 'specimen', 'cameras', 'channels', 'reducedIO', 'inputType', 'outputType', ...
+% % %             'splitting', 'kernelSize', 'kernelSigma', 'fraction', 'maskMinimum', 'maskFactor', 'maskFusion', 'padding', ...
+% % %             'slabSizes', 'intSizes', 'percentile', 'subSampling', 'medianFilter', 'preciseGauss', 'gaussFilter', ...
+% % %             'optimizer', 'correction', 'fusionType', 'transitions', 'blending', 'enforceFlag', 'verbose', ...
+% % %             'cropping', 'scaling', 'leftFlags', 'flipHFlag', 'flipVFlag', 'xOffsets', 'yOffsets', 'frontFlag', 'jobMemory');
+% % %         try
+% % %             if jobMemory(2) <= coreMemory && nTimepoints > 1
+% % %                 cmdFunction = ['multiFuse(''' parameterDatabase ''', *, ' num2str(jobMemory(2)) ')'];
+% % %                 cmd = ['job submit /scheduler:keller-cluster.janelia.priv /user:simview ' ...
+% % %                     '/parametric:1-' num2str(nTimepoints) ':1 runMatlabJob.cmd """' pwd '""" """' cmdFunction '"""'];
+% % %                 [status, systemOutput] = system(cmd);
+% % %                 disp(['System response: ' systemOutput]);
+% % %             else
+% % %                 for t = 1:nTimepoints
+% % %                     cmdFunction = ['multiFuse(''' parameterDatabase ''', ' num2str(t) ', ' num2str(jobMemory(2)) ')'];
+% % %                     cmd = ['job submit /scheduler:keller-cluster.janelia.priv /user:simview ' ...
+% % %                         '/progressmsg:"' num2str(jobMemory(2)) '" runMatlabJob.cmd """' pwd '""" """' cmdFunction '"""'];
+% % %                     [status, systemOutput] = system(cmd);
+% % %                     disp(['Submitting time point ' num2str(timepoints(t), '%.4d') ': ' systemOutput]);
+% % %                 end;
+% % %             end;
+% % %         catch ME
+% % %             rethrow(ME);
+% % %         end
     else
-        currentTime = clock;
-        timeString = [...
-            num2str(currentTime(1)) num2str(currentTime(2), '%.2d') num2str(currentTime(3), '%.2d') ...
-            '_' num2str(currentTime(4), '%.2d') num2str(currentTime(5), '%.2d') num2str(round(currentTime(6) * 1000), '%.5d')];
-        parameterDatabase = [pwd filesep 'jobParameters.multiFuse.' timeString '_' num2str(input_parameters.timepoints(1)) '.mat'];
-        
-        save(parameterDatabase, ...
-            'timepoints', 'inputString', 'outputString', 'outputID', 'dataType', 'specimen', 'cameras', 'channels', 'reducedIO', 'inputType', 'outputType', ...
-            'splitting', 'kernelSize', 'kernelSigma', 'fraction', 'maskMinimum', 'maskFactor', 'maskFusion', 'padding', ...
-            'slabSizes', 'intSizes', 'percentile', 'subSampling', 'medianFilter', 'preciseGauss', 'gaussFilter', ...
-            'optimizer', 'correction', 'fusionType', 'transitions', 'blending', 'enforceFlag', 'verbose', ...
-            'cropping', 'scaling', 'leftFlags', 'flipHFlag', 'flipVFlag', 'xOffsets', 'yOffsets', 'frontFlag', 'jobMemory');
-        
-        disp(' ');
         try
             if localRun(1) ~= 1
-                for t = 1:nTimepoints
-                    inputFolder = [inputString filesep 'SPM' num2str(specimen, '%.2d') filesep 'TM' num2str(timepoints(t), '%.6d')];
-                    header = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(t), '%.6d') ...
-                        '_CM' num2str(cameras(1), '%.2d') '_CHN' num2str(channels(1), '%.2d')];
-                    fileName = [inputFolder filesep '' header inputExtension];
-                    
-                    try
-                        switch inputType
-                            case 0
-                                headerInformation = readKLBheader(fileName);
-                                stackDimensions = headerInformation.xyzct(1:3);
-                            case 1
-                                [stackDimensions, bitDepth] = readJP2header(fileName);
-                            case 2
-                                headerInformation = imfinfo(fileName);
-                                stackDimensions = [headerInformation(1).Height headerInformation(1).Width numel(headerInformation)];
-                        end;
-                        unitX = 2 * stackDimensions(1) * stackDimensions(2) * stackDimensions(3) / (1024 ^ 3);
-                    catch errorMessage
-                        switch inputType
-                            case 0
-                                error('Failed to open KLB file.');
-                            case 1
-                                error('Failed to open JP2 file.');
-                            case 2
-                                error('Failed to open TIF file.');
-                        end;
-                    end;
-                    
-                    switch processingMode
-                        case 0
-                            if fusionType == 2
-                                jobMemory(1, 2) = ceil(1.2 * 11 * unitX);
-                            else
-                                jobMemory(1, 2) = ceil(1.2 * 8 * unitX);
-                            end;
-                        case 1
-                            if fusionType == 2
-                                jobMemory(1, 2) = ceil(1.2 * 9 * unitX);
-                            else
-                                jobMemory(1, 2) = ceil(1.2 * 6 * unitX);
-                            end;
-                        case 2
-                            if fusionType == 2
-                                switch dataType
-                                    case 0
-                                        jobMemory(1, 2) = ceil(1.2 * 9 * unitX);
-                                    case 1
-                                        jobMemory(1, 2) = ceil(1.2 * 7 * unitX);
-                                end;
-                            else
-                                switch dataType
-                                    case 0
-                                        jobMemory(1, 2) = ceil(1.2 * 6 * unitX);
-                                    case 1
-                                        jobMemory(1, 2) = ceil(1.2 * 4 * unitX);
-                                end;
-                            end;
-                    end;
-                    
-                    disp(['Estimated memory consumption per workstation core at time point ' num2str(timepoints(t), '%.4d') ' is ' num2str(jobMemory(2)) ' GB.']);
-                    
-                    cmdFunction = ['multiFuse(''' parameterDatabase ''', ' num2str(t) ', ' num2str(jobMemory(2)) ')'];
-                    cmd = ['job submit /scheduler:keller-cluster.janelia.priv /user:simview ' ...
-                        '/progressmsg:"' num2str(jobMemory(2)) '" runMatlabJob.cmd """' pwd '""" """' cmdFunction '"""'];
-                    [status, systemOutput] = system(cmd);
-                    disp(['Submitting time point ' num2str(timepoints(t), '%.4d') ': ' systemOutput]);
-                end;
+% % %                 uid = [char(java.net.InetAddress.getLocalHost.getHostName) '_' num2str(feature('getpid'))];
+% % %                 parameterDatabase = [pwd filesep 'jobParameters.multiFuse.' uid '_' num2str(input_parameters.timepoints(1)) '.mat'];
+% % %                 
+% % %                 save(parameterDatabase, ...
+% % %                     'timepoints', 'inputString', 'outputString', 'outputID', 'dataType', 'specimen', 'cameras', 'channels', 'reducedIO', 'inputType', 'outputType', ...
+% % %                     'splitting', 'kernelSize', 'kernelSigma', 'fraction', 'maskMinimum', 'maskFactor', 'maskFusion', 'padding', ...
+% % %                     'slabSizes', 'intSizes', 'percentile', 'subSampling', 'medianFilter', 'preciseGauss', 'gaussFilter', ...
+% % %                     'optimizer', 'correction', 'fusionType', 'transitions', 'blending', 'enforceFlag', 'verbose', ...
+% % %                     'cropping', 'scaling', 'leftFlags', 'flipHFlag', 'flipVFlag', 'xOffsets', 'yOffsets', 'frontFlag', 'jobMemory');
+% % %                 
+% % %                 disp(' ');
+% % %                 for t = 1:nTimepoints
+% % %                     inputFolder = [inputString filesep 'SPM' num2str(specimen, '%.2d') filesep 'TM' num2str(timepoints(t), '%.6d')];
+% % %                     header = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(t), '%.6d') ...
+% % %                         '_CM' num2str(cameras(1), '%.2d') '_CHN' num2str(channels(1), '%.2d')];
+% % %                     fileName = [inputFolder filesep '' header inputExtension];
+% % %                     
+% % %                     try
+% % %                         switch inputType
+% % %                             case 0
+% % %                                 headerInformation = readKLBheader(fileName);
+% % %                                 stackDimensions = headerInformation.xyzct(1:3);
+% % %                             case 1
+% % %                                 [stackDimensions, bitDepth] = readJP2header(fileName);
+% % %                             case 2
+% % %                                 headerInformation = imfinfo(fileName);
+% % %                                 stackDimensions = [headerInformation(1).Height headerInformation(1).Width numel(headerInformation)];
+% % %                         end;
+% % %                         unitX = 2 * stackDimensions(1) * stackDimensions(2) * stackDimensions(3) / (1024 ^ 3);
+% % %                     catch errorMessage
+% % %                         switch inputType
+% % %                             case 0
+% % %                                 error('Failed to open KLB file.');
+% % %                             case 1
+% % %                                 error('Failed to open JP2 file.');
+% % %                             case 2
+% % %                                 error('Failed to open TIF file.');
+% % %                         end;
+% % %                     end;
+% % %                     
+% % %                     switch processingMode
+% % %                         case 0
+% % %                             if fusionType == 2
+% % %                                 jobMemory(1, 2) = ceil(1.2 * 11 * unitX);
+% % %                             else
+% % %                                 jobMemory(1, 2) = ceil(1.2 * 8 * unitX);
+% % %                             end;
+% % %                         case 1
+% % %                             if fusionType == 2
+% % %                                 jobMemory(1, 2) = ceil(1.2 * 9 * unitX);
+% % %                             else
+% % %                                 jobMemory(1, 2) = ceil(1.2 * 6 * unitX);
+% % %                             end;
+% % %                         case 2
+% % %                             if fusionType == 2
+% % %                                 switch dataType
+% % %                                     case 0
+% % %                                         jobMemory(1, 2) = ceil(1.2 * 9 * unitX);
+% % %                                     case 1
+% % %                                         jobMemory(1, 2) = ceil(1.2 * 7 * unitX);
+% % %                                 end;
+% % %                             else
+% % %                                 switch dataType
+% % %                                     case 0
+% % %                                         jobMemory(1, 2) = ceil(1.2 * 6 * unitX);
+% % %                                     case 1
+% % %                                         jobMemory(1, 2) = ceil(1.2 * 4 * unitX);
+% % %                                 end;
+% % %                             end;
+% % %                     end;
+% % %                     
+% % %                     disp(['Estimated memory consumption per workstation core at time point ' num2str(timepoints(t), '%.4d') ' is ' num2str(jobMemory(2)) ' GB.']);
+% % %                     
+% % %                     cmdFunction = ['multiFuse(''' parameterDatabase ''', ' num2str(t) ', ' num2str(jobMemory(2)) ')'];
+% % %                     cmd = ['job submit /scheduler:keller-cluster.janelia.priv /user:simview ' ...
+% % %                         '/progressmsg:"' num2str(jobMemory(2)) '" runMatlabJob.cmd """' pwd '""" """' cmdFunction '"""'];
+% % %                     [status, systemOutput] = system(cmd);
+% % %                     disp(['Submitting time point ' num2str(timepoints(t), '%.4d') ': ' systemOutput]);
+% % %                 end;
             else
+                
                 if localRun(2) > 1 && nTimepoints > 1
                     if matlabpool('size') > 0
                         matlabpool('close');
@@ -336,7 +328,11 @@ if ~isempty(timepoints)
                     disp(' ');
                     
                     for t = 1:nTimepoints
-                        multiFuse(parameterDatabase, t, jobMemory(2));
+                        multiFuse(timepoints, inputString, outputString, outputID, dataType, specimen, cameras, channels, reducedIO, inputType, outputType, ...
+                            splitting, kernelSize, kernelSigma, fraction, maskMinimum, maskFactor, maskFusion, padding, ...
+                            slabSizes, intSizes, percentile, subSampling, medianFilter, preciseGauss, gaussFilter, ...
+                            optimizer, correction, fusionType, transitions, blending, enforceFlag, verbose, ...
+                            cropping, scaling, leftFlags, flipHFlag, flipVFlag, xOffsets, yOffsets, frontFlag, jobMemory, t, jobMemory(2));
                     end;
                     
                     disp(' ');
@@ -348,15 +344,17 @@ if ~isempty(timepoints)
                     disp(' ');
                 else
                     for t = 1:nTimepoints
-                        multiFuse(parameterDatabase, t, jobMemory(2));
+                        multiFuse(timepoints, inputString, outputString, outputID, dataType, specimen, cameras, channels, reducedIO, inputType, outputType, ...
+                            splitting, kernelSize, kernelSigma, fraction, maskMinimum, maskFactor, maskFusion, padding, ...
+                            slabSizes, intSizes, percentile, subSampling, medianFilter, preciseGauss, gaussFilter, ...
+                            optimizer, correction, fusionType, transitions, blending, enforceFlag, verbose, ...
+                            cropping, scaling, leftFlags, flipHFlag, flipVFlag, xOffsets, yOffsets, frontFlag, jobMemory, t, jobMemory(2));
                     end;
                     
                     disp(' ');
                 end;
             end;
-            delete(parameterDatabase);
         catch ME
-            delete(parameterDatabase);
             rethrow(ME);
         end
     end;

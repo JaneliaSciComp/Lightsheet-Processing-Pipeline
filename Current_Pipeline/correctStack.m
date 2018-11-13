@@ -1,6 +1,7 @@
-function correctStack(parameterDatabase, t, memoryEstimate)
+function correctStack(inputDatabase, outputDatabase, dataType, timepoints, dimensions, dimensionsMax, dimensionsDeltas, ...
+    correctIntensity, intensityBackgrounds, intensityFactors, correctDrift, inputType, outputType, ...
+    percentile, referenceROI, xOffsets, yOffsets, zOffsets, jobMemory, t, memoryEstimate)
 
-load(parameterDatabase);
 timepoint = timepoints(t);
 
 version = 1.01;

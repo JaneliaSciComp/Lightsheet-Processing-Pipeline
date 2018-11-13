@@ -1,4 +1,7 @@
-function timeFuse(parameterDatabase, t, memoryEstimate)
+function timeFuse(timepoints, references, globalMask, inputString, sourceString, outputString, inputID, outputID, lookUpTable, dataType, ...
+    specimen, cameras, sChannels, tChannels, reducedIO, inputType, outputType, splitting, intSizes, ...
+    correction, percentile, subSampling, fusionType, blending, enforceFlag, verbose, ...
+    cropping, scaling, leftFlags, flipHFlag, flipVFlag, frontFlag, jobMemory, t, memoryEstimate)
 
 % -----------------------------------------------------------------------------------------------
 % | Time-lapse image data fusion for simultaneous multi-view light sheet microscopy             |
@@ -53,7 +56,6 @@ function timeFuse(parameterDatabase, t, memoryEstimate)
 % row 5: final correctionFactor
 % row 6: final correctionFlag
 
-load(parameterDatabase);
 timepoint = timepoints(t);
 
 load(lookUpTable);

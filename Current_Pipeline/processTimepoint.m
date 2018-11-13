@@ -1,4 +1,7 @@
-function processTimepoint(parameterDatabase, t, memoryEstimate)
+function processTimepoint(inputFolder, outputFolder, projectionFolder, globalMaskFolder, specimen, timepoints, cameras, channels, dimensions, ...
+    startsLeft, startsTop, widths, heights, startsFront, depths, inputType, outputType, correctTIFF, rotationFlag, ...
+    medianRange, percentile, segmentFlag, flipHFlag, flipVFlag, splitting, kernelSize, kernelSigma, scaling, ...
+    references, dependents, thresholds, loggingFlag, verbose, backgroundValues, jobMemory, t, memoryEstimate)
 
 % -----------------------------------------------------------------------------------------------
 % | Image data post-processing for simultaneous multi-view light sheet microscopy               |
@@ -14,7 +17,6 @@ function processTimepoint(parameterDatabase, t, memoryEstimate)
 % | writeKLBstack.mexw64                                                                        |
 % -----------------------------------------------------------------------------------------------
 
-load(parameterDatabase);
 timepoint = timepoints(t);
 
 version = 1.07;

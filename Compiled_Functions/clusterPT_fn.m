@@ -406,48 +406,43 @@ if ~isempty(timepoints)
     end;
     
     if jobMemory(1) ~= 2 && localRun(1) ~= 1
-        disp(' ');
-        disp(['Estimated memory consumption per workstation core is ' num2str(jobMemory(2)) ' GB.']);
-        disp(' ');
-        if jobMemory(2) <= coreMemory && nTimepoints > 1
-            disp(['Submitting parametric cluster job for ' num2str(nTimepoints) ' time point(s).']);
-        else
-            disp(['Submitting individual cluster job(s) for ' num2str(nTimepoints) ' time point(s).']);
-        end;
-        disp(' ');
-        
-        currentTime = clock;
-        timeString = [...
-            num2str(currentTime(1)) num2str(currentTime(2), '%.2d') num2str(currentTime(3), '%.2d') ...
-            '_' num2str(currentTime(4), '%.2d') num2str(currentTime(5), '%.2d') num2str(round(currentTime(6) * 1000), '%.5d')];
-        parameterDatabase = [pwd filesep 'jobParameters.processTimepoint.' timeString '_' num2str(input_parameters.timepoints(1))  '.mat'];
-        
-        save(parameterDatabase, ...
-            'inputFolder', 'outputFolder', 'projectionFolder', 'globalMaskFolder', 'specimen', 'timepoints', 'cameras', 'channels', 'dimensions', ...
-            'startsLeft', 'startsTop', 'widths', 'heights', 'startsFront', 'depths', 'inputType', 'outputType', 'correctTIFF', 'rotationFlag', ...
-            'medianRange', 'percentile', 'segmentFlag', 'flipHFlag', 'flipVFlag', 'splitting', 'kernelSize', 'kernelSigma', 'scaling', ...
-            'references', 'dependents', 'thresholds', 'loggingFlag', 'verbose', 'backgroundValues', 'jobMemory');
-        try
-            if jobMemory(2) <= coreMemory && nTimepoints > 1
-                cmdFunction = ['processTimepoint(''' parameterDatabase ''', *, ' num2str(jobMemory(2)) ')'];
-                cmd = ['job submit /scheduler:keller-cluster.janelia.priv /user:simview ' ...
-                    '/parametric:1-' num2str(nTimepoints) ':1 runMatlabJob.cmd """' pwd '""" """' cmdFunction '"""'];
-                [status, systemOutput] = system(cmd);
-                disp(['System response: ' systemOutput]);
-            else
-                for t = 1:nTimepoints
-                    cmdFunction = ['processTimepoint(''' parameterDatabase ''', ' num2str(t) ', ' num2str(jobMemory(2)) ')'];
-                    cmd = ['job submit /scheduler:keller-cluster.janelia.priv /user:simview ' ...
-                        '/progressmsg:"' num2str(jobMemory(2)) '" runMatlabJob.cmd """' pwd '""" """' cmdFunction '"""'];
-                    [status, systemOutput] = system(cmd);
-                    disp(['Submitting time point ' num2str(timepoints(t), '%.4d') ': ' systemOutput]);
-                end;
-            end;
-            delete(parameterDatabase);
-        catch ME
-            delete(parameterDatabase);
-            error(ME.message);
-        end
+% % %         disp(' ');
+% % %         disp(['Estimated memory consumption per workstation core is ' num2str(jobMemory(2)) ' GB.']);
+% % %         disp(' ');
+% % %         if jobMemory(2) <= coreMemory && nTimepoints > 1
+% % %             disp(['Submitting parametric cluster job for ' num2str(nTimepoints) ' time point(s).']);
+% % %         else
+% % %             disp(['Submitting individual cluster job(s) for ' num2str(nTimepoints) ' time point(s).']);
+% % %         end;
+% % %         disp(' ');
+% % %         
+% % %         uid = [char(java.net.InetAddress.getLocalHost.getHostName) '_' num2str(feature('getpid'))];
+% % %         parameterDatabase = [pwd filesep 'jobParameters.processTimepoint.' uid '_' num2str(input_parameters.timepoints(1))  '.mat'];
+% % %         
+% % %         save(parameterDatabase, ...
+% % %             'inputFolder', 'outputFolder', 'projectionFolder', 'globalMaskFolder', 'specimen', 'timepoints', 'cameras', 'channels', 'dimensions', ...
+% % %             'startsLeft', 'startsTop', 'widths', 'heights', 'startsFront', 'depths', 'inputType', 'outputType', 'correctTIFF', 'rotationFlag', ...
+% % %             'medianRange', 'percentile', 'segmentFlag', 'flipHFlag', 'flipVFlag', 'splitting', 'kernelSize', 'kernelSigma', 'scaling', ...
+% % %             'references', 'dependents', 'thresholds', 'loggingFlag', 'verbose', 'backgroundValues', 'jobMemory');
+% % %         try
+% % %             if jobMemory(2) <= coreMemory && nTimepoints > 1
+% % %                 cmdFunction = ['processTimepoint(''' parameterDatabase ''', *, ' num2str(jobMemory(2)) ')'];
+% % %                 cmd = ['job submit /scheduler:keller-cluster.janelia.priv /user:simview ' ...
+% % %                     '/parametric:1-' num2str(nTimepoints) ':1 runMatlabJob.cmd """' pwd '""" """' cmdFunction '"""'];
+% % %                 [status, systemOutput] = system(cmd);
+% % %                 disp(['System response: ' systemOutput]);
+% % %             else
+% % %                 for t = 1:nTimepoints
+% % %                     cmdFunction = ['processTimepoint(''' parameterDatabase ''', ' num2str(t) ', ' num2str(jobMemory(2)) ')'];
+% % %                     cmd = ['job submit /scheduler:keller-cluster.janelia.priv /user:simview ' ...
+% % %                         '/progressmsg:"' num2str(jobMemory(2)) '" runMatlabJob.cmd """' pwd '""" """' cmdFunction '"""'];
+% % %                     [status, systemOutput] = system(cmd);
+% % %                     disp(['Submitting time point ' num2str(timepoints(t), '%.4d') ': ' systemOutput]);
+% % %                 end;
+% % %             end;
+% % %         catch ME
+% % %             error(ME.message);
+% % %         end
     else
         if localRun(1) ~= 1
             if inputType == 4
@@ -467,75 +462,72 @@ if ~isempty(timepoints)
             end;
         end;
         
-        currentTime = clock;
-        timeString = [...
-            num2str(currentTime(1)) num2str(currentTime(2), '%.2d') num2str(currentTime(3), '%.2d') ...
-            '_' num2str(currentTime(4), '%.2d') num2str(currentTime(5), '%.2d') num2str(round(currentTime(6) * 1000), '%.5d')];
-        parameterDatabase = [pwd filesep 'jobParameters.processTimepoint.' timeString '_' num2str(input_parameters.timepoints(1)) '.mat'];
-        
-        save(parameterDatabase, ...
-            'inputFolder', 'outputFolder', 'projectionFolder', 'globalMaskFolder', 'specimen', 'timepoints', 'cameras', 'channels', 'dimensions', ...
-            'startsLeft', 'startsTop', 'widths', 'heights', 'startsFront', 'depths', 'inputType', 'outputType', 'correctTIFF', 'rotationFlag', ...
-            'medianRange', 'percentile', 'segmentFlag', 'flipHFlag', 'flipVFlag', 'splitting', 'kernelSize', 'kernelSigma', 'scaling', ...
-            'references', 'dependents', 'thresholds', 'loggingFlag', 'verbose', 'backgroundValues', 'jobMemory');
         
         disp(' ');
         try
             if localRun(1) ~= 1
-                for t = 1:nTimepoints
-                    xmlName = [inputFolder filesep 'TM' num2str(timepoints(t), '%.5d') filesep 'ch' num2str(channels(1)) '.xml'];
-                    
-                    try
-                        stackDimensions = [];
-                        
-                        fid = fopen(xmlName, 'r');
-                        if fid < 1
-                            error('Could not open file %s for reading.', xmlName);
-                        end;
-                        while true
-                            s = fgetl(fid);
-                            if ~ischar(s)
-                                break;
-                            end;
-                            m = regexp(s, '<info dimensions="([^#]*)"', 'tokens', 'once');
-                            if ~isempty(m)
-                                stackDimensions = m{1};
-                                break;
-                            end;
-                        end;
-                        fclose(fid);
-                        
-                        if isempty(stackDimensions)
-                            error('Unable to retrieve stack dimensions from file %s.', xmlName);
-                        end
-                        stackDimensions = str2double(regexp(stackDimensions, '[^\d]+', 'split'));
-                        stackDimensions = reshape(stackDimensions, [3, numel(stackDimensions) / 3])';
-                        if any(isnan(stackDimensions))
-                            error('Unable to correctly parse stack dimensions retrieved from file %s.', xmlName);
-                        end;
-                        
-                        unitX = 2 * stackDimensions(1, 1) * stackDimensions(1, 2) * stackDimensions(1, 3) / (1024 ^ 3);
-                    catch errorMessage
-                        error('Failed to open XML file.');
-                    end;
-                    
-                    % inputMode ~= 3, the estimated memory consumption is (2*n + 2) * unitX (n = max. number of channels used in parallel, +10% safety)
-                    if rotationFlag == 0
-                        jobMemory(1, 2) = ceil(1.2 * (2 * nReferences + 2) * unitX);
-                    elseif rotationFlag == -1
-                        jobMemory(1, 2) = ceil(1.2 * (2 * nReferences + 3) * unitX);
-                    elseif rotationFlag == 1
-                        jobMemory(1, 2) = ceil(1.2 * (2 * nReferences + 4) * unitX);
-                    end;
-                    
-                    disp(['Estimated memory consumption per workstation core at time point ' num2str(timepoints(t), '%.4d') ' is ' num2str(jobMemory(2)) ' GB.']);
-                    
-                    cmdFunction = ['processTimepoint(''' parameterDatabase ''', ' num2str(t) ', ' num2str(jobMemory(2)) ')'];
-                    cmd = ['job submit /scheduler:keller-cluster.janelia.priv /user:simview ' ...
-                        '/progressmsg:"' num2str(jobMemory(2)) '" runMatlabJob.cmd """' pwd '""" """' cmdFunction '"""'];
-                    [status, systemOutput] = system(cmd);
-                    disp(['Submitting time point ' num2str(timepoints(t), '%.4d') ': ' systemOutput]);
-                end;
+% % %                 uid = [char(java.net.InetAddress.getLocalHost.getHostName) '_' num2str(feature('getpid'))];
+% % %                 parameterDatabase = [pwd filesep 'jobParameters.processTimepoint.' uid '_' num2str(input_parameters.timepoints(1)) '.mat'];
+% % %                 
+% % %                 save(parameterDatabase, ...
+% % %                     'inputFolder', 'outputFolder', 'projectionFolder', 'globalMaskFolder', 'specimen', 'timepoints', 'cameras', 'channels', 'dimensions', ...
+% % %                     'startsLeft', 'startsTop', 'widths', 'heights', 'startsFront', 'depths', 'inputType', 'outputType', 'correctTIFF', 'rotationFlag', ...
+% % %                     'medianRange', 'percentile', 'segmentFlag', 'flipHFlag', 'flipVFlag', 'splitting', 'kernelSize', 'kernelSigma', 'scaling', ...
+% % %                     'references', 'dependents', 'thresholds', 'loggingFlag', 'verbose', 'backgroundValues', 'jobMemory');
+% % %                 for t = 1:nTimepoints
+% % %                     xmlName = [inputFolder filesep 'TM' num2str(timepoints(t), '%.5d') filesep 'ch' num2str(channels(1)) '.xml'];
+% % %                     
+% % %                     try
+% % %                         stackDimensions = [];
+% % %                         
+% % %                         fid = fopen(xmlName, 'r');
+% % %                         if fid < 1
+% % %                             error('Could not open file %s for reading.', xmlName);
+% % %                         end;
+% % %                         while true
+% % %                             s = fgetl(fid);
+% % %                             if ~ischar(s)
+% % %                                 break;
+% % %                             end;
+% % %                             m = regexp(s, '<info dimensions="([^#]*)"', 'tokens', 'once');
+% % %                             if ~isempty(m)
+% % %                                 stackDimensions = m{1};
+% % %                                 break;
+% % %                             end;
+% % %                         end;
+% % %                         fclose(fid);
+% % %                         
+% % %                         if isempty(stackDimensions)
+% % %                             error('Unable to retrieve stack dimensions from file %s.', xmlName);
+% % %                         end
+% % %                         stackDimensions = str2double(regexp(stackDimensions, '[^\d]+', 'split'));
+% % %                         stackDimensions = reshape(stackDimensions, [3, numel(stackDimensions) / 3])';
+% % %                         if any(isnan(stackDimensions))
+% % %                             error('Unable to correctly parse stack dimensions retrieved from file %s.', xmlName);
+% % %                         end;
+% % %                         
+% % %                         unitX = 2 * stackDimensions(1, 1) * stackDimensions(1, 2) * stackDimensions(1, 3) / (1024 ^ 3);
+% % %                     catch errorMessage
+% % %                         error('Failed to open XML file.');
+% % %                     end;
+% % %                     
+% % %                     % inputMode ~= 3, the estimated memory consumption is (2*n + 2) * unitX (n = max. number of channels used in parallel, +10% safety)
+% % %                     if rotationFlag == 0
+% % %                         jobMemory(1, 2) = ceil(1.2 * (2 * nReferences + 2) * unitX);
+% % %                     elseif rotationFlag == -1
+% % %                         jobMemory(1, 2) = ceil(1.2 * (2 * nReferences + 3) * unitX);
+% % %                     elseif rotationFlag == 1
+% % %                         jobMemory(1, 2) = ceil(1.2 * (2 * nReferences + 4) * unitX);
+% % %                     end;
+% % %                     
+% % %                     disp(['Estimated memory consumption per workstation core at time point ' num2str(timepoints(t), '%.4d') ' is ' num2str(jobMemory(2)) ' GB.']);
+% % %                     
+% % %                     cmdFunction = ['processTimepoint(''' parameterDatabase ''', ' num2str(t) ', ' num2str(jobMemory(2)) ')'];
+% % %                     cmd = ['job submit /scheduler:keller-cluster.janelia.priv /user:simview ' ...
+% % %                         '/progressmsg:"' num2str(jobMemory(2)) '" runMatlabJob.cmd """' pwd '""" """' cmdFunction '"""'];
+% % %                     [status, systemOutput] = system(cmd);
+% % %                     disp(['Submitting time point ' num2str(timepoints(t), '%.4d') ': ' systemOutput]);
+% % %                end;
             else
                 if localRun(2) > 1 && nTimepoints > 1
                     if matlabpool('size') > 0
@@ -547,7 +539,10 @@ if ~isempty(timepoints)
                     
                     parfor t = 1:nTimepoints
                         disp(['Submitting time point ' num2str(timepoints(t), '%.4d') ' to a local worker.']);
-                        processTimepoint(parameterDatabase, t, jobMemory(2));
+                        processTimepoint(inputFolder, outputFolder, projectionFolder, globalMaskFolder, specimen, timepoints, cameras, channels, dimensions, ...
+                            startsLeft, startsTop, widths, heights, startsFront, depths, inputType, outputType, correctTIFF, rotationFlag, ...
+                            medianRange, percentile, segmentFlag, flipHFlag, flipVFlag, splitting, kernelSize, kernelSigma, scaling, ...
+                            references, dependents, thresholds, loggingFlag, verbose, backgroundValues, jobMemory, t, jobMemory(2));
                     end;
                     
                     disp(' ');
@@ -560,14 +555,15 @@ if ~isempty(timepoints)
                 else
                     for t = 1:nTimepoints
                         disp(['Processing time point ' num2str(timepoints(t), '%.4d')]);
-                        processTimepoint(parameterDatabase, t, jobMemory(2));
+                        processTimepoint(inputFolder, outputFolder, projectionFolder, globalMaskFolder, specimen, timepoints, cameras, channels, dimensions, ...
+                            startsLeft, startsTop, widths, heights, startsFront, depths, inputType, outputType, correctTIFF, rotationFlag, ...
+                            medianRange, percentile, segmentFlag, flipHFlag, flipVFlag, splitting, kernelSize, kernelSigma, scaling, ...
+                            references, dependents, thresholds, loggingFlag, verbose, backgroundValues, jobMemory, t, jobMemory(2));
                         disp(' ');
                     end;
                 end;
             end;
-            delete(parameterDatabase);
         catch ME
-            delete(parameterDatabase);
             rethrow(ME);
         end
     end;
