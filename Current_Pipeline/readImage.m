@@ -1,7 +1,7 @@
 function imageStack = readImage(filename, nThreads)
 
 if exist(filename, 'file') == 0
-    error 'File does not exist.'
+    error('File %s does not exist.', filename);
 end;
 
 % determine file extension to select appropriate reader module

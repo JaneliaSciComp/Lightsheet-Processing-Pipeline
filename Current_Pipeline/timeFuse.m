@@ -1,5 +1,5 @@
 function timeFuse(timepoints, references, globalMask, inputString, sourceString, outputString, inputID, outputID, lookUpTable, dataType, ...
-    specimen, cameras, sChannels, tChannels, reducedIO, inputType, outputType, splitting, intSizes, ...
+    specimen, angle, cameras, sChannels, tChannels, reducedIO, inputType, outputType, splitting, intSizes, ...
     correction, percentile, subSampling, fusionType, blending, enforceFlag, verbose, ...
     cropping, scaling, leftFlags, flipHFlag, flipVFlag, frontFlag, jobMemory, t, memoryEstimate)
 
@@ -67,13 +67,13 @@ configuration = cell(33, 1);
 configuration{1}  = version;      configuration{2}  = timepoint;    configuration{3}  = references;   configuration{4}  = globalMask;
 configuration{5}  = inputString;  configuration{6}  = sourceString; configuration{7}  = outputString;
 configuration{8}  = inputID;      configuration{9}  = outputID;     configuration{10} = lookUpTable;  configuration{11} = dataType;
-configuration{12} = specimen;     configuration{13} = cameras;      configuration{14} = sChannels;    configuration{15} = tChannels;
-configuration{16} = reducedIO;    configuration{17} = inputType;    configuration{18} = outputType;
-configuration{19} = splitting;    configuration{20} = intSizes;     configuration{21} = correction;
-configuration{22} = percentile;   configuration{23} = subSampling;  configuration{24} = fusionType;   configuration{25} = blending;
-configuration{26} = enforceFlag;  configuration{27} = cropping;     configuration{28} = scaling;
-configuration{29} = leftFlags;    configuration{30} = flipHFlag;    configuration{31} = flipVFlag;    configuration{32} = frontFlag;
-configuration{33} = [jobMemory(1) memoryEstimate];
+configuration{12} = specimen;     configuration{13} = angle;        configuration{14} = cameras;      configuration{15} = sChannels;    configuration{16} = tChannels;
+configuration{17} = reducedIO;    configuration{18} = inputType;    configuration{19} = outputType;
+configuration{20} = splitting;    configuration{21} = intSizes;     configuration{22} = correction;
+configuration{23} = percentile;   configuration{24} = subSampling;  configuration{25} = fusionType;   configuration{26} = blending;
+configuration{27} = enforceFlag;  configuration{28} = cropping;     configuration{29} = scaling;
+configuration{30} = leftFlags;    configuration{31} = flipHFlag;    configuration{32} = flipVFlag;    configuration{33} = frontFlag;
+configuration{34} = [jobMemory(1) memoryEstimate];
 
 %% main loop
 
@@ -99,11 +99,11 @@ distanceArray = abs(references - timepoint);
 currentSource = references(find(distanceArray == min(distanceArray), 1));
 
 inputFolder   = [inputString filesep 'SPM' num2str(specimen, '%.2d') filesep 'TM' num2str(timepoint, '%.6d')];
-inputHeader   = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d')];
+inputHeader   = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') '_ANG' num2str(angle, '%.3d')];
 sourceFolder  = [sourceString '.TM' num2str(currentSource, '%.6d') '_multiFused' inputID];
 globalFolder  = [sourceString '.TM' num2str(globalMask(2), '%.6d') '_multiFused' inputID];
 outputFolder  = [outputString '.TM' num2str(timepoint, '%.6d') '_timeFused' outputID];
-outputHeader  = [outputFolder filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d')];
+outputHeader  = [outputFolder filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') '_ANG' num2str(angle, '%.3d')];
 
 currentTransformations = lookUpTable(find(lookUpTable(:, 1) == timepoint, 1), 2:end);
 
@@ -311,9 +311,9 @@ if processingMode ~= 2
         end;
         
         if globalMask(1) == 0
-            averageMaskName = [sourceFolder '/SPM' num2str(specimen, '%.2d') '_TM' num2str(currentSource, '%.6d') '_CM' num2str(camera, '%.2d') '_CHN' num2str(sChannels(1), '%.2d') '_CHN' num2str(sChannels(2), '%.2d') '.fusionMask' inputExtension];
+            averageMaskName = [sourceFolder '/SPM' num2str(specimen, '%.2d') '_TM' num2str(currentSource, '%.6d') '_ANG' num2str(angle, '%.3d') '_CM' num2str(camera, '%.2d') '_CHN' num2str(sChannels(1), '%.2d') '_CHN' num2str(sChannels(2), '%.2d') '.fusionMask' inputExtension];
         else
-            averageMaskName = [globalFolder '/SPM' num2str(specimen, '%.2d') '_TM' num2str(globalMask(2), '%.6d') '_CM' num2str(camera, '%.2d') '_CHN' num2str(sChannels(1), '%.2d') '_CHN' num2str(sChannels(2), '%.2d') '.fusionMask' inputExtension];
+            averageMaskName = [globalFolder '/SPM' num2str(specimen, '%.2d') '_TM' num2str(globalMask(2), '%.6d') '_ANG' num2str(angle, '%.3d') '_CM' num2str(camera, '%.2d') '_CHN' num2str(sChannels(1), '%.2d') '_CHN' num2str(sChannels(2), '%.2d') '.fusionMask' inputExtension];
         end;
         averageMask = readImage(averageMaskName);
         
@@ -774,15 +774,15 @@ if processingMode ~= 1
     
     if processingMode == 0
         if globalMask(1) == 0
-            averageMaskName = [sourceFolder '/SPM' num2str(specimen, '%.2d') '_TM' num2str(currentSource, '%.6d') '_CM' num2str(cameras(1), '%.2d') '_CM' num2str(cameras(2), '%.2d') '_CHN' num2str(sChannels(1), '%.2d') '_CHN' num2str(sChannels(2), '%.2d') '.fusionMask' inputExtension];
+            averageMaskName = [sourceFolder '/SPM' num2str(specimen, '%.2d') '_TM' num2str(currentSource, '%.6d') '_ANG' num2str(angle, '%.3d') '_CM' num2str(cameras(1), '%.2d') '_CM' num2str(cameras(2), '%.2d') '_CHN' num2str(sChannels(1), '%.2d') '_CHN' num2str(sChannels(2), '%.2d') '.fusionMask' inputExtension];
         else
-            averageMaskName = [globalFolder '/SPM' num2str(specimen, '%.2d') '_TM' num2str(globalMask(2), '%.6d') '_CM' num2str(cameras(1), '%.2d') '_CM' num2str(cameras(2), '%.2d') '_CHN' num2str(sChannels(1), '%.2d') '_CHN' num2str(sChannels(2), '%.2d') '.fusionMask' inputExtension];
+            averageMaskName = [globalFolder '/SPM' num2str(specimen, '%.2d') '_TM' num2str(globalMask(2), '%.6d') '_ANG' num2str(angle, '%.3d') '_CM' num2str(cameras(1), '%.2d') '_CM' num2str(cameras(2), '%.2d') '_CHN' num2str(sChannels(1), '%.2d') '_CHN' num2str(sChannels(2), '%.2d') '.fusionMask' inputExtension];
         end;
     else
         if globalMask(1) == 0
-            averageMaskName = [sourceFolder '/SPM' num2str(specimen, '%.2d') '_TM' num2str(currentSource, '%.6d') '_CM' num2str(cameras(1), '%.2d') '_CM' num2str(cameras(2), '%.2d') '_CHN' num2str(sChannels(1), '%.2d') '.fusionMask' inputExtension];
+            averageMaskName = [sourceFolder '/SPM' num2str(specimen, '%.2d') '_TM' num2str(currentSource, '%.6d') '_ANG' num2str(angle, '%.3d') '_CM' num2str(cameras(1), '%.2d') '_CM' num2str(cameras(2), '%.2d') '_CHN' num2str(sChannels(1), '%.2d') '.fusionMask' inputExtension];
         else
-            averageMaskName = [globalFolder '/SPM' num2str(specimen, '%.2d') '_TM' num2str(globalMask(2), '%.6d') '_CM' num2str(cameras(1), '%.2d') '_CM' num2str(cameras(2), '%.2d') '_CHN' num2str(sChannels(1), '%.2d') '.fusionMask' inputExtension];
+            averageMaskName = [globalFolder '/SPM' num2str(specimen, '%.2d') '_TM' num2str(globalMask(2), '%.6d') '_ANG' num2str(angle, '%.3d') '_CM' num2str(cameras(1), '%.2d') '_CM' num2str(cameras(2), '%.2d') '_CHN' num2str(sChannels(1), '%.2d') '.fusionMask' inputExtension];
         end;
     end;
     averageMask = readImage(averageMaskName);

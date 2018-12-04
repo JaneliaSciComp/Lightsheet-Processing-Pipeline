@@ -27,10 +27,11 @@ stackLabel   = input_parameters.stackLabel;%'.corrected.shifted';
 fusionFlag   = input_parameters.fusionFlag;      % 0: clusterPT output, 1: cluterMF/clusterTF output
 
 specimen     = input_parameters.specimen;%0;
+angle        = input_parameters.angle;
 cameras      = input_parameters.cameras;%0:1;
 channels     = input_parameters.channels;%0;
 
-subOffset    = input_parameters.fusionFlag;      % background subtraction as initial processing step (useful for unfused raw image stacks)
+subOffset    = input_parameters.subOffset;      % background subtraction as initial processing step (useful for unfused raw image stacks)
 
 removeDirt   = input_parameters.removeDirt;%[0 10]; % slot 1: flag for removing all but the largest connected component determined by thresholding
                        % slot 2: threshold for binarizing volume
@@ -118,7 +119,7 @@ for currentTP = length(timepoints):-1:1
         outputPath = [outputDir header '.TM' num2str(timepoints(currentTP), '%.6d') footer];
         intermediateString = '.fusedStack_';
     end;
-    fileNameHeader = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(currentTP), '%.6d') configurationString];
+    fileNameHeader = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(currentTP), '%.6d') '_ANG' num2str(angle, '%.3d') configurationString];
     if isempty(filterMode) && removeDirt(1)
         if preMedian(1) == 0
             outputName = [outputPath filesep fileNameHeader intermediateString 'yzProjection.cleaned' outputExtension];
@@ -144,7 +145,7 @@ if ~isempty(timepoints)
     nTimepoints = numel(timepoints);
     
     if jobMemory(1) == 1 && localRun(1) ~= 1
-        fileNameHeader = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(1), '%.6d') configurationString];
+        fileNameHeader = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(1), '%.6d') '_ANG' num2str(angle, '%.3d') configurationString];
         if fusionFlag == 0
             fileName = [inputDir filesep 'SPM' num2str(specimen, '%.2d') filesep 'TM' num2str(timepoints(1), '%.6d') filesep fileNameHeader inputExtension];
         else
@@ -190,13 +191,13 @@ if ~isempty(timepoints)
         try
             if jobMemory(2) <= coreMemory && nTimepoints > 1
                 parfor t = 1:nTimepoints
-                    filterResults(timepoints, inputDir, outputDir, header, footer, stackLabel, fusionFlag, specimen, cameras, channels,subOffset, ...
+                    filterResults(timepoints, inputDir, outputDir, header, footer, stackLabel, fusionFlag, specimen, angle, cameras, channels,subOffset, ...
                         removeDirt, filterMode, rangeArray, splitting, scaling, preMedian, postMedian, inputType, outputType, ...
                         subProject, saveRawMax, saveStacks, jobMemory, t, jobMemory(2));
                 end
             else
                 for t = 1:nTimepoints
-                    filterResults(timepoints, inputDir, outputDir, header, footer, stackLabel, fusionFlag, specimen, cameras, channels,subOffset, ...
+                    filterResults(timepoints, inputDir, outputDir, header, footer, stackLabel, fusionFlag, specimen, angle, cameras, channels,subOffset, ...
                         removeDirt, filterMode, rangeArray, splitting, scaling, preMedian, postMedian, inputType, outputType, ...
                         subProject, saveRawMax, saveStacks, jobMemory, t, jobMemory(2));
                 end;
@@ -209,7 +210,7 @@ if ~isempty(timepoints)
         try
             if localRun(1) ~= 1
                 for t = 1:nTimepoints
-                    fileNameHeader = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(t), '%.6d') configurationString];
+                    fileNameHeader = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(t), '%.6d') '_ANG' num2str(angle, '%.3d') configurationString];
                     if fusionFlag == 0
                         fileName = [inputDir filesep 'SPM' num2str(specimen, '%.2d') filesep 'TM' num2str(timepoints(t), '%.6d') filesep fileNameHeader inputExtension];
                     else
@@ -240,7 +241,7 @@ if ~isempty(timepoints)
                     
                     jobMemory(1, 2) = ceil(1.2 * 4.6 * unitX);
                     
-                    filterResults(timepoints, inputDir, outputDir, header, footer, stackLabel, fusionFlag, specimen, cameras, channels,subOffset, ...
+                    filterResults(timepoints, inputDir, outputDir, header, footer, stackLabel, fusionFlag, specimen, angle, cameras, channels,subOffset, ...
                         removeDirt, filterMode, rangeArray, splitting, scaling, preMedian, postMedian, inputType, outputType, ...
                         subProject, saveRawMax, saveStacks, jobMemory, t, jobMemory(2));
                     
@@ -256,7 +257,7 @@ if ~isempty(timepoints)
                     disp(' ');
                     
                     parfor t = 1:nTimepoints
-                        filterResults(timepoints, inputDir, outputDir, header, footer, stackLabel, fusionFlag, specimen, cameras, channels,subOffset, ...
+                        filterResults(timepoints, inputDir, outputDir, header, footer, stackLabel, fusionFlag, specimen, angle, cameras, channels,subOffset, ...
                             removeDirt, filterMode, rangeArray, splitting, scaling, preMedian, postMedian, inputType, outputType, ...
                             subProject, saveRawMax, saveStacks, jobMemory, t, jobMemory(2));
                     end;
@@ -270,7 +271,7 @@ if ~isempty(timepoints)
                     disp(' ');
                 else
                     for t = 1:nTimepoints
-                        filterResults(timepoints, inputDir, outputDir, header, footer, stackLabel, fusionFlag, specimen, cameras, channels,subOffset, ...
+                        filterResults(timepoints, inputDir, outputDir, header, footer, stackLabel, fusionFlag, specimen, angle, cameras, channels,subOffset, ...
                         removeDirt, filterMode, rangeArray, splitting, scaling, preMedian, postMedian, inputType, outputType, ...
                         subProject, saveRawMax, saveStacks, jobMemory, t, jobMemory(2));
                     end;

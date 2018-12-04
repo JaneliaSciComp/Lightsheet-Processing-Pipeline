@@ -1,7 +1,7 @@
 function analyzeParameters(...
     timepoints, fullInterval,...
     outputString, outputID, dataType,...
-    specimen, cameras, channels, readFactors, smoothing,...
+    specimen, angle, cameras, channels, readFactors, smoothing,...
     offsetRange, angleRange, intRange, averaging, staticFlag, configRoot)
 
 % ----------------------------------------------------------------------
@@ -77,7 +77,7 @@ end;
 lookUpTable = NaN(length(fullInterval), lookUpTableEntries);
 lookUpTable(:, 1) = fullInterval';
 
-resultsDirectory = [configRoot filesep 'SPM' num2str(specimen, '%.2d') globalHeader '_analyzeParameters'];
+resultsDirectory = [configRoot filesep 'SPM' num2str(specimen, '%.2d') '_ANG' num2str(angle, '%.3d') globalHeader '_analyzeParameters'];
 mkdir(resultsDirectory);
 
 for currentTP = timepoints
@@ -88,14 +88,14 @@ for currentTP = timepoints
         case 0            
             for camera = cameras
                 transformationIndex = 2 + 2 * (find(cameras == camera, 1) - 1);
-                transformationName = [outputFolder filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(currentTP, '%.6d') '_CM' num2str(camera, '%.2d') '_CHN' num2str(channels(1), '%.2d') '_CHN' num2str(channels(2), '%.2d') '.transformation.mat'];
+                transformationName = [outputFolder filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(currentTP, '%.6d') '_ANG' num2str(angle, '%.3d') '_CM' num2str(camera, '%.2d') '_CHN' num2str(channels(1), '%.2d') '_CHN' num2str(channels(2), '%.2d') '.transformation.mat'];
                 if exist(transformationName, 'file') == 2
                     load(transformationName);
                     transformations(currentIndex, transformationIndex:(transformationIndex + 1)) = transformation(2:3);
                 end;
             end;
             
-            transformationName = [outputFolder filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(currentTP, '%.6d') '_CM' num2str(cameras(1), '%.2d') '_CM' num2str(cameras(2), '%.2d') '_CHN' num2str(channels(1), '%.2d') '_CHN' num2str(channels(2), '%.2d') '.transformation.mat'];
+            transformationName = [outputFolder filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(currentTP, '%.6d') '_ANG' num2str(angle, '%.3d') '_CM' num2str(cameras(1), '%.2d') '_CM' num2str(cameras(2), '%.2d') '_CHN' num2str(channels(1), '%.2d') '_CHN' num2str(channels(2), '%.2d') '.transformation.mat'];
             if exist(transformationName, 'file') == 2
                 load(transformationName);
                 transformations(currentIndex, 6:8) = transformation;
@@ -104,7 +104,7 @@ for currentTP = timepoints
             if readFactors
                 for camera = cameras
                     intensityCorrectionIndex = 2 + 2 * (find(cameras == camera, 1) - 1);
-                    intensityCorrectionName = [outputFolder filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(currentTP, '%.6d') '_CM' num2str(camera, '%.2d') '_CHN' num2str(channels(1), '%.2d') '_CHN' num2str(channels(2), '%.2d') '.intensityCorrection.mat'];
+                    intensityCorrectionName = [outputFolder filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(currentTP, '%.6d') '_ANG' num2str(angle, '%.3d') '_CM' num2str(camera, '%.2d') '_CHN' num2str(channels(1), '%.2d') '_CHN' num2str(channels(2), '%.2d') '.intensityCorrection.mat'];
                     if exist(intensityCorrectionName, 'file') == 2
                         load(intensityCorrectionName);
                         if dataType == 0
@@ -115,20 +115,20 @@ for currentTP = timepoints
                     end;
                 end;
                 
-                intensityCorrectionName = [outputFolder filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(currentTP, '%.6d') '_CM' num2str(cameras(1), '%.2d') '_CM' num2str(cameras(2), '%.2d') '_CHN' num2str(channels(1), '%.2d') '_CHN' num2str(channels(2), '%.2d') '.intensityCorrection.mat'];
+                intensityCorrectionName = [outputFolder filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(currentTP, '%.6d') '_ANG' num2str(angle, '%.3d') '_CM' num2str(cameras(1), '%.2d') '_CM' num2str(cameras(2), '%.2d') '_CHN' num2str(channels(1), '%.2d') '_CHN' num2str(channels(2), '%.2d') '.intensityCorrection.mat'];
                 if exist(intensityCorrectionName, 'file') == 2
                     load(intensityCorrectionName);
                     intensityCorrections(currentIndex, 6:7) = intensityCorrection(4:5);
                 end;
             end;
         case 1
-            transformationName = [outputFolder filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(currentTP, '%.6d') globalHeader '.transformation.mat'];
+            transformationName = [outputFolder filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(currentTP, '%.6d') '_ANG' num2str(angle, '%.3d') globalHeader '.transformation.mat'];
             if exist(transformationName, 'file') == 2
                 load(transformationName);
                 transformations(currentIndex, 2:3) = transformation(2:3);
             end;
             
-            intensityCorrectionName = [outputFolder filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(currentTP, '%.6d') globalHeader '.intensityCorrection.mat'];
+            intensityCorrectionName = [outputFolder filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(currentTP, '%.6d') '_ANG' num2str(angle, '%.3d') globalHeader '.intensityCorrection.mat'];
             if exist(intensityCorrectionName, 'file') == 2
                 load(intensityCorrectionName);
                 if dataType == 0
@@ -138,13 +138,13 @@ for currentTP = timepoints
                 end;
             end;
         case 2
-            transformationName = [outputFolder filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(currentTP, '%.6d') globalHeader '.transformation.mat'];
+            transformationName = [outputFolder filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(currentTP, '%.6d') '_ANG' num2str(angle, '%.3d') globalHeader '.transformation.mat'];
             if exist(transformationName, 'file') == 2
                 load(transformationName);
                 transformations(currentIndex, 2:4) = transformation;
             end;
             
-            intensityCorrectionName = [outputFolder filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(currentTP, '%.6d') globalHeader '.intensityCorrection.mat'];
+            intensityCorrectionName = [outputFolder filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(currentTP, '%.6d') '_ANG' num2str(angle, '%.3d') globalHeader '.intensityCorrection.mat'];
             if exist(intensityCorrectionName, 'file') == 2
                 load(intensityCorrectionName);
                 if dataType == 0

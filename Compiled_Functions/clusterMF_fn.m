@@ -27,6 +27,7 @@ outputID     = input_parameters.outputID; %'_blending';
 dataType     = input_parameters.dataType; %1;         % 0 for unsegmented clusterPT output stacks, 1 for segmented clusterPT output stacks
 
 specimen     = input_parameters.specimen;% 0;
+angle        = input_parameters.angle;
 cameras      = input_parameters.cameras;%0:1;
 channels     = input_parameters.channels;%0:1;
 
@@ -127,8 +128,8 @@ switch inputType
 end;
 
 for currentTP = length(timepoints):-1:1
-    if exist([outputString '.TM' num2str(timepoints(currentTP), '%.6d') '_multiFused' outputID ...
-            '/SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(currentTP), '%.6d') configurationString '_jobCompleted.txt'], 'file') == 2
+    if exist([outputString '.TM' num2str(timepoints(currentTP), '%.6d') '_multiFused' outputID filesep...
+            '/SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(currentTP), '%.6d') '_ANG' num2str(angle, '%.3d') configurationString '_jobCompleted.txt'], 'file') == 2
         timepoints(currentTP) = [];
     end;
 end;
@@ -138,7 +139,7 @@ if ~isempty(timepoints)
     
     if jobMemory(1) == 1 && localRun(1) ~= 1
         inputFolder = [inputString filesep 'SPM' num2str(specimen, '%.2d') filesep 'TM' num2str(timepoints(1), '%.6d')];
-        header = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(1), '%.6d') ...
+        header = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(1), '%.6d') '_ANG' num2str(angle, '%.3d')...
             '_CM' num2str(cameras(1), '%.2d') '_CHN' num2str(channels(1), '%.2d')];
         fileName = [inputFolder filesep '' header inputExtension];
         
@@ -327,8 +328,8 @@ if ~isempty(timepoints)
                     
                     disp(' ');
                     
-                    for t = 1:nTimepoints
-                        multiFuse(timepoints, inputString, outputString, outputID, dataType, specimen, cameras, channels, reducedIO, inputType, outputType, ...
+                    parfor t = 1:nTimepoints
+                        multiFuse(timepoints, inputString, outputString, outputID, dataType, specimen, angle, cameras, channels, reducedIO, inputType, outputType, ...
                             splitting, kernelSize, kernelSigma, fraction, maskMinimum, maskFactor, maskFusion, padding, ...
                             slabSizes, intSizes, percentile, subSampling, medianFilter, preciseGauss, gaussFilter, ...
                             optimizer, correction, fusionType, transitions, blending, enforceFlag, verbose, ...
@@ -344,7 +345,7 @@ if ~isempty(timepoints)
                     disp(' ');
                 else
                     for t = 1:nTimepoints
-                        multiFuse(timepoints, inputString, outputString, outputID, dataType, specimen, cameras, channels, reducedIO, inputType, outputType, ...
+                        multiFuse(timepoints, inputString, outputString, outputID, dataType, specimen, angle, cameras, channels, reducedIO, inputType, outputType, ...
                             splitting, kernelSize, kernelSigma, fraction, maskMinimum, maskFactor, maskFusion, padding, ...
                             slabSizes, intSizes, percentile, subSampling, medianFilter, preciseGauss, gaussFilter, ...
                             optimizer, correction, fusionType, transitions, blending, enforceFlag, verbose, ...

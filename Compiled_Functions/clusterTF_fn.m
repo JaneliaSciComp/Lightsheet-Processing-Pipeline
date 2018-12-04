@@ -28,6 +28,7 @@ lookUpTable  = input_parameters.lookUpTable;
 dataType     = input_parameters.dataType;         % 0 for unsegmented clusterPT output stacks, 1 for segmented clusterPT output stacks
 
 specimen     = input_parameters.specimen;
+angle        = input_parameters.angle;
 cameras      = input_parameters.cameras;
 sChannels    = input_parameters.sChannels;       % source channels
 tChannels    = input_parameters.tChannels;       % target channels
@@ -110,7 +111,7 @@ end;
 
 for currentTP = length(timepoints):-1:1
     if exist([outputString '.TM' num2str(timepoints(currentTP), '%.6d') '_timeFused' outputID ...
-            '/SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(currentTP), '%.6d') configurationString '_jobCompleted.txt'], 'file') == 2
+            '/SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(currentTP), '%.6d') '_ANG' num2str(angle, '%.3d') configurationString '_jobCompleted.txt'], 'file') == 2
         timepoints(currentTP) = [];
     end;
 end;
@@ -120,7 +121,7 @@ if ~isempty(timepoints)
     
     if jobMemory(1) == 1 && localRun(1) ~= 1
         inputFolder = [inputString filesep 'SPM' num2str(specimen, '%.2d') filesep 'TM' num2str(timepoints(1), '%.6d')];
-        header = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(1), '%.6d') ...
+        header = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(1), '%.6d') '_ANG' num2str(angle, '%.3d')...
             '_CM' num2str(cameras(1), '%.2d') '_CHN' num2str(tChannels(1), '%.2d')];
         fileName = [inputFolder filesep '' header inputExtension];
         
@@ -276,7 +277,7 @@ if ~isempty(timepoints)
                     
                     parfor t = 1:nTimepoints
                         timeFuse(timepoints, references, globalMask, inputString, sourceString, outputString, inputID, outputID, lookUpTable, dataType, ...
-                            specimen, cameras, sChannels, tChannels, reducedIO, inputType, outputType, splitting, intSizes, ...
+                            specimen, angle, cameras, sChannels, tChannels, reducedIO, inputType, outputType, splitting, intSizes, ...
                             correction, percentile, subSampling, fusionType, blending, enforceFlag, verbose, ...
                             cropping, scaling, leftFlags, flipHFlag, flipVFlag, frontFlag, jobMemory, t, jobMemory(2));
                     end;
@@ -291,7 +292,7 @@ if ~isempty(timepoints)
                 else
                     for t = 1:nTimepoints
                         timeFuse(timepoints, references, globalMask, inputString, sourceString, outputString, inputID, outputID, lookUpTable, dataType, ...
-                            specimen, cameras, sChannels, tChannels, reducedIO, inputType, outputType, splitting, intSizes, ...
+                            specimen, angle, cameras, sChannels, tChannels, reducedIO, inputType, outputType, splitting, intSizes, ...
                             correction, percentile, subSampling, fusionType, blending, enforceFlag, verbose, ...
                             cropping, scaling, leftFlags, flipHFlag, flipVFlag, frontFlag, jobMemory, t, jobMemory(2));
                     end;

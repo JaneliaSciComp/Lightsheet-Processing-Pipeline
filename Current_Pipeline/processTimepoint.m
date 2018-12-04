@@ -1,4 +1,4 @@
-function processTimepoint(inputFolder, outputFolder, projectionFolder, globalMaskFolder, specimen, timepoints, cameras, channels, dimensions, ...
+function processTimepoint(inputFolder, outputFolder, projectionFolder, globalMaskFolder, specimen, angle, timepoints, cameras, channels, dimensions, ...
     startsLeft, startsTop, widths, heights, startsFront, depths, inputType, outputType, correctTIFF, rotationFlag, ...
     medianRange, percentile, segmentFlag, flipHFlag, flipVFlag, splitting, kernelSize, kernelSigma, scaling, ...
     references, dependents, thresholds, loggingFlag, verbose, backgroundValues, jobMemory, t, memoryEstimate)
@@ -24,14 +24,14 @@ version = 1.07;
 configuration = cell(37, 1);
 
 configuration{1}  = version;     configuration{2}  = timepoint;  configuration{3}  = inputFolder;  configuration{4}  = outputFolder; configuration{5}  = projectionFolder; configuration{6} = globalMaskFolder;
-configuration{7}  = specimen;    configuration{8}  = timepoints; configuration{9}  = cameras;      configuration{10} = channels;     configuration{11} = dimensions;
-configuration{12} = startsLeft;  configuration{13} = startsTop;  configuration{14} = widths;       configuration{15} = heights;
-configuration{16} = startsFront; configuration{17} = depths;
-configuration{18} = inputType;   configuration{19} = outputType; configuration{20} = correctTIFF;  configuration{21} = rotationFlag; configuration{22} = medianRange;      configuration{23} = percentile;
-configuration{24} = segmentFlag; configuration{25} = flipHFlag;  configuration{26} = flipVFlag;    configuration{27} = splitting;    configuration{28} = kernelSize;       configuration{29} = kernelSigma;
-configuration{30} = scaling;     configuration{31} = references; configuration{32} = dependents;   configuration{33} = thresholds;
-configuration{34} = loggingFlag; configuration{35} = verbose;    configuration{36} = backgroundValues;
-configuration{37} = [jobMemory(1) memoryEstimate];
+configuration{7}  = specimen;    configuration{8} = angle; configuration{9}  = timepoints; configuration{10}  = cameras;      configuration{11} = channels;     configuration{12} = dimensions;
+configuration{13} = startsLeft;  configuration{14} = startsTop;  configuration{15} = widths;       configuration{16} = heights;
+configuration{17} = startsFront; configuration{18} = depths;
+configuration{19} = inputType;   configuration{20} = outputType; configuration{21} = correctTIFF;  configuration{22} = rotationFlag; configuration{23} = medianRange;      configuration{24} = percentile;
+configuration{25} = segmentFlag; configuration{26} = flipHFlag;  configuration{27} = flipVFlag;    configuration{28} = splitting;    configuration{29} = kernelSize;       configuration{30} = kernelSigma;
+configuration{31} = scaling;     configuration{32} = references; configuration{33} = dependents;   configuration{34} = thresholds;
+configuration{35} = loggingFlag; configuration{36} = verbose;    configuration{37} = backgroundValues;
+configuration{38} = [jobMemory(1) memoryEstimate];
 
 switch outputType
     case 0
@@ -229,7 +229,7 @@ else % inputType ~= 4
     end;
     
     if segmentFlag ~= 2
-        save([outputFolder filesep 'TM' num2str(timepoint, '%.6d') filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') '.configuration.mat'], 'configuration');
+        save([outputFolder filesep 'TM' num2str(timepoint, '%.6d') filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') '_ANG' num2str(angle, '%.3d') '.configuration.mat'], 'configuration');
     end;
     
     if segmentFlag ~= 3
@@ -239,7 +239,7 @@ else % inputType ~= 4
             else
                 source = [inputFolder filesep 'TM' num2str(timepoint, '%.5d') filesep 'ch' num2str(channels(h)) '.xml'];
             end;
-            target = [outputFolder filesep 'TM' num2str(timepoint, '%.6d') filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') '_CHN' num2str(channels(h), '%.2d') '.xml'];
+            target = [outputFolder filesep 'TM' num2str(timepoint, '%.6d') filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') '_ANG' num2str(angle, '%.3d') '_CHN' num2str(channels(h), '%.2d') '.xml'];
             copyfile(source, target);
         end;
     end;
@@ -252,16 +252,16 @@ else % inputType ~= 4
                 %     '_CM' num2str(cameras(c), '%.2d') '_CHN' num2str(channels(h), '%.2d') '.segmentationMask' outputExtension];
                 % copyfile(source, target);
                 
-                delete([outputFolder filesep 'TM' num2str(timepoint, '%.6d') filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') ...
+                delete([outputFolder filesep 'TM' num2str(timepoint, '%.6d') filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') '_ANG' num2str(angle, '%.3d')...
                     '_CM' num2str(cameras(c), '%.2d') '_CHN' num2str(channels(h), '%.2d') '.segmentationMask' outputExtension]);
                 
                 source = [globalMaskFolder filesep 'Global.xzMask' outputExtension];
-                target = [outputFolder filesep 'TM' num2str(timepoint, '%.6d') filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') ...
+                target = [outputFolder filesep 'TM' num2str(timepoint, '%.6d') filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') '_ANG' num2str(angle, '%.3d')...
                     '_CM' num2str(cameras(c), '%.2d') '_CHN' num2str(channels(h), '%.2d') '.xzMask' outputExtension];
                 copyfile(source, target);
                 
                 source = [globalMaskFolder filesep 'Global.xyMask' outputExtension];
-                target = [outputFolder filesep 'TM' num2str(timepoint, '%.6d') filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') ...
+                target = [outputFolder filesep 'TM' num2str(timepoint, '%.6d') filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') '_ANG' num2str(angle, '%.3d')...
                     '_CM' num2str(cameras(c), '%.2d') '_CHN' num2str(channels(h), '%.2d') '.xyMask' outputExtension];
                 copyfile(source, target);
             end;
@@ -279,7 +279,7 @@ else % inputType ~= 4
     end;
     
     if isempty(startsTop) || isempty(heights) || isempty(startsLeft) || isempty(widths) || isempty(startsFront) || isempty(depths)
-        xmlName = [outputFolder filesep 'TM' num2str(timepoint, '%.6d') filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') ...
+        xmlName = [outputFolder filesep 'TM' num2str(timepoint, '%.6d') filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') '_ANG' num2str(angle, '%.3d')...
             '_CHN' num2str(references(1), '%.2d') '.xml'];
         
         if ~isempty(dimensions)
@@ -357,29 +357,29 @@ else % inputType ~= 4
                 
                 if inputType == 0
                     for z = 1:numel(zRange)
-                        imageName = [inputFolder filesep 'TM' num2str(timepoint, '%.5d') filesep 'ANG000' filesep 'SPC' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.5d') ...
-                            '_ANG000_CM' num2str(currentCamera) '_CHN' num2str(currentReferences(n), '%.2d') '_PH0_PLN' num2str(zRange(z), '%.4d') '.tif'];
+                        imageName = [inputFolder filesep 'TM' num2str(timepoint, '%.5d') filesep num2str(angle, 'ANG%.3d') filesep 'SPC' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.5d') '_ANG' num2str(angle, '%.3d') ...
+                            '_CM' num2str(currentCamera) '_CHN' num2str(currentReferences(n), '%.2d') '_PH0_PLN' num2str(zRange(z), '%.4d') '.tif'];
                         currentImage = readImage(imageName);
                         referenceStacks{n}(:, :, z) = currentImage((startsTop(c) + 1):(startsTop(c) + heights(c)), ...
                             ((startsLeft(c) + 1):(startsLeft(c) + widths(c))));
                     end;
                 elseif inputType == 1
                     for z = 1:numel(zRange)
-                        imageName = [inputFolder filesep 'TM' num2str(timepoint, '%.5d') filesep 'ANG000' filesep 'SPC' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.5d') ...
-                            '_ANG000_CM' num2str(currentCamera) '_CHN' num2str(currentReferences(n), '%.2d') '_PH0_PLN' num2str(zRange(z), '%.4d') '.jp2'];
+                        imageName = [inputFolder filesep 'TM' num2str(timepoint, '%.5d') filesep num2str(angle, 'ANG%.3d') filesep 'SPC' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.5d') '_ANG' num2str(angle, '%.3d') ...
+                            '_CM' num2str(currentCamera) '_CHN' num2str(currentReferences(n), '%.2d') '_PH0_PLN' num2str(zRange(z), '%.4d') '.jp2'];
                         currentImage = readImage(imageName);
                         referenceStacks{n}(:, :, z) = currentImage((startsTop(c) + 1):(startsTop(c) + heights(c)), ...
                             ((startsLeft(c) + 1):(startsLeft(c) + widths(c))));
                     end;
                 elseif inputType == 2 || inputType == 3
                     if inputType == 2
-                        stackName = [inputFolder filesep 'TM' num2str(timepoint, '%.5d') filesep 'ANG000' filesep 'SPC' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.5d') ...
-                            '_ANG000_CM' num2str(currentCamera) '_CHN' num2str(currentReferences(n), '%.2d') '_PH0.stack'];
+                        stackName = [inputFolder filesep 'TM' num2str(timepoint, '%.5d') filesep num2str(angle, 'ANG%.3d') filesep 'SPC' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.5d') '_ANG' num2str(angle, '%.3d') ...
+                            '_CM' num2str(currentCamera) '_CHN' num2str(currentReferences(n), '%.2d') '_PH0.stack'];
                     else
-                        stackName = [inputFolder filesep 'SPC' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.5d') ...
-                            '_ANG000_CM' num2str(currentCamera) '_CHN' num2str(currentReferences(n), '%.2d') '_PH0.stack'];
+                        stackName = [inputFolder filesep 'SPC' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.5d') '_ANG' num2str(angle, '%.3d') ...
+                            '_CM' num2str(currentCamera) '_CHN' num2str(currentReferences(n), '%.2d') '_PH0.stack'];
                     end;
-                    xmlName = [outputFolder filesep 'TM' num2str(timepoint, '%.6d') filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') ...
+                    xmlName = [outputFolder filesep 'TM' num2str(timepoint, '%.6d') filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') '_ANG' num2str(angle, '%.3d')...
                         '_CHN' num2str(currentReferences(n), '%.2d') '.xml'];
                     
                     if ~isempty(dimensions)
@@ -443,7 +443,7 @@ else % inputType ~= 4
                     else
                         correctionDatabase = backgroundValues(c);
                     end;
-                    save([outputFolder filesep 'TM' num2str(timepoint, '%.6d') filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') ...
+                    save([outputFolder filesep 'TM' num2str(timepoint, '%.6d') filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') '_ANG' num2str(angle, '%.3d')...
                         '_CM' num2str(currentCamera, '%.2d') '_CHN' num2str(currentReferences(n), '%.2d') '.correctionDatabase.mat'], 'correctionDatabase');
                     clear correctionDatabase;
                 end;
@@ -457,7 +457,7 @@ else % inputType ~= 4
                         minIntensity(2) = prctile(subSampledStack(subSampledStack > 0), percentile(2));
                     else
                         minIntensity = prctile(subSampledStack(subSampledStack > 0), percentile(2));
-                        save([outputFolder filesep 'TM' num2str(timepoint, '%.6d') filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') ...
+                        save([outputFolder filesep 'TM' num2str(timepoint, '%.6d') filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') '_ANG' num2str(angle, '%.3d')...
                             '_CM' num2str(currentCamera, '%.2d') '_CHN' num2str(currentReferences(n), '%.2d') '.minIntensity.mat'], 'minIntensity');
                     end;
                     clear subSampledStack;
@@ -500,7 +500,7 @@ else % inputType ~= 4
                     % generate thresholded mask -> referenceMasks (overwrite)
                     
                     minIntensity(1) = prctile(referenceMasks{n}(1:percentile(3):end), percentile(1));
-                    save([outputFolder filesep 'TM' num2str(timepoint, '%.6d') filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') ...
+                    save([outputFolder filesep 'TM' num2str(timepoint, '%.6d') filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') '_ANG' num2str(angle, '%.3d') ...
                         '_CM' num2str(currentCamera, '%.2d') '_CHN' num2str(currentReferences(n), '%.2d') '.minIntensity.mat'], 'minIntensity');
                     
                     intensityStatistics = zeros(splitting, 2);
@@ -540,7 +540,7 @@ else % inputType ~= 4
                 referenceMasks{1} = uint16(referenceMasks{1});
                 
                 if loggingFlag || segmentFlag == 2
-                    segmentationMaskName = [outputFolder filesep 'TM' num2str(timepoint, '%.6d') filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') ...
+                    segmentationMaskName = [outputFolder filesep 'TM' num2str(timepoint, '%.6d') filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') '_ANG' num2str(angle, '%.3d')...
                         '_CM' num2str(currentCamera, '%.2d') '_CHN' num2str(currentMasterList(1), '%.2d') '.segmentationMask' outputExtension];
                     if correctTIFF == 1 && ((inputType == 0 && outputType ~= 2) || (inputType ~= 0 && outputType == 2))
                         writeImage(referenceMasks{1}, segmentationMaskName, 'transpose', 1);
@@ -550,7 +550,7 @@ else % inputType ~= 4
                     
                     if numel(currentMasterList) > 1 && segmentFlag == 1
                         for n = 2:numel(currentMasterList)
-                            targetName = [outputFolder filesep 'TM' num2str(timepoint, '%.6d') filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') ...
+                            targetName = [outputFolder filesep 'TM' num2str(timepoint, '%.6d') filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') '_ANG' num2str(angle, '%.3d')...
                                 '_CM' num2str(currentCamera, '%.2d') '_CHN' num2str(currentMasterList(n), '%.2d') '.segmentationMask' outputExtension];
                             copyfile(segmentationMaskName, targetName);
                         end;
@@ -691,9 +691,9 @@ else % inputType ~= 4
                     %     end;
                     % end;
                     
-                    xzMaskName = [outputFolder filesep 'TM' num2str(timepoint, '%.6d') filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') ...
+                    xzMaskName = [outputFolder filesep 'TM' num2str(timepoint, '%.6d') filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') '_ANG' num2str(angle, '%.3d')...
                         '_CM' num2str(currentCamera, '%.2d') '_CHN' num2str(currentMasterList(1), '%.2d') '.xzMask' outputExtension];
-                    xyMaskName = [outputFolder filesep 'TM' num2str(timepoint, '%.6d') filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') ...
+                    xyMaskName = [outputFolder filesep 'TM' num2str(timepoint, '%.6d') filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') '_ANG' num2str(angle, '%.3d')...
                         '_CM' num2str(currentCamera, '%.2d') '_CHN' num2str(currentMasterList(1), '%.2d') '.xyMask' outputExtension];
                     if correctTIFF == 1 && ((inputType == 0 && outputType ~= 2) || (inputType ~= 0 && outputType == 2))
                         writeImage(xzSliceMask, xzMaskName, 'transpose', 1);
@@ -705,9 +705,9 @@ else % inputType ~= 4
                     
                     if numel(currentMasterList) > 1
                         for n = 2:numel(currentMasterList)
-                            targetXZName = [outputFolder filesep 'TM' num2str(timepoint, '%.6d') filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') ...
+                            targetXZName = [outputFolder filesep 'TM' num2str(timepoint, '%.6d') filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') '_ANG' num2str(angle, '%.3d')...
                                 '_CM' num2str(currentCamera, '%.2d') '_CHN' num2str(currentMasterList(n), '%.2d') '.xzMask' outputExtension];
-                            targetYZName = [outputFolder filesep 'TM' num2str(timepoint, '%.6d') filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') ...
+                            targetYZName = [outputFolder filesep 'TM' num2str(timepoint, '%.6d') filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') '_ANG' num2str(angle, '%.3d')...
                                 '_CM' num2str(currentCamera, '%.2d') '_CHN' num2str(currentMasterList(n), '%.2d') '.xyMask' outputExtension];
                             copyfile(xzMaskName, targetXZName);
                             copyfile(xyMaskName, targetYZName);
@@ -728,7 +728,7 @@ else % inputType ~= 4
                     
                     % save referenceStacks
                     
-                    stackName = [outputFolder filesep 'TM' num2str(timepoint, '%.6d') filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') ...
+                    stackName = [outputFolder filesep 'TM' num2str(timepoint, '%.6d') filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') '_ANG' num2str(angle, '%.3d')...
                         '_CM' num2str(currentCamera, '%.2d') '_CHN' num2str(currentReferences(n), '%.2d') outputExtension];
                     if correctTIFF == 1 && ((inputType == 0 && outputType ~= 2) || (inputType ~= 0 && outputType == 2))
                         writeImage(referenceStacks{n}, stackName, 'transpose', 1);
@@ -738,11 +738,11 @@ else % inputType ~= 4
                     
                     % save 2D projections of referenceStacks
                     for currentFolder = {projectionFolder, [outputFolder filesep 'TM' num2str(timepoint, '%.6d')]}
-                        xyProjectionName = [currentFolder{:} filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') ...
+                        xyProjectionName = [currentFolder{:} filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') '_ANG' num2str(angle, '%.3d')...
                             '_CM' num2str(currentCamera, '%.2d') '_CHN' num2str(currentReferences(n), '%.2d') '_xyProjection' outputExtension];
-                        xzProjectionName = [currentFolder{:} filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') ...
+                        xzProjectionName = [currentFolder{:} filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') '_ANG' num2str(angle, '%.3d')...
                             '_CM' num2str(currentCamera, '%.2d') '_CHN' num2str(currentReferences(n), '%.2d') '_xzProjection' outputExtension];
-                        yzProjectionName = [currentFolder{:} filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') ...
+                        yzProjectionName = [currentFolder{:} filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') '_ANG' num2str(angle, '%.3d')...
                             '_CM' num2str(currentCamera, '%.2d') '_CHN' num2str(currentReferences(n), '%.2d') '_yzProjection' outputExtension];
                         if correctTIFF == 1 && ((inputType == 0 && outputType ~= 2) || (inputType ~= 0 && outputType == 2))
                             writeImage(squeeze(max(referenceStacks{n}, [], 3)), xyProjectionName, 'transpose', 1);
@@ -774,30 +774,30 @@ else % inputType ~= 4
                         
                         if inputType == 0
                             for z = 1:numel(zRange)
-                                imageName = [inputFolder filesep 'TM' num2str(timepoint, '%.5d') filesep 'ANG000' filesep 'SPC' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.5d') ...
-                                    '_ANG000_CM' num2str(currentCamera) '_CHN' num2str(currentDependents(n), '%.2d') '_PH0_PLN' num2str(zRange(z), '%.4d') '.tif'];
+                                imageName = [inputFolder filesep 'TM' num2str(timepoint, '%.5d') filesep num2str(angle, 'ANG%.3d') filesep 'SPC' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.5d') ...
+                                    '_ANG' num2str(angle, '%.3d') '_CM' num2str(currentCamera) '_CHN' num2str(currentDependents(n), '%.2d') '_PH0_PLN' num2str(zRange(z), '%.4d') '.tif'];
                                 currentImage = readImage(imageName);
                                 dependentStack(:, :, z) = currentImage((startsTop(c) + 1):(startsTop(c) + heights(c)), ...
                                     ((startsLeft(c) + 1):(startsLeft(c) + widths(c))));
                             end;
                         elseif inputType == 1
                             for z = 1:numel(zRange)
-                                imageName = [inputFolder filesep 'TM' num2str(timepoint, '%.5d') filesep 'ANG000' filesep 'SPC' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.5d') ...
-                                    '_ANG000_CM' num2str(currentCamera) '_CHN' num2str(currentDependents(n), '%.2d') '_PH0_PLN' num2str(zRange(z), '%.4d') '.jp2'];
+                                imageName = [inputFolder filesep 'TM' num2str(timepoint, '%.5d') filesep num2str(angle, 'ANG%.3d') filesep 'SPC' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.5d') ...
+                                    '_ANG' num2str(angle, '%.3d') '_CM' num2str(currentCamera) '_CHN' num2str(currentDependents(n), '%.2d') '_PH0_PLN' num2str(zRange(z), '%.4d') '.jp2'];
                                 currentImage = readImage(imageName);
                                 dependentStack(:, :, z) = currentImage((startsTop(c) + 1):(startsTop(c) + heights(c)), ...
                                     ((startsLeft(c) + 1):(startsLeft(c) + widths(c))));
                             end;
                         elseif inputType == 2 || inputType == 3
                             if inputType == 2
-                                stackName = [inputFolder filesep 'TM' num2str(timepoint, '%.5d') filesep 'ANG000' filesep 'SPC' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.5d') ...
-                                    '_ANG000_CM' num2str(currentCamera) '_CHN' num2str(currentDependents(n), '%.2d') '_PH0.stack'];
+                                stackName = [inputFolder filesep 'TM' num2str(timepoint, '%.5d') filesep num2str(angle, 'ANG%.3d') filesep 'SPC' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.5d') ...
+                                    '_ANG' num2str(angle, '%.3d') '_CM' num2str(currentCamera) '_CHN' num2str(currentDependents(n), '%.2d') '_PH0.stack'];
                             else
-                                stackName = [inputFolder filesep 'SPC' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.5d') ...
-                                    '_ANG000_CM' num2str(currentCamera) '_CHN' num2str(currentDependents(n), '%.2d') '_PH0.stack'];
+                                stackName = [inputFolder filesep 'SPC' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.5d')...
+                                    '_ANG' num2str(angle, '%.3d') '_CM' num2str(currentCamera) '_CHN' num2str(currentDependents(n), '%.2d') '_PH0.stack'];
                             end;
                             xmlName = [outputFolder filesep 'TM' num2str(timepoint, '%.6d') filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') ...
-                                '_CHN' num2str(currentDependents(n), '%.2d') '.xml'];
+                                    '_ANG' num2str(angle, '%.3d') '_CHN' num2str(currentDependents(n), '%.2d') '.xml'];
                             
                             if ~isempty(dimensions)
                                 stackDimensions = dimensions;
@@ -860,7 +860,7 @@ else % inputType ~= 4
                             else
                                 correctionDatabase = backgroundValues(c);
                             end;
-                            save([outputFolder filesep 'TM' num2str(timepoint, '%.6d') filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') ...
+                            save([outputFolder filesep 'TM' num2str(timepoint, '%.6d') filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') '_ANG' num2str(angle, '%.3d')...
                                 '_CM' num2str(currentCamera, '%.2d') '_CHN' num2str(currentDependents(n), '%.2d') '.correctionDatabase.mat'], 'correctionDatabase');
                             clear correctionDatabase;
                         end;
@@ -870,7 +870,7 @@ else % inputType ~= 4
                         if segmentFlag ~= 3
                             subSampledStack = dependentStack(1:percentile(3):end);
                             minIntensity = prctile(subSampledStack(subSampledStack > 0), percentile(2));
-                            save([outputFolder filesep 'TM' num2str(timepoint, '%.6d') filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') ...
+                            save([outputFolder filesep 'TM' num2str(timepoint, '%.6d') filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') '_ANG' num2str(angle, '%.3d')...
                                 '_CM' num2str(currentCamera, '%.2d') '_CHN' num2str(currentDependents(n), '%.2d') '.minIntensity.mat'], 'minIntensity');
                             clear subSampledStack;
                         end;
@@ -890,7 +890,7 @@ else % inputType ~= 4
                         
                         % save dependentStack
                         
-                        stackName = [outputFolder filesep 'TM' num2str(timepoint, '%.6d') filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') ...
+                        stackName = [outputFolder filesep 'TM' num2str(timepoint, '%.6d') filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') '_ANG' num2str(angle, '%.3d')...
                             '_CM' num2str(currentCamera, '%.2d') '_CHN' num2str(currentDependents(n), '%.2d') outputExtension];
                         if correctTIFF == 1 && ((inputType == 0 && outputType ~= 2) || (inputType ~= 0 && outputType == 2))
                             writeImage(dependentStack, stackName, 'transpose', 1);
@@ -900,11 +900,11 @@ else % inputType ~= 4
                         
                         % save 2D projections of dependentStack
                         for currentFolder = {projectionFolder, [outputFolder filesep 'TM' num2str(timepoint, '%.6d')]}
-                            xyProjectionName = [currentFolder{:} filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') ...
+                            xyProjectionName = [currentFolder{:} filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') '_ANG' num2str(angle, '%.3d') ...
                                 '_CM' num2str(currentCamera, '%.2d') '_CHN' num2str(currentDependents(n), '%.2d') '_xyProjection' outputExtension];
-                            xzProjectionName = [currentFolder{:} filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') ...
+                            xzProjectionName = [currentFolder{:} filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') '_ANG' num2str(angle, '%.3d')...
                                 '_CM' num2str(currentCamera, '%.2d') '_CHN' num2str(currentDependents(n), '%.2d') '_xzProjection' outputExtension];
-                            yzProjectionName = [currentFolder{:} filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') ...
+                            yzProjectionName = [currentFolder{:} filesep 'SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') '_ANG' num2str(angle, '%.3d')...
                                 '_CM' num2str(currentCamera, '%.2d') '_CHN' num2str(currentDependents(n), '%.2d') '_yzProjection' outputExtension];
                             if correctTIFF == 1 && ((inputType == 0 && outputType ~= 2) || (inputType ~= 0 && outputType == 2))
                                 writeImage(squeeze(max(dependentStack, [], 3)), xyProjectionName, 'transpose', 1);

@@ -1,4 +1,4 @@
-function filterResults(timepoints, inputDir, outputDir, header, footer, stackLabel, fusionFlag, specimen, cameras, channels,subOffset, ...
+function filterResults(timepoints, inputDir, outputDir, header, footer, stackLabel, fusionFlag, specimen, angle, cameras, channels,subOffset, ...
                         removeDirt, filterMode, rangeArray, splitting, scaling, preMedian, postMedian, inputType, outputType, ...
                         subProject, saveRawMax, saveStacks, jobMemory, t, memoryEstimate)
 
@@ -23,13 +23,13 @@ configuration = cell(25, 1);
 configuration{1}  = version;      configuration{2}  = timepoint;   configuration{3}  = inputDir;    configuration{4}  = outputDir;
 configuration{5}  = header;       configuration{6}  = footer;      configuration{7}  = stackLabel;
 configuration{8}  = fusionFlag;
-configuration{9}  = specimen;     configuration{10} = cameras;     configuration{11} = channels;
-configuration{12} = subOffset;
-configuration{13} = removeDirt;
-configuration{14} = filterMode;   configuration{15} = rangeArray;  configuration{16} = splitting;   configuration{17} = scaling;
-configuration{18} = preMedian;    configuration{19} = postMedian;  configuration{20} = inputType;   configuration{21} = outputType;
-configuration{22} = subProject;   configuration{23} = saveRawMax;  configuration{24} = saveStacks;
-configuration{25} = [jobMemory(1) memoryEstimate];         
+configuration{9}  = specimen;     configuration{10} = angle; configuration{11} = cameras;     configuration{12} = channels;
+configuration{13} = subOffset;
+configuration{14} = removeDirt;
+configuration{15} = filterMode;   configuration{16} = rangeArray;  configuration{17} = splitting;   configuration{18} = scaling;
+configuration{19} = preMedian;    configuration{20} = postMedian;  configuration{21} = inputType;   configuration{22} = outputType;
+configuration{23} = subProject;   configuration{24} = saveRawMax;  configuration{25} = saveStacks;
+configuration{26} = [jobMemory(1) memoryEstimate];         
 
 if fusionFlag == 0
     configurationString = ['_CM' num2str(cameras(1), '%.2d') '_CHN' num2str(channels(1), '%.2d')]; % single channel
@@ -63,9 +63,9 @@ end;
 
 disp(['processing time point ' num2str(timepoint, '%.6d')]);
 
-fileNameHeader = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') configurationString];
+fileNameHeader = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.6d') '_ANG' num2str(angle, '%.3d') configurationString];
 if fusionFlag == 0
-    stackName = [inputDir filesep 'SPM' num2str(specimen, '%.2d') filesep 'TM' num2str(timepoint, '%.6d') filesep fileNameHeader inputExtension];
+    stackName = [inputDir filesep 'SPM' num2str(specimen, '%.2d') filesep 'TM' num2str(timepoint, '%.6d') filesep fileNameHeader stackLabel inputExtension];
 else
     stackName = [inputDir filesep header '.TM' num2str(timepoint, '%.6d') footer filesep '' fileNameHeader '.fusedStack' stackLabel inputExtension];
 end

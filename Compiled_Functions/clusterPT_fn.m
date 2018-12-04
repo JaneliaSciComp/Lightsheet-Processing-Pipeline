@@ -22,6 +22,7 @@ userDefinedOutputFolder='';
 if isfield(input_parameters,'outputFolder'), userDefinedOutputFolder = input_parameters.outputFolder; end%DGA added this so that the output folder can be different from the input
 outputLabel  = input_parameters.outputLabel;
 specimen     = input_parameters.specimen;    % specimen index to be processed
+angle        = input_parameters.angle;       % angle to be processed
 timepoints   = input_parameters.timepoints;  % time points to be processed
 cameras      = input_parameters.cameras;     % camera indices to be processed
 channels     = input_parameters.channels;    % channel indices to be processed
@@ -288,14 +289,14 @@ for currentTP = length(timepoints):-1:1
             end;
         end;
     else
-        currentHeader = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(currentTP), '%.6d')];
+        currentHeader = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(currentTP), '%.6d') '_ANG' num2str(angle, '%.3d')];
         currentMissingFlag = 0;
         for c = cameras
             if segmentFlag == 2
                 if ~isempty(references)
                     for h = references(1, :)
                         % check for presence of final image file written by each processTimepoint.m process
-                        outputFile = [outputFolder filesep 'TM' num2str(timepoints(currentTP), '%.6d') filesep '' currentHeader ...
+                        outputFile = [outputFolder filesep 'TM' num2str(timepoints(currentTP), '%.6d') filesep currentHeader ...
                             '_CM' num2str(c, '%.2d') '_CHN' num2str(h, '%.2d') '.segmentationMask' outputExtension];
                         if exist(outputFile, 'file') ~= 2
                             currentMissingFlag = 1;
@@ -305,7 +306,7 @@ for currentTP = length(timepoints):-1:1
                 else
                     for h = channels
                         % check for presence of final image file written by each processTimepoint.m process
-                        outputFile = [outputFolder filesep 'TM' num2str(timepoints(currentTP), '%.6d') filesep '' currentHeader ...
+                        outputFile = [outputFolder filesep 'TM' num2str(timepoints(currentTP), '%.6d') filesep currentHeader ...
                             '_CM' num2str(c, '%.2d') '_CHN' num2str(h, '%.2d') '.segmentationMask' outputExtension];
                         if exist(outputFile, 'file') ~= 2
                             currentMissingFlag = 1;
@@ -539,7 +540,7 @@ if ~isempty(timepoints)
                     
                     parfor t = 1:nTimepoints
                         disp(['Submitting time point ' num2str(timepoints(t), '%.4d') ' to a local worker.']);
-                        processTimepoint(inputFolder, outputFolder, projectionFolder, globalMaskFolder, specimen, timepoints, cameras, channels, dimensions, ...
+                        processTimepoint(inputFolder, outputFolder, projectionFolder, globalMaskFolder, specimen, angle, timepoints, cameras, channels, dimensions, ...
                             startsLeft, startsTop, widths, heights, startsFront, depths, inputType, outputType, correctTIFF, rotationFlag, ...
                             medianRange, percentile, segmentFlag, flipHFlag, flipVFlag, splitting, kernelSize, kernelSigma, scaling, ...
                             references, dependents, thresholds, loggingFlag, verbose, backgroundValues, jobMemory, t, jobMemory(2));
@@ -555,7 +556,7 @@ if ~isempty(timepoints)
                 else
                     for t = 1:nTimepoints
                         disp(['Processing time point ' num2str(timepoints(t), '%.4d')]);
-                        processTimepoint(inputFolder, outputFolder, projectionFolder, globalMaskFolder, specimen, timepoints, cameras, channels, dimensions, ...
+                        processTimepoint(inputFolder, outputFolder, projectionFolder, globalMaskFolder, specimen, angle, timepoints, cameras, channels, dimensions, ...
                             startsLeft, startsTop, widths, heights, startsFront, depths, inputType, outputType, correctTIFF, rotationFlag, ...
                             medianRange, percentile, segmentFlag, flipHFlag, flipVFlag, splitting, kernelSize, kernelSigma, scaling, ...
                             references, dependents, thresholds, loggingFlag, verbose, backgroundValues, jobMemory, t, jobMemory(2));
@@ -584,8 +585,8 @@ elseif segmentFlag == 2
     for t = 1:nTimepoints
         disp(['Reading masks for time point ' num2str(timepointsBackup(t), '%.4d')]);
         
-        maskFolder = [outputFolder filesep 'TM' num2str(timepointsBackup(t), '%.6d') filesep ''];
-        maskHeader = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(timepointsBackup(t), '%.6d') '_CM*_CHN*.segmentationMask' outputExtension];
+        maskFolder = [outputFolder filesep 'TM' num2str(timepointsBackup(t), '%.6d') filesep ];
+        maskHeader = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(timepointsBackup(t), '%.6d') '_ANG' num2str(angle, '%.3d') '_CM*_CHN*.segmentationMask' outputExtension];
         maskFiles = dir([maskFolder maskHeader]);
         
         for i = 1:numel(maskFiles)
