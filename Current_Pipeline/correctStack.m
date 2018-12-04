@@ -21,7 +21,7 @@ if ~exist(outputDatabase{t, 1}, 'dir')
     mkdir(outputDatabase{t, 1});
 end;
 
-save([outputDatabase{t, 1} filesep 'Configuration.mat'], 'configuration');
+save([outputDatabase{t, 2} '.configuration.mat'], 'configuration');
 
 switch inputType
     case 0
