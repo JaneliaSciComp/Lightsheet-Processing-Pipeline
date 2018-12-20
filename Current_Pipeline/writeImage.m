@@ -1,13 +1,19 @@
 function writeImage(imageStack, filename, varargin)
-
-% determine file extension to select appropriate write module
-[~, ~, extension] = fileparts(filename);
-
+[filepath, name, extension] = fileparts(filename);
+if ~isempty(varargin) && ~isempty(intersect(varargin{end},{'.jp2','.tif','.tiff','.klb'}))
+    extension = varargin{end};
+    varargin(end) = [];
+else
+    % determine file extension to select appropriate write module
+    extension={extension};
+end
 % set all global options to default settings
 transposeFlag = 0;
 
-switch(extension)
-    case '.jp2'
+for currentExtension=extension
+    currentExtension=currentExtension{:};
+    currentFilename =  [filepath filesep name currentExtension];
+    if currentExtension=='.jp2'
         
         % set all options to default settings
         nThreads = min(feature('numcores'), 8);
@@ -39,9 +45,9 @@ switch(extension)
             end;
         end;
         
-        writeJP2stack(imageStack, filename, nThreads, compression);
-        
-    case {'.tif', '.tiff'}
+        writeJP2stack(imageStack, currentFilename, nThreads, compression);
+    end     
+    if ismember(currentExtension,{'.tif', '.tiff'})
         
         % read optional input parameters
         if ~isempty(varargin)
@@ -65,9 +71,9 @@ switch(extension)
             end;
         end;
         
-        writeTIFstack(imageStack, filename, 2^31);
-        
-    case '.klb'
+        writeTIFstack(imageStack, currentFilename, 2^31);
+    end   
+    if currentExtension == '.klb'
         
        % set all options to default settings
         nThreads = feature('numcores');
@@ -108,8 +114,9 @@ switch(extension)
             end;
         end;
         
-        writeKLBstack(imageStack, filename, nThreads, pixelSize, blockSize, compressionType, metadata);
-        
-    otherwise
+        writeKLBstack(imageStack, currentFilename, nThreads, pixelSize, blockSize, compressionType, metadata);
+    end  
+    if ~ismember(currentExtension,{'.jp2','.tif','.tiff','.klb'})
         error 'Format not recognized.'
+    end
 end;

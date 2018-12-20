@@ -315,7 +315,9 @@ try
     
     tStart = tic;
     if ~options.append
-        tempfile = [path(1:(end - 3)) 'temp.tif'];
+        pid = num2str(feature('getpid'));
+        hostname = char(java.net.InetAddress.getLocalHost.getHostName);
+        tempfile = [path(1:(end - 3)) '_' hostname '_' num2str(pid) '_temp.tif'];
         
         % amatf: modification to use big tiff if needed
         qq = whos('data');

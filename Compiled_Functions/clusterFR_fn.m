@@ -102,44 +102,49 @@ switch inputType
         inputExtension = '.tif';
 end;
 
-switch outputType
-    case 0
-        outputExtension = '.klb';
-    case 1
-        outputExtension = '.jp2';
-    case 2
-        outputExtension = '.tif';
-end;
+outputExtension = {};
+if ismember(0,outputType)
+    outputExtension = {'.klb'};
+end
+if ismember(1,outputType)
+    outputExtension = {outputExtension{:}, '.jp2'};
+end
+if ismember(2,outputType)
+    outputExtension = {outputExtension{:},'.tif'};
+end
 
-for currentTP = length(timepoints):-1:1
-    if fusionFlag == 0
-        outputPath = [outputDir 'SPM' num2str(specimen, '%.2d') filesep 'TM' num2str(timepoints(currentTP), '%.6d')];
-        intermediateString = '.';
-    else
-        outputPath = [outputDir header '.TM' num2str(timepoints(currentTP), '%.6d') footer];
-        intermediateString = '.fusedStack_';
-    end;
-    fileNameHeader = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(currentTP), '%.6d') '_ANG' num2str(angle, '%.3d') configurationString];
-    if isempty(filterMode) && removeDirt(1)
-        if preMedian(1) == 0
-            outputName = [outputPath filesep fileNameHeader intermediateString 'yzProjection.cleaned' outputExtension];
+for currentOutputExtension=outputExtension
+    currentOutputExtension=currentOutputExtension{:};
+    for currentTP = length(timepoints):-1:1
+        if fusionFlag == 0
+            outputPath = [outputDir 'SPM' num2str(specimen, '%.2d') filesep 'TM' num2str(timepoints(currentTP), '%.6d')];
+            intermediateString = '.';
         else
-            outputName = [outputPath filesep fileNameHeader intermediateString 'yzProjection.cleaned_median' outputExtension];
+            outputPath = [outputDir header '.TM' num2str(timepoints(currentTP), '%.6d') footer];
+            intermediateString = '.fusedStack_';
         end;
-    elseif ~isempty(filterMode)
-        if postMedian(1) == 0
-            outputName = [outputPath filesep fileNameHeader intermediateString 'yzProjection.filtered_' num2str(rangeArray(end)) outputExtension];
+        fileNameHeader = ['SPM' num2str(specimen, '%.2d') '_TM' num2str(timepoints(currentTP), '%.6d') '_ANG' num2str(angle, '%.3d') configurationString];
+        if isempty(filterMode) && removeDirt(1)
+            if preMedian(1) == 0
+                outputName = [outputPath filesep fileNameHeader intermediateString 'yzProjection.cleaned' currentOutputExtension];
+            else
+                outputName = [outputPath filesep fileNameHeader intermediateString 'yzProjection.cleaned_median' currentOutputExtension];
+            end;
+        elseif ~isempty(filterMode)
+            if postMedian(1) == 0
+                outputName = [outputPath filesep fileNameHeader intermediateString 'yzProjection.filtered_' num2str(rangeArray(end)) currentOutputExtension];
+            else
+                outputName = [outputPath filesep fileNameHeader intermediateString 'yzProjection.filtered_' num2str(rangeArray(end)) '_median' currentOutputExtension];
+            end;
         else
-            outputName = [outputPath filesep fileNameHeader intermediateString 'yzProjection.filtered_' num2str(rangeArray(end)) '_median' outputExtension];
+            error('Bad script configuration: both filtering and dirt removal are deactivated.');
         end;
-    else
-        error('Bad script configuration: both filtering and dirt removal are deactivated.');
+        
+        if exist(outputName, 'file') == 2
+            timepoints(currentTP) = [];
+        end;
     end;
-    
-    if exist(outputName, 'file') == 2
-        timepoints(currentTP) = [];
-    end;
-end;
+end
 
 if ~isempty(timepoints)
     nTimepoints = numel(timepoints);
