@@ -44,7 +44,7 @@ This project is currently being maintained and developed at HHMI's Janelia Resea
 
 # Contributions
 
-WaveSurfer includes code from the JSONlab project, by 
+Lightsheet-Processing-Pipeline includes code from the JSONlab project, by 
 Qianqian Fang (https://github.com/fangq/jsonlab).  This code is covered 
 by its own copyright and licensing.  We thank Dr. Fang for making it 
 publicly available.
