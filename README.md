@@ -1,5 +1,6 @@
 # Lightsheet-Processing-Pipeline
-This repository is based on an updated version of the code from the following paper: https://www.nature.com/articles/nprot.2015.111. Original code can also be found here https://www.janelia.org/lab/keller-lab/software/efficient-processing-and-analysis-large-scale-light-sheet-microscopy-data.
+This repository is based on an updated version of the code from the following paper: https://www.nature.com/articles/nprot.2015.111.
+Original code can also be found here: https://www.janelia.org/lab/keller-lab/software/efficient-processing-and-analysis-large-scale-light-sheet-microscopy-data.
 
 # License
 Copyright (c) 2019, Howard Hughes Medical Institute
