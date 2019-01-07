@@ -1,5 +1,5 @@
 # Lightsheet-Processing-Pipeline
-This repository is based on an updated version of the files provided in https://www.nature.com/articles/nprot.2015.111.
+This repository is based on an updated version of the code provided in https://www.nature.com/articles/nprot.2015.111.
 
 # License
 Copyright (c) 2019, Howard Hughes Medical Institute
