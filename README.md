@@ -30,13 +30,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 # Authors
 
-Original from original paper:
-Fernando Amat: amatf@janelia.hhmi.org
-Burkhard Höckendorf: hockendorfb@janelia.hhmi.org
-Philipp Keller: kellerp@janelia.hhmi.org
+Original from original paper:  
+Fernando Amat: amatf@janelia.hhmi.org  
+Burkhard Höckendorf: hockendorfb@janelia.hhmi.org  
+Philipp Keller: kellerp@janelia.hhmi.org  
 
-Additional authors since publication:
-David Ackerman: ackermand@janelia.hhmi.org
+Additional authors since publication:  
+David Ackerman: ackermand@janelia.hhmi.org  
 
 # Maintenance and Development
 
