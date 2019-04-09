@@ -249,9 +249,9 @@ end;
 
 % evalute background files and copy to output folder
 if inputType == 0 || inputType == 2 || inputType == 3 || inputType == 4
-    backgroundFiles = dir([inputFolder filesep '*.tif']);
+    backgroundFiles = dir([inputFolder filesep 'Background_*.tif']);
 else % inputType == 1
-    backgroundFiles = dir([inputFolder filesep '*.jp2']);
+    backgroundFiles = dir([inputFolder filesep 'Background_*.jp2']);
 end;
 if isempty(backgroundFiles)
     error('Error: Background files are missing.');

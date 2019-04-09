@@ -4,7 +4,7 @@
 inputFolder  = '/groups/lightsheet/lightsheet/home/ackermand/Lightsheet_Data/Paper/Supplementary_Data_1/Image_Data';
 outputLabel  = '';
 specimen     = 0;                   % specimen index to be processed
-timepoints   = 0;                   % time points to be processed
+timepoints   = 25:40;                   % time points to be processed
 cameras      = [0 1];               % camera indices to be processed
 channels     = [0 1];               % channel indices to be processed
 
