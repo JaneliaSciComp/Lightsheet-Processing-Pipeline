@@ -40,11 +40,12 @@ heights      = input_parameters.heights;     % cropping height for each camera (
 startsFront  = input_parameters.startsFront; % cropping front start coordinates for each camera (ImageJ-y convention)
 depths       = input_parameters.depths;      % cropping depth for each camera (ImageJ-h convention)
 
-inputType    = input_parameters.inputType;   % 0: input data in TIF format
-                                             % 1: input data in JP2 format
-                                             % 2: input data in binary stack format (normal experiment mode, structured)
-                                             % 3: input data in binary stack format (normal experiment mode, unstructured)
-                                             % 4: input data in binary stack format (HS single-plane experiment mode)
+inputType    = input_parameters.inputType;   % 0: input data in unstructured TIF format
+                                             % 1: input data in structured TIF format
+                                             % 2: input data in JP2 format
+                                             % 3: input data in binary stack format (normal experiment mode, structured)
+                                             % 4: input data in binary stack format (normal experiment mode, unstructured)
+                                             % 5: input data in binary stack format (HS single-plane experiment mode)
                                              %    note: pixel correction and segmentFlag are inactive in this mode
 outputType   = input_parameters.outputType;  % 0: output data saved in KLB format
                                              % 1: output data saved in JP2 format
@@ -164,7 +165,7 @@ coreMemory   = floor(((96 - 8) * 1024) / (12 * 1024)); % memory boundary for swi
 
 %% initialization
 
-if inputType == 4 && segmentFlag > 0
+if inputType == 5 && segmentFlag > 0
     error('Error: clusterPT segmentation features cannot be applied to image data recorded in HS single-plane experiment mode.');
 end;
 
@@ -207,7 +208,7 @@ else
     projectionFolder = [templateOutputFolder '.corrected.projections'];
 end;
 
-if inputType == 4
+if inputType == 5
     if ~isempty(outputLabel)
         outputFolder = [templateOutputFolder '.corrected.' outputLabel];
     else
@@ -225,7 +226,7 @@ if ~isempty(outputLabel)
 else
     globalMaskFolder = [templateOutputFolder '.globalMask'];
 end;
-if inputType ~= 3 && inputType ~= 4
+if inputType ~=0 && inputType ~= 4 && inputType ~= 5
     inputFolder = [inputFolder filesep 'SPM' num2str(specimen, '%.2d')];
 end;
 
@@ -233,7 +234,7 @@ if exist(outputFolder, 'dir') == 7 && exist(projectionFolder, 'dir') == 7
     warning('Default output folders already exist. Abort processing if existing data should not be overwritten.');
 else
     mkdir(outputFolder);
-    if inputType ~= 4 && exist(projectionFolder, 'dir') ~= 7
+    if inputType ~= 5 && exist(projectionFolder, 'dir') ~= 7
         mkdir(projectionFolder);
     end;
 end;
@@ -248,9 +249,9 @@ switch outputType
 end;
 
 % evalute background files and copy to output folder
-if inputType == 0 || inputType == 2 || inputType == 3 || inputType == 4
+if inputType == 0 || inputType == 1 || inputType == 3 || inputType == 4 || inputType == 5
     backgroundFiles = dir([inputFolder filesep 'Background_*.tif']);
-else % inputType == 1
+else % inputType == 2
     backgroundFiles = dir([inputFolder filesep 'Background_*.jp2']);
 end;
 if isempty(backgroundFiles)
@@ -276,7 +277,7 @@ end;
 %% job submission
 
 for currentTP = length(timepoints):-1:1
-    if inputType == 4
+    if inputType == 5
         currentMissingFlag = 0;
         for c = cameras
             for h = channels
@@ -338,7 +339,7 @@ if ~isempty(timepoints)
         if numel(dimensions) == 3 && (dimensions(1) * dimensions(2) * dimensions(3) ~= 0)
             unitX = 2 * dimensions(1) * dimensions(2) * dimensions(3) / (1024 ^ 3);
         else
-            if inputType == 3 || inputType == 4
+            if inputType == 0 || inputType == 4 || inputType == 5
                 xmlName = [inputFolder filesep 'ch' num2str(channels(1)) '.xml'];
             else
                 xmlName = [inputFolder filesep 'TM' num2str(timepoints(1), '%.5d') filesep 'ch' num2str(channels(1)) '.xml'];
@@ -379,7 +380,7 @@ if ~isempty(timepoints)
             end;
         end;
         
-        if inputType == 4 % for HS single-plane experiment mode, the estimated memory consumption is 1 * unitX (+10% safety)
+        if inputType == 5 % for HS single-plane experiment mode, the estimated memory consumption is 1 * unitX (+10% safety)
             if rotationFlag == 0
                 jobMemory(1, 2) = ceil(1.2 * unitX);
             elseif rotationFlag == -1
@@ -446,8 +447,8 @@ if ~isempty(timepoints)
 % % %         end
     else
         if localRun(1) ~= 1
-            if inputType == 4
-                error('Inconsistent parameters: "jobMemory(1) = 2" and "inputType = 4".');
+            if inputType == 5
+                error('Inconsistent parameters: "jobMemory(1) = 2" and "inputType = 5".');
             end;
             if numel(dimensions) == 3 && (dimensions(1) * dimensions(2) * dimensions(3) ~= 0)
                 error('Inconsistent parameters: "jobMemory(1) = 2" is in conflict with assignment of non-empty "dimensions" vector.');
