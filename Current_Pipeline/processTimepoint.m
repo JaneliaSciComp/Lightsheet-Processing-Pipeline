@@ -22,7 +22,6 @@ timepoint = timepoints(t);
 version = 1.07;
 
 configuration = cell(37, 1);
-
 configuration{1}  = version;     configuration{2}  = timepoint;  configuration{3}  = inputFolder;  configuration{4}  = outputFolder; configuration{5}  = projectionFolder; configuration{6} = globalMaskFolder;
 configuration{7}  = specimen;    configuration{8} = angle; configuration{9}  = timepoints; configuration{10}  = cameras;      configuration{11} = channels;     configuration{12} = dimensions;
 configuration{13} = startsLeft;  configuration{14} = startsTop;  configuration{15} = widths;       configuration{16} = heights;
@@ -359,7 +358,7 @@ else % inputType ~= 5
                     for z = 1:numel(zRange)
                         if inputType == 0
                             imageName = [inputFolder filesep 'SPC' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.5d') '_ANG' num2str(angle, '%.3d') ...
-                                '_CM' num2str(currentCamera) '_CHN' num2str(currentReferences(n), '%.2d') '_PH0.tif'];
+                                '_CM' num2str(currentCamera) '_CHN' num2str(currentReferences(n), '%.2d') '_PH0_PLN' num2str(zRange(z), '%.4d') '.tif'];
                         else
                             imageName = [inputFolder filesep 'TM' num2str(timepoint, '%.5d') filesep num2str(angle, 'ANG%.3d') filesep 'SPC' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.5d') '_ANG' num2str(angle, '%.3d') ...
                                 '_CM' num2str(currentCamera) '_CHN' num2str(currentReferences(n), '%.2d') '_PH0_PLN' num2str(zRange(z), '%.4d') '.tif'];
@@ -781,7 +780,7 @@ else % inputType ~= 5
                             for z = 1:numel(zRange)
                                 if inputType == 0
                                     imageName = [inputFolder filesep 'SPC' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.5d')...
-                                        '_ANG' num2str(angle, '%.3d') '_CM' num2str(currentCamera) '_CHN' num2str(currentDependents(n), '%.2d') '_PH0.tif'];
+                                        '_ANG' num2str(angle, '%.3d') '_CM' num2str(currentCamera) '_CHN' num2str(currentDependents(n), '%.2d') '_PH0_PLN' num2str(zRange(z), '%.4d') '.tif'];
                                 else
                                     imageName = [inputFolder filesep 'TM' num2str(timepoint, '%.5d') filesep num2str(angle, 'ANG%.3d') filesep 'SPC' num2str(specimen, '%.2d') '_TM' num2str(timepoint, '%.5d') ...
                                         '_ANG' num2str(angle, '%.3d') '_CM' num2str(currentCamera) '_CHN' num2str(currentDependents(n), '%.2d') '_PH0_PLN' num2str(zRange(z), '%.4d') '.tif'];
